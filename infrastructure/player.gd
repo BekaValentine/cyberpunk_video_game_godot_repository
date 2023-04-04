@@ -14,7 +14,6 @@ var body_collider = null
 var crouch_tween = null
 var camera = null
 var hold_camera = null
-var hold_collider = null
 var hold_position = null
 var on_floor = false
 var pivot = null
@@ -40,7 +39,7 @@ var inventory_open = false
 var tick = 0
 
 var WORLD_OBJECT_COLLISION_MASK = 2;
-var HELD_COLLISION_MASK = 4;
+var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
 
 
@@ -53,7 +52,6 @@ func _ready():
 	body_collider = $body_collider
 	camera = $pivot/camera
 	hold_camera = $pivot/camera/hold_viewport_container/hold_viewport/hold_camera
-	hold_collider = $hold_collider
 	crouch_tween = $crouch_tween
 	hold_position = $pivot/hold_position
 	object_highlight = $object_highlight
@@ -62,7 +60,6 @@ func _ready():
 	stand_height = pivot.transform.origin.y
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	hold_collider.disabled = true
 
 
 
@@ -137,19 +134,18 @@ func hold_object(obj):
 	held_object = obj
 	if not held_object.get_parent():
 		self.get_parent().add_child(held_object)
-#	hold_position.add_child(held_object)
 	self_initial_rotation = self.get_rotation()
 	if held_object.transform.basis.y.angle_to(Vector3.UP) > 0.01:
 		held_object_initial_rotation = Vector3.ZERO
 	else:
 		held_object_initial_rotation = held_object.get_rotation()
-#	held_object.mode = RigidBody.MODE_KINEMATIC
+	held_object.mode = RigidBody.MODE_KINEMATIC
 	held_object.collision_mask = HELD_COLLISION_MASK
+	held_object.start_hold()
 	held_object.hold()
-	hold_collider.shape.extents = held_object.hold_collider_extents()
-	hold_collider.disabled = false
 
 func throw_object():
+	held_object.end_hold()
 	held_object.release()
 	var old_transform = held_object.global_transform
 	held_object.mode = RigidBody.MODE_RIGID
@@ -157,16 +153,15 @@ func throw_object():
 	held_object.global_transform = old_transform
 	held_object.apply_impulse(Vector3(0,0,0), -10*camera.global_transform.basis.z)
 	held_object = null
-	hold_collider.disabled = true
 
 func drop_object():
+	held_object.end_hold()
 	held_object.release()
 	var old_transform = held_object.global_transform
 	held_object.mode = RigidBody.MODE_RIGID
 	held_object.collision_mask = NORMAL_COLLISION_MASK
 	held_object.global_transform = old_transform
 	held_object = null
-	hold_collider.disabled = true
 
 func take_object():
 	held_object.take()
@@ -329,4 +324,3 @@ func viewing_ui():
 
 func set_held_object_position():
 	held_object.global_transform.origin = hold_position.global_transform.origin
-	hold_collider.global_transform.origin = held_object.global_transform.origin
