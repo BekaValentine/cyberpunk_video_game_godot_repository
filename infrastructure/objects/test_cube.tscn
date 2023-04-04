@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="BoxShape" id=1]
+
+[node name="KinematicBody" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.55193, 0.96849, -3.78786 )
+collision_layer = 4
+collision_mask = 5
+
+[node name="CSGBox" type="CSGBox" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )

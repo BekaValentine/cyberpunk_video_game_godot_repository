@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=1]
+[ext_resource path="res://infrastructure/menus/pause_menu.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 0.564706, 0, 1 )
+
+[node name="pause_menu" type="Container"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pause" type="Label" parent="."]
+margin_top = 50.0
+margin_right = 1920.0
+margin_bottom = 130.0
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Pause"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back_to_game" type="Button" parent="."]
+margin_left = 800.0
+margin_top = 200.0
+margin_right = 1000.0
+margin_bottom = 250.0
+text = "Back to Game"
+
+[node name="main_menu" type="Button" parent="."]
+margin_left = 800.0
+margin_top = 300.0
+margin_right = 1000.0
+margin_bottom = 350.0
+text = "Main Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="back_to_game" to="." method="back_to_game"]
+[connection signal="pressed" from="main_menu" to="." method="goto_main_menu"]

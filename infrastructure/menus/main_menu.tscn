@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://infrastructure/menus/menu.gd" type="Script" id=1]
+[ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
+[ext_resource path="res://infrastructure/menus/exit_button.gd" type="Script" id=4]
+[ext_resource path="res://infrastructure/menus/prototypes_button.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 0.564706, 0, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[node name="main_menu" type="Container"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="."]
+margin_top = 50.0
+margin_right = 1920.0
+margin_bottom = 100.0
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Main Menu"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="prototypes" type="Button" parent="."]
+anchor_right = 0.059
+margin_left = 805.0
+margin_top = 200.0
+margin_right = 1115.0
+margin_bottom = 260.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 3 )
+enabled_focus_mode = 0
+text = "Prototypes"
+script = ExtResource( 5 )
+
+[node name="exit" type="Button" parent="."]
+anchor_right = 0.059
+margin_left = 805.0
+margin_top = 300.0
+margin_right = 1115.0
+margin_bottom = 360.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 3 )
+enabled_focus_mode = 0
+text = "Exit"
+script = ExtResource( 4 )
+[connection signal="pressed" from="prototypes" to="prototypes" method="pressed"]
+[connection signal="pressed" from="exit" to="exit" method="pressed"]
