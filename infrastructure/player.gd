@@ -18,6 +18,21 @@ var hold_position = null
 var on_floor = false
 var pivot = null
 var pickup_detect_ray = null
+var stair_rays = null
+var stair_ray_bottom = null
+var stair_ray_top = null
+var using_stair = false
+var stair_start_position = null
+var stair_up_vec = null
+var stair_up_distance = 0
+var stair_fwd_vec = null
+var stair_fwd_distance = 0
+#var stair_start_position = null
+#var stair_middle_position = null
+#var stair_end_position = null
+var stair_phase = 0
+var stair_phase_frac = 0.0
+var stair_speed = 2
 
 var highlighted_object = null
 var held_object = null
@@ -27,6 +42,7 @@ var self_initial_rotation = Vector3.ZERO
 var held_object_initial_rotation = Vector3.ZERO
 var velocity = Vector3.ZERO
 var velocity_after_move_and_slide = null
+var move_direction = Vector3.ZERO
 var stand_height = null
 var crouch_height = 0.75
 var crouch_time = 0.25
@@ -35,14 +51,14 @@ var in_crouching_transition = false
 var pushed_objects = []
 var pushed_objects_changed = false
 var inventory_open = false
+var max_step_height = 0.178
+var max_step_depth = 0.279
 
 var tick = 0
 
 var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
-
-
 
 
 
@@ -57,6 +73,9 @@ func _ready():
 	object_highlight = $object_highlight
 	pickup_detect_ray = $pivot/pickup_detect_ray
 	pivot = $pivot
+	stair_rays = $stair_rays
+	stair_ray_bottom = $stair_rays/stair_ray_bottom
+	stair_ray_top = $stair_rays/stair_ray_top
 	stand_height = pivot.transform.origin.y
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -194,68 +213,95 @@ func _physics_process(delta):
 		move(delta)
 		rotate_held_object()
 		interact_objects()
+		try_stairs()
+#		use_stair()
 
 func is_on_floor():
 	return on_floor
 
 func move(delta):
-	velocity = Vector3.ZERO
-	var move_direction = Vector3.ZERO
-	# determine the direction to move in
-	var basis = global_transform.basis
-	if Input.is_action_pressed("move_forward"):
-		move_direction -= basis.z
-	if Input.is_action_pressed("move_backward"):
-		move_direction += basis.z
-	if Input.is_action_pressed("move_left"):
-		move_direction -= basis.x
-	if Input.is_action_pressed("move_right"):
-		move_direction += basis.x
-	
-#	if is_on_floor():
-	# we're walking, running, or jumping
-	
-	# determine the horizontal velocity to move
-	var speed
-	if is_on_floor():
-		# we're on the floor so we can move under our own power a lot
+	if using_stair:
 		
-		if Input.is_action_pressed("run"):
-			# we're running
-			speed = run_speed
+		if stair_phase == 0:
+#			$debug_message.show_text(str(stair_phase) + " " + str(stair_phase_frac))
+			stair_phase_frac += stair_speed * delta / stair_up_distance
+			stair_phase_frac = min(1.0, stair_phase_frac)
+			self.global_transform.origin = stair_start_position + stair_phase_frac*stair_up_vec
+#			$debug_message.show_text(str(stair_phase_frac))
+			if stair_phase_frac >= 1.0:
+				stair_phase_frac = 0.0
+				stair_phase = 1
 		else:
-			# we're walking
-			speed = walk_speed
+#			$debug_message.show_text(str(stair_phase) + " " + str(stair_phase_frac))
+			stair_phase_frac += stair_speed * delta / stair_fwd_distance
+			stair_phase_frac = min(1.0, stair_phase_frac)
+			self.global_transform.origin = stair_start_position + stair_up_vec + stair_phase_frac*stair_fwd_vec
+#			$debug_message.show_text(str(stair_phase_frac))
+			
+			if stair_phase_frac >= 1.0:
+				using_stair = false
+#				$debug_message.show_text("Done!")
+		
+	else:
+		
+		velocity = Vector3.ZERO
+		move_direction = Vector3.ZERO
+		# determine the direction to move in
+		var basis = global_transform.basis
+		if Input.is_action_pressed("move_forward"):
+			move_direction -= basis.z
+		if Input.is_action_pressed("move_backward"):
+			move_direction += basis.z
+		if Input.is_action_pressed("move_left"):
+			move_direction -= basis.x
+		if Input.is_action_pressed("move_right"):
+			move_direction += basis.x
+		
+	#	if is_on_floor():
+		# we're walking, running, or jumping
+		
+		# determine the horizontal velocity to move
+		var speed
+		if is_on_floor():
+			# we're on the floor so we can move under our own power a lot
+			
+			if Input.is_action_pressed("run"):
+				# we're running
+				speed = run_speed
+			else:
+				# we're walking
+				speed = walk_speed
 
-		var vel = move_direction.normalized() * speed
-		velocity.x = vel.x
-		velocity.z = vel.z
-		
-		velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
+			var vel = move_direction.normalized() * speed
+			velocity.x = vel.x
+			velocity.z = vel.z
+			
+			# actual velocity we need to add is the target velocity minus current velocity
+			velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
 
-		# determine the vertical velocity
-		if Input.is_action_just_pressed("jump"):
-			# we're jumping, so we just set the vertical speed
-			velocity.y = jump_speed
+			# determine the vertical velocity
+			if Input.is_action_just_pressed("jump"):
+				# we're jumping, so we just set the vertical speed
+				velocity.y = jump_speed
+				
+			self.apply_central_impulse(velocity)
+			
+		elif Vector3(linear_velocity.x, 0, linear_velocity.z).length() < air_speed:
+			# we're in the air and don't already have some momentum so we can move
+			# tiny bit to get onto ledges
+			
+			speed = air_speed
+			
+			var vel = move_direction.normalized() * speed
+			velocity.x = vel.x
+			velocity.z = vel.z
+			
+			self.apply_central_impulse(velocity)
 
-		self.apply_central_impulse(velocity)
 		
-	elif Vector3(linear_velocity.x, 0, linear_velocity.z).length() < air_speed:
-		# we're in the air and don't already have some momentum so we can move
-		# tiny bit to get onto ledges
-		
-		speed = air_speed
-		
-		var vel = move_direction.normalized() * speed
-		velocity.x = vel.x
-		velocity.z = vel.z
-		
-		self.apply_central_impulse(velocity)
-
-	
-	#prevents infinite falling
-	if translation.y < fall_limit:
-		scene_manager.reload_scene()
+		#prevents infinite falling
+		if translation.y < fall_limit:
+			scene_manager.reload_scene()
 
 	hold_camera.global_transform = camera.global_transform
 
@@ -313,6 +359,83 @@ func show_highlight():
 func hide_highlight():
 	object_highlight.visible = false
 
+func try_stairs():
+	if using_stair or not is_on_floor() or move_direction == Vector3.ZERO:
+		return
+	
+	if move_direction.length() > 0.01:
+		stair_rays.show()
+	else:
+		stair_rays.hide()
+	var delta_rotation = self.get_rotation() - self_initial_rotation
+	stair_rays.set_rotation(-self.get_rotation())
+	stair_rays.rotate_y(sign(Vector3(1,0,0).cross(Vector3(move_direction.x, 0, move_direction.z)).y)*Vector3(1,0,0).angle_to(Vector3(move_direction.x, 0, move_direction.z)))
+	
+#	var bottom_hit = !!stair_ray_bottom.get_collider()
+#	var top_hit = !!stair_ray_top.get_collider()
+#	$debug_message.show_text(str(bottom_hit) + " / " + str(top_hit))
+#	$debug_message.show_text(str(stair_ray_bottom.get_collider()))
+	var move_dir = 0.1 * move_direction.normalized()
+	var move_dist = self.compute_move(self.global_transform.origin, move_dir)
+#	$debug_message.show_text(str(move_dir) + " " + str(move_dist))
+	var move_hit = move_dist <= 0.35
+	if not move_hit:
+#		$debug_message.show_text("florp " + str(move_dir))
+		using_stair = false
+		return
+	
+#	$debug_message.show_text("Step up?")
+#		self.apply_central_impulse(0.75*jump_speed*global_transform.basis.y)
+#		self.add_central_force(Vector3(0,2000,0))
+#		using_stair = true
+	var up_dir = max_step_height * Vector3.UP
+	var up_distance = self.compute_move(self.global_transform.origin, up_dir)
+	var up_dest = up_distance * up_dir
+#	$debug_message.show_text("Up: " + str(up_dir) + " " + str(up_distance) + " " + str(up_dest))
+#	$debug_message.show_text(str(up_distance))
+	if up_distance == 0:
+		return
+	var fwd_dir = max_step_depth * move_direction.normalized()
+	var fwd_distance = self.compute_move(self.global_transform.origin + up_dest, fwd_dir)
+	var fwd_dest = fwd_distance * fwd_dir
+#	$debug_message.show_text("Fwd: " + str(fwd_dir) + " " + str(fwd_distance) + " " + str(fwd_dest))
+	if fwd_distance == 0:
+		return
+	if fwd_dest.length() > 0.1:
+		fwd_dest = 0.1 * fwd_dest.normalized()
+	var down_dir = -up_dest
+	var down_distance = self.compute_move(self.global_transform.origin + up_dest + fwd_dest, down_dir)
+	var down_dest = down_distance * down_dir
+	var travel = up_dest + fwd_dest + down_dest
+	var travel_distance = travel.length()
+	$debug_message.show_text(str(up_dest) + " " + str(fwd_dest) + " " + str(down_dest) + " " + str(travel) + " " + str(travel_distance))
+#	$debug_message.show_text(str(travel))
+#	$debug_message.show_text(str(up_distance) + " " + str(fwd_distance) + " " + str(down_distance))
+	if travel_distance < 0.01 or travel.y <= 0:
+		return
+	
+#	print(str(move_direction) + " " + str(fwd_dir) + " " + str(fwd_distance) + " " + str(fwd_dest) + " " + str(travel))
+	using_stair = true
+	stair_phase = 0
+	stair_phase_frac = 0.0
+	stair_start_position = self.global_transform.origin
+	stair_up_vec = Vector3(0, travel.y, 0)
+	stair_up_distance = stair_up_vec.length()
+	stair_fwd_vec = Vector3(travel.x, 0, travel.z)
+	stair_fwd_distance = stair_fwd_vec.length()
+#	$debug_message.show_text(str(stair_up_distance))
+#			stair_start_position = self.global_transform.origin
+#			stair_middle_position = up_dest
+#			stair_end_position = fwd_dest
+
+func use_stair():
+	var bottom_hit = !!stair_ray_bottom.get_collider()
+	var top_hit = !!stair_ray_top.get_collider()
+#	$debug_message.show_text(str(bottom_hit) + " / " + str(top_hit))
+#	if stair_use and not bottom_hit:
+#		$debug_message.show_text("Step passed")
+#		stair_use = false
+
 func rotate_held_object():
 	if held_object:
 		set_held_object_position()
@@ -324,3 +447,31 @@ func viewing_ui():
 
 func set_held_object_position():
 	held_object.global_transform.origin = hold_position.global_transform.origin
+
+
+
+func compute_move(origin : Vector3, dir : Vector3):
+	var shape = body_collider.shape
+	origin += Vector3(0,shape.height/2,0)
+	
+	# Create collision parameters
+	var params = PhysicsShapeQueryParameters.new()
+	params.set_shape(shape)
+	params.transform.origin = origin
+	params.collide_with_bodies = true
+	params.exclude = [self]
+	params.margin = 0
+	#params.set_collision_mask(mask)
+	
+	
+	# Get distance fraction and position of first collision
+	var space_state = get_world().direct_space_state
+#	$debug_message.show_text(str(space_state.collide_shape(params)))
+	var results = space_state.cast_motion(params, dir)
+	
+#	$debug_message.show_text(str(results))
+	
+	if len(results) == 0:
+		return 1
+	else:
+		return results[0]

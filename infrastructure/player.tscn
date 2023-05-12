@@ -28,7 +28,7 @@ albedo_color = Color( 0.992157, 0.00784314, 0.376471, 1 )
 albedo_color = Color( 0.0509804, 0.937255, 0.666667, 1 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.772549, 0.992157, 0.227451, 1 )
+albedo_color = Color( 0.992157, 0.227451, 0.623529, 1 )
 
 [node name="player" type="RigidBody" groups=[
 "player",
@@ -87,6 +87,8 @@ custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 align = 1
+autowrap = true
+clip_text = true
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -157,5 +159,31 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="stair_rays" type="Spatial" parent="."]
+
+[node name="CSGBox" type="CSGBox" parent="stair_rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
+height = 0.0544661
+depth = 0.066
+material = SubResource( 7 )
+
+[node name="stair_ray_bottom" type="RayCast" parent="stair_rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.01, 0 )
+enabled = true
+cast_to = Vector3( 0.15, 0, 0 )
+collision_mask = 4
+
+[node name="stair_ray_middle" type="RayCast" parent="stair_rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.7, 0 )
+enabled = true
+cast_to = Vector3( 0.25, 0, 0 )
+collision_mask = 4
+
+[node name="stair_ray_top" type="RayCast" parent="stair_rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.7, 0 )
+enabled = true
+cast_to = Vector3( 0.25, 0, 0 )
+collision_mask = 4
 [connection signal="tween_all_completed" from="crouch_tween" to="." method="finished_crouching_transition"]
 [connection signal="item_selected" from="backpack" to="backpack" method="item_selected"]
