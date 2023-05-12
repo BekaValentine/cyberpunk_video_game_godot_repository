@@ -186,6 +186,7 @@ func take_object():
 	held_object.take()
 	backpack.store_item(held_object)
 	held_object.get_parent().remove_child(held_object)
+	held_object = null
 	
 func use_object():
 	highlighted_object.use(held_object)
