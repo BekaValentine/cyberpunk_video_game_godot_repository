@@ -52,7 +52,7 @@ var pushed_objects = []
 var pushed_objects_changed = false
 var inventory_open = false
 var max_step_height = 0.178
-var max_step_depth = 0.279
+var min_step_depth = 0.1
 
 var tick = 0
 
@@ -223,25 +223,33 @@ func is_on_floor():
 func move(delta):
 	if using_stair:
 		
+#		$debug_message.show_text(str(stair_phase))
+		
 		if stair_phase == 0:
-#			$debug_message.show_text(str(stair_phase) + " " + str(stair_phase_frac))
-			stair_phase_frac += stair_speed * delta / stair_up_distance
-			stair_phase_frac = min(1.0, stair_phase_frac)
-			self.global_transform.origin = stair_start_position + stair_phase_frac*stair_up_vec
-#			$debug_message.show_text(str(stair_phase_frac))
-			if stair_phase_frac >= 1.0:
+			var current_delta = stair_start_position + stair_up_vec - self.global_transform.origin
+			var current_distance = current_delta.length()
+			if current_distance > 0.001:
+				var target_velocity = stair_speed * current_delta.normalized()
+				var velocity_delta = target_velocity - self.linear_velocity
+				self.apply_central_impulse(velocity_delta)
+#				$debug_message.show_text(str(velocity_delta))
+			stair_phase_frac = 1 - current_delta.y / stair_up_distance
+#			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
+			if stair_phase_frac >= 0.99:
 				stair_phase_frac = 0.0
 				stair_phase = 1
+				self.global_transform.origin = stair_start_position + stair_up_vec
 		else:
-#			$debug_message.show_text(str(stair_phase) + " " + str(stair_phase_frac))
-			stair_phase_frac += stair_speed * delta / stair_fwd_distance
-			stair_phase_frac = min(1.0, stair_phase_frac)
-			self.global_transform.origin = stair_start_position + stair_up_vec + stair_phase_frac*stair_fwd_vec
-#			$debug_message.show_text(str(stair_phase_frac))
-			
-			if stair_phase_frac >= 1.0:
+			var current_delta = stair_start_position + stair_up_vec + stair_fwd_vec - self.global_transform.origin
+			var current_distance = current_delta.length()
+			if current_distance > 0.001:
+				var target_velocity = stair_speed * current_delta.normalized()
+				var velocity_delta = target_velocity - self.linear_velocity
+				self.apply_central_impulse(velocity_delta)
+			stair_phase_frac = 1 - current_distance / stair_fwd_distance
+			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
+			if stair_phase_frac >= 0.9:
 				using_stair = false
-#				$debug_message.show_text("Done!")
 		
 	else:
 		
@@ -363,78 +371,106 @@ func hide_highlight():
 func try_stairs():
 	if using_stair or not is_on_floor() or move_direction == Vector3.ZERO:
 		return
+		
+	# The logic of trying to use stairs works like this:
+	#
+	# 1. Test if the path forward is obstructed. If not, then no possible step.
+	# 2. Since we can move, we need to determine where we're going to land on
+	#    the step. So we make three movements:
+	#   1. A move up to the max step height
+	#   2. A move forward to the min step depth
+	#   3. A move back down to see where we land
+	# 3. This total movement -- the travel -- defines the step. BUT! we might
+	#    be on a ramp! So we need to see if the direct travel path is obstructed
+	#    and if it is, there must be a step there, otherwise there's a ramp and
+	#    we're not using stairs.
 	
-	if move_direction.length() > 0.01:
-		stair_rays.show()
-	else:
-		stair_rays.hide()
-	var delta_rotation = self.get_rotation() - self_initial_rotation
-	stair_rays.set_rotation(-self.get_rotation())
-	stair_rays.rotate_y(sign(Vector3(1,0,0).cross(Vector3(move_direction.x, 0, move_direction.z)).y)*Vector3(1,0,0).angle_to(Vector3(move_direction.x, 0, move_direction.z)))
+	# Here we just show some debugging info, not essential
+#	if move_direction.length() > 0.01:
+#		stair_rays.show()
+#	else:
+#		stair_rays.hide()
+#	var delta_rotation = self.get_rotation() - self_initial_rotation
+#	stair_rays.set_rotation(-self.get_rotation())
+#	stair_rays.rotate_y(sign(Vector3(1,0,0).cross(Vector3(move_direction.x, 0, move_direction.z)).y)*Vector3(1,0,0).angle_to(Vector3(move_direction.x, 0, move_direction.z)))
 	
-#	var bottom_hit = !!stair_ray_bottom.get_collider()
-#	var top_hit = !!stair_ray_top.get_collider()
-#	$debug_message.show_text(str(bottom_hit) + " / " + str(top_hit))
-#	$debug_message.show_text(str(stair_ray_bottom.get_collider()))
-	var move_dir = 0.1 * move_direction.normalized()
-	var move_dist = self.compute_move(self.global_transform.origin, move_dir)
-#	$debug_message.show_text(str(move_dir) + " " + str(move_dist))
-	var move_hit = move_dist <= 0.35
-	if not move_hit:
-#		$debug_message.show_text("florp " + str(move_dir))
-		using_stair = false
+	# The result of motion tests
+	var res
+	
+	# Here we move forward to test if we're obstructed
+	var move_dir = 0.005 * move_direction.normalized()
+	res = self.cast_motion(self.global_transform.origin, move_dir, 0)
+	if not res:
+		# not colliding with anything, so must not be next to a step
 		return
+		
+	# Well set the origin of future tests to be slightly away from the
+	# obstruction, otherwise we might collide with it when we run the tests
+	# for vertical motion
+	var test_origin = self.global_transform.origin - 0.001*move_direction.normalized()
 	
-#	$debug_message.show_text("Step up?")
-#		self.apply_central_impulse(0.75*jump_speed*global_transform.basis.y)
-#		self.add_central_force(Vector3(0,2000,0))
-#		using_stair = true
+	# Here we test upward
 	var up_dir = max_step_height * Vector3.UP
-	var up_distance = self.compute_move(self.global_transform.origin, up_dir)
-	var up_dest = up_distance * up_dir
-#	$debug_message.show_text("Up: " + str(up_dir) + " " + str(up_distance) + " " + str(up_dest))
-#	$debug_message.show_text(str(up_distance))
+	var up_distance
+	res = self.cast_motion(test_origin, up_dir, 10);
+	if not res:
+		up_distance = 1
+	else:
+		up_distance = res[0]
 	if up_distance == 0:
 		return
-	var fwd_dir = max_step_depth * move_direction.normalized()
-	var fwd_distance = self.compute_move(self.global_transform.origin + up_dest, fwd_dir)
-	var fwd_dest = fwd_distance * fwd_dir
-#	$debug_message.show_text("Fwd: " + str(fwd_dir) + " " + str(fwd_distance) + " " + str(fwd_dest))
-	if fwd_distance == 0:
+	var up_dest = up_distance * up_dir
+	
+	# And now forward
+	var fwd_dir = min_step_depth * move_direction.normalized()
+	var fwd_distance
+	res = self.cast_motion(test_origin + up_dest, fwd_dir, 0)
+	if not res:
+		fwd_distance = 1
+	else:
+		fwd_distance = res[0]
+	if fwd_distance < 1:
 		return
-	if fwd_dest.length() > 0.1:
-		fwd_dest = 0.1 * fwd_dest.normalized()
+	var fwd_dest = fwd_distance * fwd_dir
+	
+	# And now back down
 	var down_dir = -up_dest
-	var down_distance = self.compute_move(self.global_transform.origin + up_dest + fwd_dest, down_dir)
+	var down_distance
+	res = self.cast_motion(test_origin + up_dest + fwd_dest, down_dir, 10)
+	if not res:
+		down_distance = 1
+	else:
+		down_distance = res[0]
 	var down_dest = down_distance * down_dir
+	
+	# If we haven't travelled anywhere up a step or ramp, then we can just
+	# quit early
 	var travel = up_dest + fwd_dest + down_dest
 	var travel_distance = travel.length()
-	$debug_message.show_text(str(up_dest) + " " + str(fwd_dest) + " " + str(down_dest) + " " + str(travel) + " " + str(travel_distance))
-#	$debug_message.show_text(str(travel))
-#	$debug_message.show_text(str(up_distance) + " " + str(fwd_distance) + " " + str(down_distance))
 	if travel_distance < 0.01 or travel.y <= 0:
 		return
 	
-#	print(str(move_direction) + " " + str(fwd_dir) + " " + str(fwd_distance) + " " + str(fwd_dest) + " " + str(travel))
+	# But otherwise we test if we're going up a ramp
+	var along_distance
+	res = self.cast_motion(test_origin, travel, 0)
+	if not res:
+		return
+
+	# We're not going up a ramp, so we must be at a step!
 	using_stair = true
 	stair_phase = 0
 	stair_phase_frac = 0.0
 	stair_start_position = self.global_transform.origin
 	stair_up_vec = Vector3(0, travel.y, 0)
-	stair_up_distance = stair_up_vec.length()
-	stair_fwd_vec = Vector3(travel.x, 0, travel.z)
-	stair_fwd_distance = stair_fwd_vec.length()
-#	$debug_message.show_text(str(stair_up_distance))
-#			stair_start_position = self.global_transform.origin
-#			stair_middle_position = up_dest
-#			stair_end_position = fwd_dest
+	stair_up_distance = travel.y
+	stair_fwd_distance = min_step_depth
+	stair_fwd_vec = min_step_depth * Vector3(travel.x, 0, travel.z).normalized()
+	move_direction = Vector3.ZERO
 
 func use_stair():
 	var bottom_hit = !!stair_ray_bottom.get_collider()
 	var top_hit = !!stair_ray_top.get_collider()
-#	$debug_message.show_text(str(bottom_hit) + " / " + str(top_hit))
 #	if stair_use and not bottom_hit:
-#		$debug_message.show_text("Step passed")
 #		stair_use = false
 
 func rotate_held_object():
@@ -449,30 +485,37 @@ func viewing_ui():
 func set_held_object_position():
 	held_object.global_transform.origin = hold_position.global_transform.origin
 
-
-
-func compute_move(origin : Vector3, dir : Vector3):
+func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int):
 	var shape = body_collider.shape
-	origin += Vector3(0,shape.height/2,0)
+	# raise the shape by half its height so that its at the same position
+	# as the collider, then add a millimeter so it doesnt collide with ground
+	origin += Vector3(0,shape.height/2 + 0.001,0)
 	
 	# Create collision parameters
 	var params = PhysicsShapeQueryParameters.new()
 	params.set_shape(shape)
-	params.transform.origin = origin
+	params.transform.origin = origin + dir
 	params.collide_with_bodies = true
 	params.exclude = [self]
 	params.margin = 0
-	#params.set_collision_mask(mask)
 	
-	
-	# Get distance fraction and position of first collision
 	var space_state = get_world().direct_space_state
-#	$debug_message.show_text(str(space_state.collide_shape(params)))
-	var results = space_state.cast_motion(params, dir)
-	
-#	$debug_message.show_text(str(results))
-	
-	if len(results) == 0:
-		return 1
-	else:
-		return results[0]
+	var results = space_state.intersect_shape(params)
+	if len(results) > 0:
+		var lower = 0
+		var upper = 1
+		var mid = 0.5
+		var forward
+		for i in range(recursive_steps):
+			mid = 0.5*(upper + lower)
+			forward = mid*dir
+			params.transform.origin = origin + forward
+			var new_results = space_state.intersect_shape(params)
+			if len(new_results) > 0:
+				results = new_results
+				upper = mid
+			else:
+				lower = mid
+		return [mid, results]
+	return null
+		
