@@ -106,6 +106,10 @@ use={
  ]
 }
 
+[physics]
+
+common/physics_fps=120
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
