@@ -223,8 +223,6 @@ func is_on_floor():
 func move(delta):
 	if using_stair:
 		
-#		$debug_message.show_text(str(stair_phase))
-		
 		if stair_phase == 0:
 			var current_delta = stair_start_position + stair_up_vec - self.global_transform.origin
 			var current_distance = current_delta.length()
@@ -232,9 +230,7 @@ func move(delta):
 				var target_velocity = stair_speed * current_delta.normalized()
 				var velocity_delta = target_velocity - self.linear_velocity
 				self.apply_central_impulse(velocity_delta)
-#				$debug_message.show_text(str(velocity_delta))
 			stair_phase_frac = 1 - current_delta.y / stair_up_distance
-#			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
 			if stair_phase_frac >= 0.99:
 				stair_phase_frac = 0.0
 				stair_phase = 1
@@ -247,7 +243,6 @@ func move(delta):
 				var velocity_delta = target_velocity - self.linear_velocity
 				self.apply_central_impulse(velocity_delta)
 			stair_phase_frac = 1 - current_distance / stair_fwd_distance
-			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
 			if stair_phase_frac >= 0.9:
 				using_stair = false
 		
@@ -452,7 +447,7 @@ func try_stairs():
 	
 	# But otherwise we test if we're going up a ramp
 	var along_distance
-	res = self.cast_motion(test_origin, travel, 0)
+	res = self.cast_motion(test_origin + 0.01 * Vector3.UP, travel, 0)
 	if not res:
 		return
 
