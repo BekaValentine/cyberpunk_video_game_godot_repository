@@ -60,6 +60,8 @@ var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
 
+var debug_message
+
 
 
 
@@ -79,6 +81,7 @@ func _ready():
 	stand_height = pivot.transform.origin.y
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	debug_message = $debug_message
 
 
 
@@ -102,7 +105,7 @@ func _unhandled_input(event):
 			throw_object()
 		
 		elif highlighted_object:
-			if highlighted_object.has_method("hold"):
+			if highlighted_object is SimObject and highlighted_object.holdable:
 				pickup_object()
 				
 
@@ -112,14 +115,15 @@ func _unhandled_input(event):
 
 	elif Input.is_action_just_pressed("take"):
 		if held_object:
-			if held_object.has_method("take"):
+			if held_object:
 				take_object()
 	
 	elif Input.is_action_just_pressed("use"):
-		if highlighted_object:
-			if highlighted_object.has_method("use"):
-				use_object()
-		
+		if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
+			use_object()
+	
+	elif Input.is_action_pressed("backpack"):
+		self.toggle_backpack()
 
 func toggle_crouch():
 	if not in_crouching_transition:
@@ -149,7 +153,7 @@ func pickup_object():
 	hold_object(highlighted_object)
 	highlighted_object = null
 
-func hold_object(obj):
+func hold_object(obj):	
 	held_object = obj
 	if not held_object.get_parent():
 		self.get_parent().add_child(held_object)
@@ -160,12 +164,10 @@ func hold_object(obj):
 		held_object_initial_rotation = held_object.get_rotation()
 	held_object.mode = RigidBody.MODE_KINEMATIC
 	held_object.collision_mask = HELD_COLLISION_MASK
-	held_object.start_hold()
-	held_object.hold()
+	held_object._hold()
 
 func throw_object():
-	held_object.end_hold()
-	held_object.release()
+	held_object._release()
 	var old_transform = held_object.global_transform
 	held_object.mode = RigidBody.MODE_RIGID
 	held_object.collision_mask = NORMAL_COLLISION_MASK
@@ -174,8 +176,7 @@ func throw_object():
 	held_object = null
 
 func drop_object():
-	held_object.end_hold()
-	held_object.release()
+	held_object._release()
 	var old_transform = held_object.global_transform
 	held_object.mode = RigidBody.MODE_RIGID
 	held_object.collision_mask = NORMAL_COLLISION_MASK
@@ -183,13 +184,42 @@ func drop_object():
 	held_object = null
 
 func take_object():
-	held_object.take()
+	held_object._stash()
 	backpack.store_item(held_object)
 	held_object.get_parent().remove_child(held_object)
 	held_object = null
 	
 func use_object():
-	highlighted_object.use(held_object)
+	highlighted_object._use(held_object)
+
+func toggle_backpack():
+	if not backpack.visible:
+	# 	self.hide_backpack()
+	# else:
+		self.show_backpack()
+
+func show_backpack():
+	self.set_process_unhandled_input(false)
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	backpack.show()
+
+func hide_backpack():
+	self.set_process_unhandled_input(true)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	backpack.hide()
+
+func stash_object(obj):
+	obj._stash()
+	backpack.store_item(obj)
+
+func unstash_object(obj):
+	if held_object: return false
+	
+	self.hide_backpack()
+	obj._unstash()
+	self.hold_object(obj)
+
+	return true
 	
 
 

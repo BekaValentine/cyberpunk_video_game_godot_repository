@@ -1,9 +1,8 @@
-extends StaticBody
-
-var highlight_shape = null
+extends SimObject
 
 func _ready():
 	highlight_shape = $CSGSphere
+	interactable = true
 
-func use(equipped_object):
-	print("used!", equipped_object)
+func use(tool_object = null):
+	print("used!", tool_object)

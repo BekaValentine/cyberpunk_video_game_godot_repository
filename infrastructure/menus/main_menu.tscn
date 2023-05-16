@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://infrastructure/menus/menu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=2]
 [ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
 [ext_resource path="res://infrastructure/menus/exit_button.gd" type="Script" id=4]
@@ -24,8 +23,7 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
-[node name="main_menu" type="Container"]
-script = ExtResource( 1 )
+[node name="main_menu" type="Control"]
 __meta__ = {
 "_edit_use_anchors_": false
 }
