@@ -60,8 +60,6 @@ var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
 
-var debug_message
-
 
 
 
@@ -81,7 +79,6 @@ func _ready():
 	stand_height = pivot.transform.origin.y
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	debug_message = $debug_message
 
 
 
@@ -343,7 +340,7 @@ func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
 
-	debug_message.show_text(str(raycast_hit))
+	debug_info.log("player.interact_objects", raycast_hit if raycast_hit else "no interactable object")
 	
 	if raycast_hit and \
 		raycast_hit is SimObject and \

@@ -6,6 +6,14 @@ var player
 func _ready():
 	player = get_parent()
 
+func show():
+	.show()
+	debug_info.log("backpack log", "show")
+
+func hide():
+	.hide()
+	debug_info.log("backpack log", "hide")
+
 func _unhandled_input(event):
 	if not self.visible: return
 	
@@ -15,7 +23,6 @@ func _unhandled_input(event):
 		handled = true
 		
 	elif Input.is_action_pressed("backpack"):
-		player.debug_message.show_text("hide!")
 		player.hide_backpack()
 		handled = true
 		
@@ -34,5 +41,5 @@ func item_selected(i):
 	if player.unstash_object(stored_items[i]):
 		self.unstore_item(i)
 	else:
-		player.debug_message.show_text("hrmph")
+		debug_info.log("backpack log", "hrmph")
 		self.unselect_all()

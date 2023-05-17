@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "CanvasLayer",
+"class": "DebugInfo",
+"language": "GDScript",
+"path": "res://infrastructure/DebugInfo.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://infrastructure/objects/SimObject.gd"
 } ]
 _global_script_class_icons={
+"DebugInfo": "",
 "GitAPI": "",
 "Key": "",
 "Lock": "",
@@ -46,6 +52,7 @@ config/icon="res://icon.png"
 [autoload]
 
 scene_manager="*res://infrastructure/scene_manager.tscn"
+debug_info="*res://infrastructure/DebugInfo.tscn"
 
 [display]
 

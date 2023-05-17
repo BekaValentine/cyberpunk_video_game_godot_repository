@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://infrastructure/player.gd" type="Script" id=1]
 [ext_resource path="res://infrastructure/debug_message.gd" type="Script" id=2]
 [ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
 [ext_resource path="res://infrastructure/menus/pause_menu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://infrastructure/backpack.gd" type="Script" id=5]
+[ext_resource path="res://infrastructure/DebugInfo.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.001
@@ -185,5 +186,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.7, 0 )
 enabled = true
 cast_to = Vector3( 0.25, 0, 0 )
 collision_mask = 4
+
+[node name="DebugInfo" parent="." instance=ExtResource( 6 )]
 [connection signal="tween_all_completed" from="crouch_tween" to="." method="finished_crouching_transition"]
 [connection signal="item_selected" from="backpack" to="backpack" method="item_selected"]
