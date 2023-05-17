@@ -231,6 +231,7 @@ func move(delta):
 				var velocity_delta = target_velocity - self.linear_velocity
 				self.apply_central_impulse(velocity_delta)
 			stair_phase_frac = 1 - current_delta.y / stair_up_distance
+			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
 			if stair_phase_frac >= 0.99:
 				stair_phase_frac = 0.0
 				stair_phase = 1
@@ -243,6 +244,7 @@ func move(delta):
 				var velocity_delta = target_velocity - self.linear_velocity
 				self.apply_central_impulse(velocity_delta)
 			stair_phase_frac = 1 - current_distance / stair_fwd_distance
+			stair_phase_frac = clamp(stair_phase_frac, 0, 1)
 			if stair_phase_frac >= 0.9:
 				using_stair = false
 		
@@ -446,8 +448,8 @@ func try_stairs():
 		return
 	
 	# But otherwise we test if we're going up a ramp
-	var along_distance
-	res = self.cast_motion(test_origin + 0.01 * Vector3.UP, travel, 0)
+	res = self.cast_motion(self.global_transform.origin + 0.01 * Vector3.UP, travel, 5, true)
+	$debug_message.show_text(str(res))
 	if not res:
 		return
 
@@ -480,7 +482,7 @@ func viewing_ui():
 func set_held_object_position():
 	held_object.global_transform.origin = hold_position.global_transform.origin
 
-func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int):
+func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int, force_recursive_steps = false):
 	var shape = body_collider.shape
 	# raise the shape by half its height so that its at the same position
 	# as the collider, then add a millimeter so it doesnt collide with ground
@@ -496,11 +498,12 @@ func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int):
 	
 	var space_state = get_world().direct_space_state
 	var results = space_state.intersect_shape(params)
-	if len(results) > 0:
+	if len(results) > 0 or force_recursive_steps:
 		var lower = 0
 		var upper = 1
 		var mid = 0.5
 		var forward
+		var hit = false
 		for i in range(recursive_steps):
 			mid = 0.5*(upper + lower)
 			forward = mid*dir
@@ -509,8 +512,13 @@ func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int):
 			if len(new_results) > 0:
 				results = new_results
 				upper = mid
+				hit = true
 			else:
 				lower = mid
+		
+		if force_recursive_steps and not hit:
+			return null
+		
 		return [mid, results]
 	return null
 		
