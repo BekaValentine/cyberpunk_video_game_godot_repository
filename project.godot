@@ -9,13 +9,37 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "CanvasLayer",
+"class": "DebugInfo",
+"language": "GDScript",
+"path": "res://infrastructure/DebugInfo.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
+"base": "SimObject",
+"class": "Key",
+"language": "GDScript",
+"path": "res://infrastructure/objects/Key.gd"
+}, {
+"base": "SimObject",
+"class": "Lock",
+"language": "GDScript",
+"path": "res://infrastructure/objects/Lock.gd"
+}, {
+"base": "RigidBody",
+"class": "SimObject",
+"language": "GDScript",
+"path": "res://infrastructure/objects/SimObject.gd"
 } ]
 _global_script_class_icons={
-"GitAPI": ""
+"DebugInfo": "",
+"GitAPI": "",
+"Key": "",
+"Lock": "",
+"SimObject": ""
 }
 
 [application]
@@ -28,6 +52,7 @@ config/icon="res://icon.png"
 [autoload]
 
 scene_manager="*res://infrastructure/scene_manager.tscn"
+debug_info="*res://infrastructure/DebugInfo.tscn"
 
 [display]
 

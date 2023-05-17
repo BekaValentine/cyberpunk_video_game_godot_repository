@@ -17,3 +17,6 @@ func goto_prototypes_menu():
 
 func goto_interactions_prototype():
 	goto_scene("res://levels/prototypes/interactions.tscn")
+
+func goto_locks_and_doors_prototype():
+	goto_scene("res://levels/prototypes/locks_and_doors.tscn")

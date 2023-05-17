@@ -1,4 +1,4 @@
-extends Container
+extends Control
 
 func _ready():
 	unpause_game()
