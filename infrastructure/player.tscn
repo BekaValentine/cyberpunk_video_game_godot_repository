@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://infrastructure/player.gd" type="Script" id=1]
-[ext_resource path="res://infrastructure/debug_message.gd" type="Script" id=2]
 [ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
 [ext_resource path="res://infrastructure/menus/pause_menu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://infrastructure/backpack.gd" type="Script" id=5]
@@ -19,16 +18,13 @@ height = 1.77
 background_mode = 1
 background_color = Color( 0.160784, 0.160784, 0.160784, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0, 0, 0, 0.196078 )
-
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.992157, 0.00784314, 0.376471, 1 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.0509804, 0.937255, 0.666667, 1 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0.992157, 0.227451, 0.623529, 1 )
 
 [node name="player" type="RigidBody" groups=[
@@ -79,22 +75,6 @@ enabled = true
 cast_to = Vector3( 0, 0, -2 )
 collision_mask = 2
 
-[node name="debug_message" type="Label" parent="."]
-margin_top = 1026.0
-margin_right = 1920.0
-margin_bottom = 1080.0
-custom_styles/normal = SubResource( 4 )
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-align = 1
-autowrap = true
-clip_text = true
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="reticle" type="Label" parent="."]
 margin_left = 955.0
 margin_top = 535.0
@@ -125,7 +105,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
 radius = 0.3
 height = 0.2
 sides = 32
-material = SubResource( 5 )
+material = SubResource( 4 )
 
 [node name="velocity" type="Spatial" parent="."]
 visible = false
@@ -134,7 +114,7 @@ visible = false
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 width = 0.0663925
 height = 0.0544661
-material = SubResource( 6 )
+material = SubResource( 5 )
 
 [node name="collision_normal" type="Spatial" parent="."]
 visible = false
@@ -143,7 +123,7 @@ visible = false
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 width = 0.0663925
 height = 0.0544661
-material = SubResource( 7 )
+material = SubResource( 6 )
 
 [node name="backpack" type="ItemList" parent="."]
 visible = false
@@ -167,7 +147,7 @@ __meta__ = {
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
 height = 0.0544661
 depth = 0.066
-material = SubResource( 7 )
+material = SubResource( 6 )
 
 [node name="stair_ray_bottom" type="RayCast" parent="stair_rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.01, 0 )

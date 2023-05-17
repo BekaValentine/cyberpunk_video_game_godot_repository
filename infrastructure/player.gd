@@ -125,6 +125,7 @@ func _unhandled_input(event):
 func toggle_crouch():
 	if not in_crouching_transition:
 		crouching = !crouching
+		debug_info.log("crouching", crouching)
 		
 		crouch_tween.interpolate_method(
 			self,
@@ -340,7 +341,7 @@ func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
 
-	debug_info.log("player.interact_objects", raycast_hit if raycast_hit else "no interactable object")
+	debug_info.log("player.interact_objects", raycast_hit.name if raycast_hit else "no interactable object")
 	
 	if raycast_hit and \
 		raycast_hit is SimObject and \

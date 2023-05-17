@@ -5,4 +5,4 @@ func _ready():
 	interactable = true
 
 func use(tool_object = null):
-	print("used!", tool_object)
+	debug_info.log("last interactable action", "use " + self.name + (" with tool " + tool_object.name if tool_object else ""))

@@ -9,6 +9,6 @@ func _init():
 func use(tool_object):
     if tool_object is Key:
         if tool_object.lock_type and tool_object.lock_type == self.lock_type:
-            print("Open!")
+            debug_info.log("last lock action", "open with " + tool_object.name)
         else:
-            print("Wrong key. :(")
+            debug_info.log("last lock action", "reject " + tool_object.name)
