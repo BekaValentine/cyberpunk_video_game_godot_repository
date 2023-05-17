@@ -481,7 +481,6 @@ func try_stairs():
 	
 	# But otherwise we test if we're going up a ramp
 	res = self.cast_motion(self.global_transform.origin + 0.01 * Vector3.UP, travel, 5, true)
-	$debug_message.show_text(str(res))
 	if not res:
 		return
 

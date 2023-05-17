@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://infrastructure/objects/solid_surface.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://levels/prototypes/sphere1.gd" type="Script" id=4]
 [ext_resource path="res://infrastructure/objects/test_cube.tscn" type="PackedScene" id=5]
 [ext_resource path="res://levels/prototypes/sphere2.gd" type="Script" id=6]
+[ext_resource path="res://infrastructure/objects/ramp.tscn" type="PackedScene" id=7]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.25, 0.25, 0.25 )
@@ -24,7 +25,7 @@ extents = Vector3( 1, 0.15, 0.15 )
 transform = Transform( 0.547286, 0, -0.836946, 0, 1, 0, 0.836946, 0, 0.547286, 0, 0, 0 )
 
 [node name="ground" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.006, -1, 0.025 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100615, -1.00577, 0.0196089 )
 collision_mask = 5
 
 [node name="ground2" parent="." instance=ExtResource( 2 )]
@@ -52,9 +53,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.552, 1, -3.788 )
 
 [node name="cube2" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.903, 1, -2.165 )
-
-[node name="cube7" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 0.293754, 0.31135, 0, -0.0608977, 1.50187, -2.92463, -0.00617802, 2.72162 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.03208, 6.1249, -5.11075 )
@@ -204,3 +202,6 @@ depth = 0.3
 
 [node name="CollisionShape" type="CollisionShape" parent="step6"]
 shape = SubResource( 4 )
+
+[node name="ramp" parent="." instance=ExtResource( 7 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -3.29435, 0, 2.75781 )
