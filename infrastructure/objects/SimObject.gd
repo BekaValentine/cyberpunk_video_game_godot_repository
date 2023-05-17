@@ -66,5 +66,5 @@ func stash():
 func unstash():
 	pass
 
-func use(tool_object = null):
+func use(tool_object):
 	pass

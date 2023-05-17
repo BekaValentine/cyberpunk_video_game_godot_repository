@@ -342,8 +342,12 @@ func move(delta):
 func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
+
+	debug_message.show_text(str(raycast_hit))
 	
-	if raycast_hit:
+	if raycast_hit and \
+		raycast_hit is SimObject and \
+		(raycast_hit.interactable or raycast_hit.hold_size):
 		highlighted_object = raycast_hit
 	else:
 		highlighted_object = null
