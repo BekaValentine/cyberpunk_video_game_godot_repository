@@ -56,7 +56,7 @@ var min_step_depth = 0.1
 var climbing_ladder = false
 var climb_ladder_speed = 2
 var ladder = null
-var ladder_attachment_point = null
+var ladder_attachment_point_position = null
 var ladder_phase = 0
 
 var tick = 0
@@ -282,6 +282,16 @@ func move(delta):
 				using_stair = false
 		
 	elif climbing_ladder:
+		if Input.is_action_just_pressed("jump"):
+			var direction_away_from_ladder = self.global_transform.origin - self.ladder.global_transform.origin
+			direction_away_from_ladder.y = 0
+			self.drop_off_ladder()
+			
+			var jump_direction = (Vector3.UP + direction_away_from_ladder).normalized()
+				
+			self.apply_central_impulse(jump_speed * jump_direction)
+			return
+
 		var up_down = 0
 		if Input.is_action_pressed("move_forward"):
 			up_down = 1
@@ -292,7 +302,7 @@ func move(delta):
 		debug_info.log("ladder phase", self.ladder_phase)
 		if self.ladder_phase == 0:
 			# moving to attachment point
-			var direction = ladder_attachment_point.global_transform.origin - self.global_transform.origin
+			var direction = ladder_attachment_point_position - self.global_transform.origin
 
 			var attach_distance = 0.01
 
@@ -319,7 +329,7 @@ func move(delta):
 
 			elif up_down < 0 and bottom_direction.y >= -0.1:
 				debug_info.log("ladder", "getting off at bottom")
-				self.jump_off_ladder()
+				self.drop_off_ladder()
 			
 	
 	else:
@@ -600,21 +610,36 @@ func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int, force_r
 	return null
 		
 func try_using_ladder(ladder):
-	var distance_to_bottom = (ladder.bottom_reference.global_transform.origin - self.global_transform.origin).length()
-	var distance_to_top = (ladder.top_reference.global_transform.origin - self.global_transform.origin).length()
+	if climbing_ladder:
+		self.drop_off_ladder()
+		return
 	
-	debug_info.log("distance to bottom", distance_to_bottom)
-	debug_info.log("distance to top", distance_to_top)
+	var direction_to_bottom = ladder.bottom_reference.global_transform.origin - self.global_transform.origin
+	var direction_to_top = ladder.top_reference.global_transform.origin - self.global_transform.origin
+	debug_info.log("direction to bottom", direction_to_bottom)
+	debug_info.log("direction to top", direction_to_top)
+	
 	debug_info.log("using ladder", true)
 	debug_info.log("old gravity", self.gravity_scale)
 	
-	if distance_to_bottom <= distance_to_top:
-		# attach to the bottom
-		ladder_attachment_point = ladder.bottom_attachment_point
+	if direction_to_bottom.y >= 0 or direction_to_top.y <= 0:
+		# we're either below the bottom, or above the top, so we move to the closest attachment point
+		var distance_to_bottom = direction_to_bottom.length()
+		var distance_to_top = direction_to_top.length()
+		debug_info.log("distance to bottom", distance_to_bottom)
+		debug_info.log("distance to top", distance_to_top)
+		if distance_to_bottom <= distance_to_top:
+			# attach to the bottom
+			ladder_attachment_point_position = ladder.bottom_attachment_point.global_transform.origin
 
+		else:
+			# attach to the top of the ladder
+			ladder_attachment_point_position = ladder.top_attachment_point.global_transform.origin
 	else:
-		# attach to the top of the ladder
-		ladder_attachment_point = ladder.top_attachment_point
+		# we're between the two attachment points so we grab onto the ladder there
+		ladder_attachment_point_position = 0.5*(ladder.bottom_attachment_point.global_transform.origin + ladder.top_attachment_point.global_transform.origin)
+		ladder_attachment_point_position.y = self.global_transform.origin.y
+
 	
 	climbing_ladder = true
 	self.apply_central_impulse(-linear_velocity)
@@ -623,7 +648,7 @@ func try_using_ladder(ladder):
 	self.ladder_phase = 0
 	self.ladder.disable_top_support()
 
-func jump_off_ladder():
+func drop_off_ladder():
 	debug_info.log("ladder", "jumping off")
 	debug_info.log("using ladder", false)
 	climbing_ladder = false
