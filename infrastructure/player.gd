@@ -282,6 +282,16 @@ func move(delta):
 				using_stair = false
 		
 	elif climbing_ladder:
+		if Input.is_action_just_pressed("jump"):
+			var direction_away_from_ladder = self.global_transform.origin - self.ladder.global_transform.origin
+			direction_away_from_ladder.y = 0
+			self.drop_off_ladder()
+			
+			var jump_direction = (Vector3.UP + direction_away_from_ladder).normalized()
+				
+			self.apply_central_impulse(jump_speed * jump_direction)
+			return
+
 		var up_down = 0
 		if Input.is_action_pressed("move_forward"):
 			up_down = 1
@@ -319,7 +329,7 @@ func move(delta):
 
 			elif up_down < 0 and bottom_direction.y >= -0.1:
 				debug_info.log("ladder", "getting off at bottom")
-				self.jump_off_ladder()
+				self.drop_off_ladder()
 			
 	
 	else:
@@ -600,6 +610,10 @@ func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int, force_r
 	return null
 		
 func try_using_ladder(ladder):
+	if climbing_ladder:
+		self.drop_off_ladder()
+		return
+	
 	var direction_to_bottom = ladder.bottom_reference.global_transform.origin - self.global_transform.origin
 	var direction_to_top = ladder.top_reference.global_transform.origin - self.global_transform.origin
 	debug_info.log("direction to bottom", direction_to_bottom)
@@ -634,7 +648,7 @@ func try_using_ladder(ladder):
 	self.ladder_phase = 0
 	self.ladder.disable_top_support()
 
-func jump_off_ladder():
+func drop_off_ladder():
 	debug_info.log("ladder", "jumping off")
 	debug_info.log("using ladder", false)
 	climbing_ladder = false
