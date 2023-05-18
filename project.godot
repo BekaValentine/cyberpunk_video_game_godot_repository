@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/DebugInfo.gd"
 }, {
+"base": "SimObject",
+"class": "Door",
+"language": "GDScript",
+"path": "res://infrastructure/objects/Door.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -25,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://infrastructure/objects/Key.gd"
 }, {
 "base": "SimObject",
+"class": "Ladder",
+"language": "GDScript",
+"path": "res://infrastructure/objects/Ladder.gd"
+}, {
+"base": "SimObject",
 "class": "Lock",
 "language": "GDScript",
 "path": "res://infrastructure/objects/Lock.gd"
@@ -33,13 +43,21 @@ _global_script_classes=[ {
 "class": "SimObject",
 "language": "GDScript",
 "path": "res://infrastructure/objects/SimObject.gd"
+}, {
+"base": "SimObject",
+"class": "Window",
+"language": "GDScript",
+"path": "res://infrastructure/objects/Window.gd"
 } ]
 _global_script_class_icons={
 "DebugInfo": "",
+"Door": "",
 "GitAPI": "",
 "Key": "",
+"Ladder": "",
 "Lock": "",
-"SimObject": ""
+"SimObject": "",
+"Window": ""
 }
 
 [application]

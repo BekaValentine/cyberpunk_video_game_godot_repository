@@ -46,10 +46,10 @@ func _unstash():
 	
 	self.unstash()
 
-func _use(tool_object = null):
+func _use(agent, tool_object = null):
 	if not self.interactable: return
 	
-	self.use(tool_object)
+	self.use(agent, tool_object)
 
 
 #### Exposed Functions MAY OVERRIDE ####
@@ -66,5 +66,5 @@ func stash():
 func unstash():
 	pass
 
-func use(tool_object):
+func use(agent, tool_object):
 	pass

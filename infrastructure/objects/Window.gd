@@ -21,7 +21,7 @@ func log_status(extra = ""):
 func _init():
 	interactable = true
 
-func use(tool_object):
+func use(agent, tool_object):
 	if locked: return
 	
 	if toggling: return
