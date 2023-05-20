@@ -168,6 +168,12 @@ cast_to = Vector3( 0.25, 0, 0 )
 collision_mask = 4
 
 [node name="DebugInfo" parent="." instance=ExtResource( 6 )]
+
+[node name="move_target_reference" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64, -2 )
+width = 0.1
+height = 0.1
+depth = 0.1
 [connection signal="body_entered" from="." to="." method="body_entered"]
 [connection signal="body_exited" from="." to="." method="body_exited"]
 [connection signal="tween_all_completed" from="crouch_tween" to="." method="finished_crouching_transition"]
