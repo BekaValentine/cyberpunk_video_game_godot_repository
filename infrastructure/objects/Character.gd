@@ -13,7 +13,6 @@ var can_do_physics_activities = true
 var body_collider = null
 var crouch_tween = null
 var on_floor = false
-var pivot = null
 var stair_rays = null
 var stair_ray_bottom = null
 var stair_ray_top = null
@@ -29,10 +28,9 @@ var stair_speed = 2
 var velocity = Vector3.ZERO
 var move_target = Vector3.ZERO
 var move_direction = Vector3.ZERO
-var stand_height = null
-var crouch_height = 0.75
 var crouch_time = 0.25
 var crouching = false
+var crouch_state = 1
 var in_crouching_transition = false
 var max_step_height = 0.178
 var min_step_depth = 0.1
@@ -50,11 +48,9 @@ var tick = 0
 func _ready():
 	body_collider = $body_collider
 	crouch_tween = $crouch_tween
-	pivot = $pivot
 	stair_rays = $stair_rays
 	stair_ray_bottom = $stair_rays/stair_ray_bottom
 	stair_ray_top = $stair_rays/stair_ray_top
-	stand_height = pivot.transform.origin.y
 
 
 
@@ -70,8 +66,8 @@ func toggle_crouch():
 		crouch_tween.interpolate_method(
 			self,
 			"crouching_height_change",
-			pivot.transform.origin.y,
-			crouch_height if crouching else stand_height,
+			1 if crouching else 0,
+			0 if crouching else 1,
 			crouch_time,
 			Tween.TRANS_LINEAR,
 			Tween.EASE_IN_OUT
@@ -82,8 +78,8 @@ func toggle_crouch():
 func finished_crouching_transition():
 	in_crouching_transition = false
 
-func crouching_height_change(h):
-	pivot.transform.origin.y = h
+func crouching_height_change(new_crouch_state):
+	crouch_state = new_crouch_state
 	
 
 

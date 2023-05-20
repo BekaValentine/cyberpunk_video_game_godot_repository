@@ -3,6 +3,7 @@ extends "res://infrastructure/objects/Character.gd"
 export var mouse_sensitivity = 0.002
 
 var backpack = null
+var pivot = null
 var camera = null
 var hold_camera = null
 var hold_position = null
@@ -18,7 +19,8 @@ var should_move_forward = false
 var should_move_backward = false
 var should_move_left = false
 var should_move_right = false
-var move_target_reference = null
+var stand_height = null
+var crouch_height = 0.75
 
 var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
@@ -26,17 +28,18 @@ var NORMAL_COLLISION_MASK = 2 | 4;
 
 
 
-
 func _ready():
 	._ready()
 
 	backpack = $backpack
+	pivot = $pivot
 	camera = $pivot/camera
 	hold_camera = $pivot/camera/hold_viewport_container/hold_viewport/hold_camera
 	hold_position = $pivot/hold_position
-	move_target_reference = $move_target_reference
 	object_highlight = $object_highlight
 	pickup_detect_ray = $pivot/pickup_detect_ray
+
+	stand_height = pivot.transform.origin.y
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -84,6 +87,8 @@ func _unhandled_input(event):
 
 func crouching_height_change(h):
 	.crouching_height_change(h)
+
+	pivot.transform.origin.y = lerp(crouch_height, stand_height, crouch_state)
 	
 	if held_object:
 		set_held_object_position()
@@ -199,7 +204,6 @@ func calculate_behavior_from_user_inputs():
 	if should_move_right:
 		move_target += basis.x
 
-	move_target_reference.global_transform.origin = Vector3(move_target.x, camera.global_transform.origin.y, move_target.z)
 	debug_info.log("move target", move_target)
 
 func move():
