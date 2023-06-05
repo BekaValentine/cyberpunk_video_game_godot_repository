@@ -1,8 +1,31 @@
 [gd_scene format=2]
 
-[node name="VBoxContainer" type="VBoxContainer"]
+[node name="NavGraphDock" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AddNavSpaceButton" type="Button" parent="."]
+margin_right = 106.0
+margin_bottom = 1080.0
+hint_tooltip = "Select two navigation spaces to add a bridge link between them"
+disabled = true
+text = "Add Nav Space"
+
+[node name="AddBridgeLinkButton" type="Button" parent="."]
+margin_left = 110.0
+margin_right = 222.0
+margin_bottom = 1080.0
+hint_tooltip = "Select two navigation spaces to add a bridge link between them"
+disabled = true
+text = "Add Bridge Link"
+
+[node name="AddStitchLinkButton" type="Button" parent="."]
+margin_left = 226.0
+margin_right = 333.0
+margin_bottom = 1080.0
+hint_tooltip = "Select one navigation space to add a stitch link to it"
+disabled = true
+text = "Add Stitch Link"
