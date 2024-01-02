@@ -4,8 +4,9 @@ extends EditorSpatialGizmoPlugin
 var NavBridgeLink = preload("res://addons/navgraph_plugin/NavBridgeLink.gd")
 
 func _init():
-    create_material("main", Color(1,0,0))
-    create_handle_material("handles")
+    create_material("main", Color(1,0,0), false, true)
+    create_material("alt", Color(1,0.5,0))
+    # create_handle_material("handles")
 
 func get_name():
     return "NavBridgeLinkGizmo"
@@ -15,7 +16,6 @@ func has_gizmo(node):
     return node is NavBridgeLink
 
 func redraw(gizmo):
-    print("Redrawing ", gizmo)
     gizmo.clear()
 
     var bridge_link = gizmo.get_spatial_node()
@@ -28,30 +28,76 @@ func redraw(gizmo):
         print("Spaces are empty.")
         return
     
-    # print(bridge_link, spaces)
+    var space_0_local_origin = bridge_link.to_local(spaces[0].global_transform.origin)
+    var space_1_local_origin = bridge_link.to_local(spaces[1].global_transform.origin)
 
-    var space_0_local_origin = (spaces[0].global_transform.origin)
-    var space_1_local_origin = (spaces[1].global_transform.origin)
+    var a1 = space_0_local_origin
+    var a2 = space_1_local_origin
+    var b = Vector3(0,0.1,0)
+    var c = Vector3(0,-0.1,0)
 
-    print("Ends: ", space_0_local_origin, " ", space_1_local_origin)
-
-    var vertices = PoolVector3Array()
-    var a = space_0_local_origin
-    var b = space_1_local_origin
-    var c = Vector3(0,0,0)
-    vertices.push_back(a)
-    vertices.push_back(b)
-    vertices.push_back(c)
-    vertices.push_back(c)
-    vertices.push_back(b)
-    vertices.push_back(a)
+    var vertices = PoolVector3Array([
+        a1,b,c,
+        c,b,a1,
+        b,a2,c,
+        c,a2,b
+    ])
     
-    # Initialize the ArrayMesh.
     var arr_mesh = ArrayMesh.new()
     var arrays = []
     arrays.resize(ArrayMesh.ARRAY_MAX)
     arrays[ArrayMesh.ARRAY_VERTEX] = vertices
-    # Create the Mesh.
     arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
     
-    gizmo.add_mesh(arr_mesh, true, null, get_material("main", gizmo))
+    gizmo.add_mesh(arr_mesh, false, null, get_material("alt", gizmo))
+
+    var dt = Vector3(0,0.2,0)
+    var db = Vector3(0,-0.2,0)
+    var dfl = Vector3(0.1,0,0.1)
+    var dfr = Vector3(-0.1,0,0.1)
+    var dbl = Vector3(0.1,0,-0.1)
+    var dbr = Vector3(-0.1,0,-0.1)
+
+    var vertices2 = PoolVector3Array([
+        # top back
+        dt, dbl, dbr,
+        dbr, dbl, dt,
+
+        # bottom back
+        db, dbl, dbr,
+        dbr, dbl, db,
+
+        # top front
+        dt, dfl, dfr,
+        dfr, dfl, dt,
+
+        # bottom front
+        db, dfl, dfr,
+        dfr, dfl, db,
+
+        # top left
+        dt, dfl, dbl,
+        dbl, dfl, dt,
+
+        # bottom left
+        db, dfl, dbl,
+        dbl, dfl, db,
+
+        # top right
+        dt, dfr, dbr,
+        dbr, dfr, dt,
+
+        # bottom right
+
+        db, dfr, dbr,
+        dbr, dfr, db
+    ])
+
+    var arr_mesh2 = ArrayMesh.new()
+    var arrays2 = []
+    arrays2.resize(ArrayMesh.ARRAY_MAX)
+    arrays2[ArrayMesh.ARRAY_VERTEX] = vertices2
+
+    arr_mesh2.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays2)
+    
+    gizmo.add_mesh(arr_mesh2, false, null, get_material("main", gizmo))

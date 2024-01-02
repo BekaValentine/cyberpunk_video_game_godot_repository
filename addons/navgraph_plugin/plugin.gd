@@ -4,6 +4,7 @@ extends EditorPlugin
 var NavBridgeLink = preload("res://addons/navgraph_plugin/NavBridgeLink.gd")
 var NavBridgeLinkGizmo = preload("res://addons/navgraph_plugin/NavBridgeLinkGizmo.gd")
 var NavSpace = preload("res://addons/navgraph_plugin/NavSpace.gd")
+var NavSpaceGizmo = preload("res://addons/navgraph_plugin/NavSpaceGizmo.gd")
 var NavStitchLink = preload("res://addons/navgraph_plugin/NavStitchLink.gd")
 
 var add_bridge_link_button
@@ -11,6 +12,7 @@ var add_nav_space_button
 var add_stitch_link_button
 var dock = preload("res://addons/navgraph_plugin/dock.tscn").instance()
 var nav_bridge_link_gizmo = NavBridgeLinkGizmo.new()
+var nav_space_gizmo = NavSpaceGizmo.new()
 var selection
 
 func _ready():
@@ -43,10 +45,12 @@ func _enter_tree():
 	dock.visible = true
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, dock)
 	add_spatial_gizmo_plugin(nav_bridge_link_gizmo)
+	add_spatial_gizmo_plugin(nav_space_gizmo)
 
 func _exit_tree():
 	dock.queue_free()
 	remove_spatial_gizmo_plugin(nav_bridge_link_gizmo)
+	remove_spatial_gizmo_plugin(nav_space_gizmo)
 
 func selection_changed():
 	var selected = selection.get_selected_nodes()
@@ -150,6 +154,15 @@ func delete_bridge_links(ls):
 			spaces[1].remove_bridge_link(l)
 		
 		l.get_parent().remove_child(l)
+
+func space_moved(s):
+	var g
+	for l in s.bridge_links:
+		g = s.get_node(l).gizmo
+		g.get_plugin().redraw(g)
+	for l in s.stitch_links:
+		g = s.get_node(l).gizmo
+		g.get_plugin().redraw(g)
 	
 
 

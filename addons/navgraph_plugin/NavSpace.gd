@@ -3,17 +3,22 @@ class_name NavSpace
 extends Area
 
 var plugin
-export var bridge_links : Array
-export var stitch_links : Array
+export var bridge_links : Array = []
+export var stitch_links : Array = []
 
-func _init():
-    bridge_links = []
-    stitch_links = []
+# func _init():
+#     bridge_links = []
+#     stitch_links = []
+
+func _ready():
+    self.set_notify_transform(true)
 
 func _notification(note):
     if plugin != null:        
         if note == NOTIFICATION_PREDELETE:
             plugin.space_may_delete(self)
+        elif note == NOTIFICATION_TRANSFORM_CHANGED:
+            plugin.space_moved(self)
 
 func _exit_tree():
     if plugin != null:
