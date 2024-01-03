@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "SimObject",
+"class": "BoltCutters",
+"language": "GDScript",
+"path": "res://infrastructure/objects/BoltCutters.gd"
+}, {
 "base": "RigidBody",
 "class": "Character",
 "language": "GDScript",
@@ -55,6 +60,7 @@ _global_script_classes=[ {
 "path": "res://infrastructure/objects/Window.gd"
 } ]
 _global_script_class_icons={
+"BoltCutters": "",
 "Character": "",
 "DebugInfo": "",
 "Door": "",
