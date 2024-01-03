@@ -55,6 +55,12 @@ collision_layer = 6
 mode = 1
 script = ExtResource( 4 )
 
+[node name="lock2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 2.46302, 1.20824, 1.70659 )
+collision_layer = 6
+mode = 1
+script = ExtResource( 4 )
+
 [node name="key1" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.1, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 2.13322, 0.869336, 0.279 )
 collision_layer = 6
@@ -72,6 +78,7 @@ script = ExtResource( 9 )
 
 [node name="Door" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.120874, -2.38419e-07, 2.0346 )
+lock_path = NodePath("../lock1")
 
 [node name="Window" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7981, 1.22037, 2.26717 )
