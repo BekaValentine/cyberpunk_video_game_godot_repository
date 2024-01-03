@@ -26,6 +26,10 @@ var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
 
+var skills = {
+	"lock": 0
+}
+
 
 
 func _ready():

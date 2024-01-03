@@ -6,4 +6,4 @@ func _ready():
 
 func _init():
 	._init()
-	key_type = "Type1"
+	key_type = "Type3"

@@ -6,4 +6,5 @@ func _ready():
 
 func _init():
 	._init()
-	lock_type = "Type1"
+	lock_types = ["Type1", "Type2"]
+	base_difficulty = 0.75
