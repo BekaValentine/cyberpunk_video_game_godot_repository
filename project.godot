@@ -49,6 +49,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/objects/Lock.gd"
 }, {
+"base": "Node",
+"class": "RFIDController",
+"language": "GDScript",
+"path": "res://infrastructure/objects/RFIDController.gd"
+}, {
+"base": "Key",
+"class": "RFIDKey",
+"language": "GDScript",
+"path": "res://infrastructure/objects/RFIDKey.gd"
+}, {
+"base": "Lock",
+"class": "RFIDLock",
+"language": "GDScript",
+"path": "res://infrastructure/objects/RFIDLock.gd"
+}, {
 "base": "RigidBody",
 "class": "SimObject",
 "language": "GDScript",
@@ -68,6 +83,9 @@ _global_script_class_icons={
 "Key": "",
 "Ladder": "",
 "Lock": "",
+"RFIDController": "",
+"RFIDKey": "",
+"RFIDLock": "",
 "SimObject": "",
 "Window": ""
 }
