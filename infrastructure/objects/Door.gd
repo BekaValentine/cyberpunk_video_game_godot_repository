@@ -3,7 +3,8 @@ extends SimObject
 
 var tween = null
 var toggling = false
-var locked = false
+export(NodePath) var lock_path
+var lock = null
 var open = false
 var open_angle = Vector3(0,-90,0)
 var closed_angle = Vector3(0,0,0)
@@ -11,16 +12,16 @@ var closed_angle = Vector3(0,0,0)
 func _ready():
 	tween = $Tween
 	highlight_shape = $CSGBox
-	log_status()
-
-func log_status():
-	debug_info.log("door", ("locked" if locked else "unlocked") + " " + ("open" if open else "closed"))
+	if lock_path != null:
+		var candidate_lock = get_node(lock_path)
+		if candidate_lock is Lock:
+			lock = candidate_lock
 
 func _init():
 	interactable = true
 
 func use(agent, tool_object):
-	if locked: return
+	if lock and lock.locked: return
 	
 	if toggling: return
 	
@@ -28,8 +29,6 @@ func use(agent, tool_object):
 		close()
 	else:
 		open()
-	
-	log_status()
 
 func open():
 	toggling = true

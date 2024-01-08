@@ -1,7 +1,8 @@
 class_name Key
 extends SimObject
 
-var lock_type = null
+var key_type = null
+var attack_strength = 1.0
 
 func _init():
-    hold_size = 1
+	hold_size = 1

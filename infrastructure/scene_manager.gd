@@ -2,6 +2,9 @@ extends Node
 
 var current_scene = "res://infrastructure/menus/main_menu.tscn"
 
+func _ready():
+	randomize()
+
 func goto_scene(var s):
 	current_scene = s
 	get_tree().change_scene(s)

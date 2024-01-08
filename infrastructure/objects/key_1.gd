@@ -6,4 +6,5 @@ func _ready():
 
 func _init():
 	._init()
-	lock_type = "Type1"
+	key_type = "Type1"
+	attack_strength = 1

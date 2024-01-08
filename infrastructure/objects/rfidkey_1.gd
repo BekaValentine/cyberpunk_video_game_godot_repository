@@ -1,4 +1,4 @@
-extends Key
+extends RFIDKey
 
 
 func _ready():
@@ -6,5 +6,4 @@ func _ready():
 
 func _init():
 	._init()
-	key_type = "Type2"
-	attack_strength = 0.5
+	key_code = "67890"

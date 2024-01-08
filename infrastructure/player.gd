@@ -26,6 +26,10 @@ var WORLD_OBJECT_COLLISION_MASK = 2;
 var HELD_COLLISION_MASK = 0;
 var NORMAL_COLLISION_MASK = 2 | 4;
 
+var skills = {
+	"lock": 0
+}
+
 
 
 func _ready():
@@ -222,6 +226,8 @@ func interact_objects():
 		(raycast_hit.interactable or raycast_hit.hold_size):
 		highlighted_object = raycast_hit
 	else:
+		if highlighted_object and highlighted_object.has_method("highlight_ended"):
+			highlighted_object.highlight_ended()
 		highlighted_object = null
 
 	if highlighted_object and should_show_highlight:
