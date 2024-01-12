@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://infrastructure/player.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
@@ -11,12 +11,28 @@ friction = 0.001
 
 [sub_resource type="CylinderShape" id=2]
 margin = 0.001
-radius = 0.3
 height = 1.77
+radius = 0.3
 
 [sub_resource type="Environment" id=3]
 background_mode = 1
 background_color = Color( 0.160784, 0.160784, 0.160784, 1 )
+
+[sub_resource type="Image" id=9]
+data = {
+"data": PoolByteArray( 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0 ),
+"format": "RGBA8",
+"height": 9,
+"mipmaps": false,
+"width": 9
+}
+
+[sub_resource type="ImageTexture" id=8]
+flags = 5
+lossy_quality = 1.0
+flags = 5
+image = SubResource( 9 )
+size = Vector2( 9, 9 )
 
 [sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.992157, 0.00784314, 0.376471, 1 )
@@ -27,9 +43,11 @@ albedo_color = Color( 0.0509804, 0.937255, 0.666667, 1 )
 [sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0.992157, 0.227451, 0.623529, 1 )
 
-[node name="player" type="RigidBody" groups=[
-"player",
-]]
+[sub_resource type="SpatialMaterial" id=7]
+flags_transparent = true
+albedo_color = Color( 0, 0, 0, 0.501961 )
+
+[node name="player" type="RigidBody" groups=["player"]]
 physics_material_override = SubResource( 1 )
 contacts_reported = 10
 contact_monitor = true
@@ -48,44 +66,27 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64, 0 )
 [node name="hold_position" type="Spatial" parent="pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, -1 )
 
-[node name="camera" type="Camera" parent="pivot"]
-cull_mask = 2148532221
-environment = SubResource( 3 )
-
-[node name="hold_viewport_container" type="ViewportContainer" parent="pivot/camera"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="hold_viewport" type="Viewport" parent="pivot/camera/hold_viewport_container"]
-size = Vector2( 1920, 1080 )
-transparent_bg = true
-handle_input_locally = false
-render_target_update_mode = 3
-
-[node name="hold_camera" type="Camera" parent="pivot/camera/hold_viewport_container/hold_viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63492, 0 )
-cull_mask = 2
-
 [node name="pickup_detect_ray" type="RayCast" parent="pivot"]
 enabled = true
 cast_to = Vector3( 0, 0, -2 )
 collision_mask = 2
 
-[node name="reticle" type="Label" parent="."]
+[node name="camera" type="Camera" parent="pivot"]
+cull_mask = 2147483649
+environment = SubResource( 3 )
+
+[node name="reticle_center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="reticle" type="TextureRect" parent="reticle_center"]
 margin_left = 955.0
 margin_top = 535.0
-margin_right = 965.0
-margin_bottom = 549.0
-text = "+"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_right = 964.0
+margin_bottom = 544.0
+mouse_filter = 2
+texture = SubResource( 8 )
 
 [node name="object_highlight" type="ReferenceRect" parent="."]
 visible = false
@@ -168,6 +169,69 @@ cast_to = Vector3( 0.25, 0, 0 )
 collision_mask = 4
 
 [node name="DebugInfo" parent="." instance=ExtResource( 6 )]
+
+[node name="hold_layer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="hold_viewport_container" type="ViewportContainer" parent="hold_layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+stretch = true
+
+[node name="hold_viewport" type="Viewport" parent="hold_layer/hold_viewport_container"]
+size = Vector2( 1920, 1080 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="hold_camera" type="Camera" parent="hold_layer/hold_viewport_container/hold_viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63492, 0 )
+cull_mask = 2
+
+[node name="focus_layer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="focal_objects" type="Spatial" parent="focus_layer"]
+
+[node name="key_light" type="DirectionalLight" parent="focus_layer"]
+transform = Transform( 0.5, 0.433013, -0.75, 0, 0.866025, 0.5, 0.866025, -0.25, 0.433013, 0, 0, 0 )
+layers = 4
+light_color = Color( 1, 0.964706, 0.909804, 1 )
+light_cull_mask = 4293918724
+
+[node name="fill_light" type="DirectionalLight" parent="focus_layer"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+layers = 4
+light_color = Color( 0.741176, 0.803922, 0.890196, 1 )
+light_cull_mask = 4294966276
+
+[node name="focus_object_viewport_container" type="ViewportContainer" parent="focus_layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+stretch = true
+
+[node name="focus_object_viewport" type="Viewport" parent="focus_layer/focus_object_viewport_container"]
+size = Vector2( 1920, 1080 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="focus_camera" type="Camera" parent="focus_layer/focus_object_viewport_container/focus_object_viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0.1 )
+cull_mask = 4
+fov = 30.0
+
+[node name="background_hider" type="CSGBox" parent="focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, -1 )
+visible = false
+layers = 4
+width = 10.0
+height = 10.0
+depth = 0.001
+material = SubResource( 7 )
+
 [connection signal="body_entered" from="." to="." method="body_entered"]
 [connection signal="body_exited" from="." to="." method="body_exited"]
 [connection signal="tween_all_completed" from="crouch_tween" to="." method="finished_crouching_transition"]

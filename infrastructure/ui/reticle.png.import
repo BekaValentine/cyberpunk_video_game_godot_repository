@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/reticle.png-7c3fb739bde8eb4e49b90c7571dfef23.image"
+
+[deps]
+
+source_file="res://infrastructure/ui/reticle.png"
+dest_files=[ "res://.import/reticle.png-7c3fb739bde8eb4e49b90c7571dfef23.image" ]
+
+[params]
+

@@ -26,3 +26,6 @@ func goto_locks_and_doors_prototype():
 
 func goto_ladders_prototype():
 	goto_scene("res://levels/prototypes/ladders.tscn")
+
+func goto_inspection_prototype():
+	goto_scene("res://levels/prototypes/inspection.tscn")

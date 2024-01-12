@@ -68,9 +68,7 @@ light_color = Color( 1, 0.898039, 0.764706, 1 )
 light_energy = 0.5
 omni_range = 53.3251
 
-[node name="block1" type="RigidBody" parent="." groups=[
-"manipulate",
-]]
+[node name="block1" type="RigidBody" parent="." groups=["manipulate"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.308, 0.248817, -2.354 )
 collision_layer = 6
 collision_mask = 2147483653
@@ -84,9 +82,7 @@ width = 0.5
 height = 0.5
 depth = 0.5
 
-[node name="sphere1" type="RigidBody" parent="." groups=[
-"use",
-]]
+[node name="sphere1" type="RigidBody" parent="." groups=["use"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.265, 1.5, -0.816 )
 collision_layer = 6
 collision_mask = 5
@@ -99,10 +95,7 @@ shape = SubResource( 2 )
 [node name="CSGSphere" type="CSGSphere" parent="sphere1"]
 radius = 0.1
 
-[node name="sphere2" type="RigidBody" parent="." groups=[
-"manipulate",
-"take",
-]]
+[node name="sphere2" type="RigidBody" parent="." groups=["manipulate", "take"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.434696, 1.5, -0.816 )
 collision_layer = 6
 collision_mask = 5
@@ -116,10 +109,7 @@ radius = 0.1
 radial_segments = 32
 rings = 16
 
-[node name="sphere3" type="RigidBody" parent="." groups=[
-"manipulate",
-"take",
-]]
+[node name="sphere3" type="RigidBody" parent="." groups=["manipulate", "take"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.327961, 1.5, -0.816 )
 collision_layer = 6
 collision_mask = 5
