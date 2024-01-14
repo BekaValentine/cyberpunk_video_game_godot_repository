@@ -37,9 +37,21 @@ func move_meshes_to_layers(layers):
 func set_root_object(obj):
 	self.root_object = obj
 
+func can_highlight():
+	return holdable or interactable or focal_object_resource != null
 
 
 #### Internal Functions MUST NOT OVERRIDE ####
+
+func _start_highlight():
+	if !self.can_highlight(): return
+	
+	self.start_highlight()
+	
+func _end_highlight():
+	if !self.can_highlight(): return
+	
+	self.end_highlight()
 
 func _hold():
 	if not self.holdable: return
@@ -82,6 +94,12 @@ func _unfocus():
 
 
 #### Exposed Functions MAY OVERRIDE ####
+
+func start_highlight():
+	pass
+
+func end_highlight():
+	pass
 
 func hold():
 	pass

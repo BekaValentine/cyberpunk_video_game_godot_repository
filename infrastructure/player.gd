@@ -29,6 +29,7 @@ var focus_camera = null
 var focus_background_hider = null
 var focal_object_depth_offset = 0.5
 var focal_object_horizontal_offset = 0.2
+var focus_highlighted_object = null
 
 var reticle_cursor = load("res://infrastructure/ui/reticle.png")
 
@@ -117,6 +118,10 @@ func _unhandled_input(event):
 
 		elif Input.is_action_just_pressed("unfocus"):
 			unfocus_object()
+		
+		elif Input.is_action_just_pressed("focus"):
+			if focus_highlighted_object and focus_highlighted_object is SimObject and focus_highlighted_object.focal_object_resource:
+				self.focus_object(focus_highlighted_object)
 
 func crouching_height_change(h):
 	.crouching_height_change(h)
@@ -170,8 +175,14 @@ func use_object():
 	highlighted_object._use(self, held_object)
 
 func focus_object(focused_object):
+	if highlighted_object:
+		highlighted_object._end_highlight()
+	if focus_highlighted_object:
+		focus_highlighted_object._end_highlight()
+	
 	focusing_on_object = true
 	highlighted_object = null
+	focus_highlighted_object = null
 	self.display_highlight()
 	reticle.visible = false
 	Input.set_custom_mouse_cursor(reticle_cursor)
@@ -190,6 +201,11 @@ func focus_object(focused_object):
 	debug_info.log("focus_camera position", focus_camera.transform.origin)
 
 func unfocus_object():
+	if highlighted_object:
+		highlighted_object._end_highlight()
+	if focus_highlighted_object:
+		focus_highlighted_object._end_highlight()
+	
 	if len(focus_stack) > 0:
 		focal_objects.remove_child(focus_stack[-1])
 		focus_stack.pop_back()
@@ -237,8 +253,14 @@ func focus_interact_objects():
 	var to = from + focus_camera.project_ray_normal(mouse_position) * ray_length
 	var space = self.get_world().direct_space_state
 	var raycast_hit = space.intersect_ray(from, to, [], FOCUS_COLLISION_MASK)
-	if "collider" in raycast_hit and raycast_hit.collider is SimObject:
-		...
+	if "collider" in raycast_hit:
+		if raycast_hit.collider is SimObject and !focus_highlighted_object:
+			focus_highlighted_object = raycast_hit.collider
+			focus_highlighted_object._start_highlight()
+	else:
+		if focus_highlighted_object:
+			focus_highlighted_object._end_highlight()
+			focus_highlighted_object = null
 	
 
 
@@ -297,9 +319,10 @@ func interact_objects():
 		raycast_hit is SimObject and \
 		(raycast_hit.interactable or raycast_hit.hold_size):
 		highlighted_object = raycast_hit
+		highlighted_object._start_highlight()
 	else:
-		if highlighted_object and highlighted_object.has_method("highlight_ended"):
-			highlighted_object.highlight_ended()
+		if highlighted_object and highlighted_object is SimObject:
+			highlighted_object._end_highlight()
 		highlighted_object = null
 
 	self.display_highlight()
