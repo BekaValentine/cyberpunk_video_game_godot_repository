@@ -29,7 +29,9 @@ var focus_camera = null
 var focus_background_hider = null
 var focal_object_depth_offset = 0.5
 var focal_object_horizontal_offset = 0.2
+
 var focus_highlighted_object = null
+var focus_held_object = null
 
 var reticle_cursor = load("res://infrastructure/ui/reticle.png")
 
@@ -115,6 +117,10 @@ func _unhandled_input(event):
 	else:
 		if event is InputEventMouseMotion:
 			focus_interact_objects()
+
+		elif Input.is_action_just_pressed("use"):
+			if focus_highlighted_object and focus_highlighted_object is SimObject and focus_highlighted_object.interactable:
+				focus_use_object()
 
 		elif Input.is_action_just_pressed("unfocus"):
 			unfocus_object()
@@ -261,7 +267,9 @@ func focus_interact_objects():
 		if focus_highlighted_object:
 			focus_highlighted_object._end_highlight()
 			focus_highlighted_object = null
-	
+
+func focus_use_object():
+	focus_highlighted_object._use(self, focus_held_object)
 
 
 
