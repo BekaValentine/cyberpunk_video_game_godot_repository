@@ -33,9 +33,10 @@ var focal_object_horizontal_offset = 0.2
 var reticle_cursor = load("res://infrastructure/ui/reticle.png")
 
 
-var WORLD_OBJECT_COLLISION_MASK = 2;
-var HELD_COLLISION_MASK = 0;
-var NORMAL_COLLISION_MASK = 2 | 4;
+var WORLD_OBJECT_COLLISION_MASK = 2
+var HELD_COLLISION_MASK = 0
+var NORMAL_COLLISION_MASK = 2 | 4
+var FOCUS_COLLISION_MASK = 8
 
 var skills = {
 	"lock": 0
@@ -111,7 +112,10 @@ func _unhandled_input(event):
 			self.toggle_backpack()
 	
 	else:
-		if Input.is_action_just_pressed("unfocus"):
+		if event is InputEventMouseMotion:
+			focus_interact_objects()
+
+		elif Input.is_action_just_pressed("unfocus"):
 			unfocus_object()
 
 func crouching_height_change(h):
@@ -225,6 +229,16 @@ func unstash_object(obj):
 	self.hold_object(obj)
 
 	return true
+
+func focus_interact_objects():
+	var mouse_position = self.get_viewport().get_mouse_position()
+	var ray_length = 10
+	var from = focus_camera.project_ray_origin(mouse_position)
+	var to = from + focus_camera.project_ray_normal(mouse_position) * ray_length
+	var space = self.get_world().direct_space_state
+	var raycast_hit = space.intersect_ray(from, to, [], FOCUS_COLLISION_MASK)
+	if "collider" in raycast_hit and raycast_hit.collider is SimObject:
+		...
 	
 
 
