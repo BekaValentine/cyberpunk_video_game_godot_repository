@@ -29,9 +29,7 @@ var focus_camera = null
 var focus_background_hider = null
 var focal_object_depth_offset = 0.5
 var focal_object_horizontal_offset = 0.2
-
 var focus_highlighted_object = null
-var focus_held_object = null
 
 var reticle_cursor = load("res://infrastructure/ui/reticle.png")
 
@@ -269,7 +267,7 @@ func focus_interact_objects():
 			focus_highlighted_object = null
 
 func focus_use_object():
-	focus_highlighted_object._use(self, focus_held_object)
+	focus_highlighted_object._use(self, held_object)
 
 
 

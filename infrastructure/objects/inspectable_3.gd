@@ -15,7 +15,7 @@ func end_highlight():
 	highlight_shape.material.albedo_color = normal_color
 
 func use(agent, tool_object):
-	debug_info.log("inspectable 3 used", true)
+	debug_info.log("inspectable 3 used", str(tool_object))
 
 func focus():
 	debug_info.log("inspectable 3 focused", true)
