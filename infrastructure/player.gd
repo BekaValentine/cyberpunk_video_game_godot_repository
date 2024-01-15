@@ -3,6 +3,7 @@ extends "res://infrastructure/objects/Character.gd"
 export var mouse_sensitivity = 0.002
 
 var backpack = null
+var reticle = null
 var pivot = null
 var camera = null
 var hold_camera = null
@@ -21,10 +22,22 @@ var should_move_left = false
 var should_move_right = false
 var stand_height = null
 var crouch_height = 0.75
+var focusing_on_object = false
+var focus_stack = []
+var focal_objects = null
+var focus_camera = null
+var focus_background_hider = null
+var focal_object_depth_offset = 0.5
+var focal_object_horizontal_offset = 0.2
+var focus_highlighted_object = null
 
-var WORLD_OBJECT_COLLISION_MASK = 2;
-var HELD_COLLISION_MASK = 0;
-var NORMAL_COLLISION_MASK = 2 | 4;
+var reticle_cursor = load("res://infrastructure/ui/reticle.png")
+
+
+var WORLD_OBJECT_COLLISION_MASK = 2
+var HELD_COLLISION_MASK = 0
+var NORMAL_COLLISION_MASK = 2 | 4
+var FOCUS_COLLISION_MASK = 8
 
 var skills = {
 	"lock": 0
@@ -34,14 +47,18 @@ var skills = {
 
 func _ready():
 	._ready()
-
+	
 	backpack = $backpack
+	reticle = $reticle_center/reticle
 	pivot = $pivot
 	camera = $pivot/camera
-	hold_camera = $pivot/camera/hold_viewport_container/hold_viewport/hold_camera
+	hold_camera = $hold_layer/hold_viewport_container/hold_viewport/hold_camera
 	hold_position = $pivot/hold_position
 	object_highlight = $object_highlight
 	pickup_detect_ray = $pivot/pickup_detect_ray
+	focal_objects = $focus_layer/focal_objects
+	focus_camera = $focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera
+	focus_background_hider = $focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera/background_hider
 
 	stand_height = pivot.transform.origin.y
 	
@@ -56,38 +73,59 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion:
-		self.rotate_y(-event.relative.x * mouse_sensitivity)
-		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-		pivot.rotation.x = clamp(pivot.rotation.x, -1.2, 1.2)
-	
-	elif Input.is_action_pressed("crouch"):
-		toggle_crouch()
-	
-	elif Input.is_action_pressed("primary_interaction"):
-		if held_object:
-			throw_object()
+	if !focusing_on_object:
+		if event is InputEventMouseMotion:
+			self.rotate_y(-event.relative.x * mouse_sensitivity)
+			pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+			pivot.rotation.x = clamp(pivot.rotation.x, -1.2, 1.2)
+			hold_camera.global_transform = camera.global_transform
 		
-		elif highlighted_object:
-			if highlighted_object is SimObject and highlighted_object.holdable:
-				pickup_object()
-				
-
-	elif Input.is_action_just_pressed("secondary_interaction"):
-		if held_object:
-			drop_object()
-
-	elif Input.is_action_just_pressed("take"):
-		if held_object:
+		elif Input.is_action_pressed("crouch"):
+			toggle_crouch()
+		
+		elif Input.is_action_pressed("primary_interaction"):
 			if held_object:
-				take_object()
+				throw_object()
+			
+			elif highlighted_object:
+				if highlighted_object is SimObject and highlighted_object.holdable:
+					pickup_object()
+					
+
+		elif Input.is_action_just_pressed("secondary_interaction"):
+			if held_object:
+				drop_object()
+
+		elif Input.is_action_just_pressed("take"):
+			if held_object:
+				if held_object:
+					take_object()
+		
+		elif Input.is_action_just_pressed("use"):
+			if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
+				use_object()
+		
+		elif Input.is_action_just_pressed("focus"):
+			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
+				focus_object(highlighted_object)
+		
+		elif Input.is_action_pressed("backpack"):
+			self.toggle_backpack()
 	
-	elif Input.is_action_just_pressed("use"):
-		if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
-			use_object()
-	
-	elif Input.is_action_pressed("backpack"):
-		self.toggle_backpack()
+	else:
+		if event is InputEventMouseMotion:
+			focus_interact_objects()
+
+		elif Input.is_action_just_pressed("use"):
+			if focus_highlighted_object and focus_highlighted_object is SimObject and focus_highlighted_object.interactable:
+				focus_use_object()
+
+		elif Input.is_action_just_pressed("unfocus"):
+			unfocus_object()
+		
+		elif Input.is_action_just_pressed("focus"):
+			if focus_highlighted_object and focus_highlighted_object is SimObject and focus_highlighted_object.focal_object_resource:
+				self.focus_object(focus_highlighted_object)
 
 func crouching_height_change(h):
 	.crouching_height_change(h)
@@ -140,6 +178,49 @@ func take_object():
 func use_object():
 	highlighted_object._use(self, held_object)
 
+func focus_object(focused_object):
+	if highlighted_object:
+		highlighted_object._end_highlight()
+	if focus_highlighted_object:
+		focus_highlighted_object._end_highlight()
+	
+	focusing_on_object = true
+	highlighted_object = null
+	focus_highlighted_object = null
+	self.display_highlight()
+	reticle.visible = false
+	Input.set_custom_mouse_cursor(reticle_cursor)
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+	focus_background_hider.visible = true
+	var focal_object = focused_object._focus()
+	focus_stack.push_back(focal_object)
+
+	focal_objects.add_child(focal_object)
+	focal_object.global_transform.origin = Vector3(0, 0, focal_object_depth_offset*(len(focal_objects.get_children()) - 1))
+	focus_camera.global_transform.origin.z += focal_object_depth_offset
+	focal_object.rotate_y(0.1 * (len(focal_objects.get_children()) - 1))
+	focal_object.global_transform.origin.x = focal_object_horizontal_offset*(len(focal_objects.get_children()) - 1)
+	focus_camera.global_transform.origin.x += focal_object_horizontal_offset
+	debug_info.log("focus_camera position", focus_camera.transform.origin)
+
+func unfocus_object():
+	if highlighted_object:
+		highlighted_object._end_highlight()
+	if focus_highlighted_object:
+		focus_highlighted_object._end_highlight()
+	
+	if len(focus_stack) > 0:
+		focal_objects.remove_child(focus_stack[-1])
+		focus_stack.pop_back()
+		focusing_on_object = len(focus_stack) > 0
+		reticle.visible = !focusing_on_object
+		if !focusing_on_object:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		focus_background_hider.visible = focusing_on_object
+		focus_camera.global_transform.origin.z -= focal_object_depth_offset
+		focus_camera.global_transform.origin.x -= focal_object_horizontal_offset
+
 func toggle_backpack():
 	if not backpack.visible:
 	# 	self.hide_backpack()
@@ -168,7 +249,25 @@ func unstash_object(obj):
 	self.hold_object(obj)
 
 	return true
-	
+
+func focus_interact_objects():
+	var mouse_position = self.get_viewport().get_mouse_position()
+	var ray_length = 10
+	var from = focus_camera.project_ray_origin(mouse_position)
+	var to = from + focus_camera.project_ray_normal(mouse_position) * ray_length
+	var space = self.get_world().direct_space_state
+	var raycast_hit = space.intersect_ray(from, to, [], FOCUS_COLLISION_MASK)
+	if "collider" in raycast_hit:
+		if raycast_hit.collider is SimObject and !focus_highlighted_object:
+			focus_highlighted_object = raycast_hit.collider
+			focus_highlighted_object._start_highlight()
+	else:
+		if focus_highlighted_object:
+			focus_highlighted_object._end_highlight()
+			focus_highlighted_object = null
+
+func focus_use_object():
+	focus_highlighted_object._use(self, held_object)
 
 
 
@@ -177,10 +276,11 @@ func unstash_object(obj):
 ################ Physics-based UI ################
 
 func physics_activities():
-	calculate_behavior_from_user_inputs()
-	.physics_activities()
-	interact_objects()
-	rotate_held_object()
+	if !focusing_on_object:
+		calculate_behavior_from_user_inputs()
+		.physics_activities()
+		interact_objects()
+		rotate_held_object()
 
 
 func calculate_behavior_from_user_inputs():
@@ -225,11 +325,15 @@ func interact_objects():
 		raycast_hit is SimObject and \
 		(raycast_hit.interactable or raycast_hit.hold_size):
 		highlighted_object = raycast_hit
+		highlighted_object._start_highlight()
 	else:
-		if highlighted_object and highlighted_object.has_method("highlight_ended"):
-			highlighted_object.highlight_ended()
+		if highlighted_object and highlighted_object is SimObject:
+			highlighted_object._end_highlight()
 		highlighted_object = null
 
+	self.display_highlight()
+
+func display_highlight():
 	if highlighted_object and should_show_highlight:
 		show_highlight()
 	else:
@@ -271,9 +375,11 @@ func show_highlight():
 	object_highlight.set_position(Vector2(left,top))
 	object_highlight.set_size(Vector2(right-left,bottom-top))
 	object_highlight.visible = true
+	debug_info.log("highlight", object_highlight.visible)
 
 func hide_highlight():
 	object_highlight.visible = false
+	debug_info.log("highlight", object_highlight.visible)
 
 func rotate_held_object():
 	if held_object:

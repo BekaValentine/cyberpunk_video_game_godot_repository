@@ -22,7 +22,7 @@ func unlock():
 	locked = false
 	debug_info.log("lock state changed" + str(self), self.locked)
 
-func highlight_ended():
+func end_highlight():
 	timer.stop()
 
 func use(agent, tool_object):

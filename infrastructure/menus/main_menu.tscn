@@ -24,9 +24,6 @@ anti_aliasing = false
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [node name="main_menu" type="Control"]
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="title" type="Label" parent="."]
 margin_top = 50.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://infrastructure/menus/ladders_button.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://infrastructure/menus/main_menu_button.gd" type="Script" id=4]
 [ext_resource path="res://infrastructure/menus/interactions.gd" type="Script" id=5]
 [ext_resource path="res://infrastructure/menus/locks_and_doors.gd" type="Script" id=6]
+[ext_resource path="res://infrastructure/menus/inspection.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 0.564706, 0, 1 )
@@ -26,17 +27,14 @@ anti_aliasing = false
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [node name="prototypes_menu" type="Control"]
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="title" type="Label" parent="."]
 margin_top = 50.0
 margin_right = 1920.0
 margin_bottom = 100.0
-custom_styles/normal = SubResource( 1 )
-custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 2 )
+custom_styles/normal = SubResource( 1 )
 text = "Prototypes"
 align = 1
 __meta__ = {
@@ -51,12 +49,12 @@ margin_right = 1135.0
 margin_bottom = 260.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 3 )
 custom_styles/focus = SubResource( 4 )
 custom_styles/disabled = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
-custom_fonts/font = ExtResource( 3 )
 enabled_focus_mode = 0
 text = "Interactions"
 script = ExtResource( 5 )
@@ -69,12 +67,12 @@ margin_right = 1135.0
 margin_bottom = 360.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 3 )
 custom_styles/focus = SubResource( 4 )
 custom_styles/disabled = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
-custom_fonts/font = ExtResource( 3 )
 enabled_focus_mode = 0
 text = "Locks and Doors"
 script = ExtResource( 6 )
@@ -87,12 +85,12 @@ margin_right = 1135.0
 margin_bottom = 460.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 3 )
 custom_styles/focus = SubResource( 4 )
 custom_styles/disabled = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
-custom_fonts/font = ExtResource( 3 )
 enabled_focus_mode = 0
 text = "Ladders"
 script = ExtResource( 1 )
@@ -100,7 +98,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="back" type="Button" parent="."]
+[node name="inspection" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
 margin_top = 500.0
@@ -108,16 +106,36 @@ margin_right = 1135.0
 margin_bottom = 560.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 3 )
 custom_styles/focus = SubResource( 4 )
 custom_styles/disabled = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
+enabled_focus_mode = 0
+text = "Inspection"
+script = ExtResource( 7 )
+
+[node name="back" type="Button" parent="."]
+anchor_right = 0.059
+margin_left = 785.0
+margin_top = 604.0
+margin_right = 1135.0
+margin_bottom = 664.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 enabled_focus_mode = 0
 text = "Back"
 script = ExtResource( 4 )
+
 [connection signal="pressed" from="interactions" to="interactions" method="pressed"]
 [connection signal="pressed" from="locks_and_doors" to="locks_and_doors" method="pressed"]
 [connection signal="pressed" from="ladders" to="ladders" method="pressed"]
+[connection signal="pressed" from="inspection" to="inspection" method="pressed"]
 [connection signal="pressed" from="back" to="back" method="pressed"]
