@@ -176,7 +176,10 @@ func take_object():
 	held_object = null
 	
 func use_object():
-	highlighted_object._use(self, held_object)
+	if held_object:
+		held_object._use_on(self, highlighted_object)
+	else:
+		highlighted_object._affected_by(self)
 
 func focus_object(focused_object):
 	if highlighted_object:
@@ -267,7 +270,7 @@ func focus_interact_objects():
 			focus_highlighted_object = null
 
 func focus_use_object():
-	focus_highlighted_object._use(self, held_object)
+	focus_highlighted_object._affected_by(self, held_object)
 
 
 

@@ -77,10 +77,13 @@ func _unstash():
 	
 	self.unstash()
 
-func _use(agent, tool_object = null):
+func _use_on(agent, patient):
+	self.use_on(agent, patient)
+
+func _affected_by(agent, tool_object = null):
 	if not self.interactable: return
 	
-	self.use(agent, tool_object)
+	self.affected_by(agent, tool_object)
 
 func _focus():
 	debug_info.log("focused on an object", self)
@@ -113,7 +116,11 @@ func stash():
 func unstash():
 	pass
 
-func use(agent, tool_object):
+func use_on(agent, patient):
+	# default behavior is to simply pass control to the patient
+	patient.affected_by(agent, self)
+
+func affected_by(agent, tool_object):
 	pass
 
 func focus():

@@ -25,7 +25,7 @@ func unlock():
 func end_highlight():
 	timer.stop()
 
-func use(agent, tool_object):
+func affected_by(agent, tool_object):
 	if locked:
 		if "skills" in agent and tool_object is Key and self.should_unlock(tool_object):
 			var player_skill = agent.skills["lock"]

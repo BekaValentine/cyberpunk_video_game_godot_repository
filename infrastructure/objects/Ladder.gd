@@ -18,7 +18,7 @@ func _ready():
 	top_attachment_point = $TopAttachmentPoint
 	top_support = $TopSupport
 
-func use(agent, tool_object):
+func affected_by(agent, tool_object):
 	if agent.name == "player":
 		agent.try_using_ladder(self)
 
