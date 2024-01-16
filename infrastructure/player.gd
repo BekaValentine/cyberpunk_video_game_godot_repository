@@ -135,7 +135,7 @@ func crouching_height_change(h):
 
 func pickup_object():
 	hold_object(highlighted_object)
-	highlighted_object = null
+	self.set_highlighted_object(null)
 
 func hold_object(obj):	
 	held_object = obj
@@ -186,7 +186,7 @@ func focus_object(focused_object):
 		focus_highlighted_object._end_highlight()
 	
 	focusing_on_object = true
-	highlighted_object = null
+	self.set_highlighted_object(null)
 	focus_highlighted_object = null
 	reticle.visible = false
 	Input.set_custom_mouse_cursor(reticle_cursor)
@@ -315,6 +315,16 @@ func move():
 
 	hold_camera.global_transform = camera.global_transform
 
+func set_highlighted_object(obj):
+	debug_info.log("setting highlighted", str(obj))
+	if highlighted_object and highlighted_object is SimObject:
+		highlighted_object._end_highlight()
+	
+	if obj and obj is SimObject:
+		obj._start_highlight()
+	
+	highlighted_object = obj
+
 func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
@@ -324,12 +334,9 @@ func interact_objects():
 	if raycast_hit and \
 		raycast_hit is SimObject and \
 		(raycast_hit.interactable or raycast_hit.hold_size):
-		highlighted_object = raycast_hit
-		highlighted_object._start_highlight()
+		self.set_highlighted_object(raycast_hit)
 	else:
-		if highlighted_object and highlighted_object is SimObject:
-			highlighted_object._end_highlight()
-		highlighted_object = null
+		self.set_highlighted_object(null)
 
 func rotate_held_object():
 	if held_object:
