@@ -11,7 +11,6 @@ var closed_angle = Vector3(0,0,0)
 
 func _ready():
 	tween = $Tween
-	highlight_shape = $CSGBox
 	if lock_path != null:
 		var candidate_lock = get_node(lock_path)
 		if candidate_lock is Lock:

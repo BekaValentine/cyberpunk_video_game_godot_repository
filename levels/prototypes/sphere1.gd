@@ -1,7 +1,6 @@
 extends SimObject
 
 func _ready():
-	highlight_shape = $CSGSphere
 	interactable = true
 
 func affected_by(agent, tool_object = null):

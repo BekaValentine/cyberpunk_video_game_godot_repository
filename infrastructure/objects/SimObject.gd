@@ -14,7 +14,6 @@ func get_holdable():
 # when true, 
 var interactable = false
 
-var highlight_shape = null
 var meshes = []
 var focal_object_resource = null
 var focal_object = null

@@ -11,7 +11,6 @@ var closed_position = Vector3(0,0,0)
 
 func _ready():
 	tween = $Tween
-	highlight_shape = $CSGBox
 	default_position = self.global_transform.origin
 	log_status()
 

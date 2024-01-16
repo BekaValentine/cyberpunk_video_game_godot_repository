@@ -11,7 +11,6 @@ func _init():
 	interactable = true
 
 func _ready():
-	highlight_shape = $CSGBox
 	bottom_reference = $BottomReference
 	bottom_attachment_point = $BottomAttachmentPoint
 	top_reference = $TopReference
