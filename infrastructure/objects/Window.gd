@@ -1,6 +1,7 @@
 class_name Window
 extends SimObject
 
+var normal_color = null
 var tween = null
 var toggling = false
 var locked = false
@@ -11,7 +12,6 @@ var closed_position = Vector3(0,0,0)
 
 func _ready():
 	tween = $Tween
-	highlight_shape = $CSGBox
 	default_position = self.global_transform.origin
 	log_status()
 
@@ -20,6 +20,13 @@ func log_status(extra = ""):
 
 func _init():
 	interactable = true
+
+func start_highlight():
+	normal_color = $CSGBox.material.albedo_color
+	$CSGBox.material.albedo_color = normal_color.lightened(0.5)
+
+func end_highlight():
+	$CSGBox.material.albedo_color = normal_color
 
 func affected_by(agent, tool_object):
 	if locked: return

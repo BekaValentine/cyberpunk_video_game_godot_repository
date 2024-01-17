@@ -11,10 +11,8 @@ func get_holdable():
 	return hold_size != null
 
 # interactable is whether the object can be interacted with or not
-# when true, 
 var interactable = false
 
-var highlight_shape = null
 var meshes = []
 var focal_object_resource = null
 var focal_object = null
@@ -38,19 +36,15 @@ func set_root_object(obj):
 	self.root_object = obj
 
 func can_highlight():
-	return holdable or interactable or focal_object_resource != null
+	return self.get_holdable() or interactable or focal_object_resource != null
 
 
 #### Internal Functions MUST NOT OVERRIDE ####
 
 func _start_highlight():
-	if !self.can_highlight(): return
-	
 	self.start_highlight()
 	
 func _end_highlight():
-	if !self.can_highlight(): return
-	
 	self.end_highlight()
 
 func _hold():

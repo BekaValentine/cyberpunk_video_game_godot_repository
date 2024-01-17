@@ -12,7 +12,6 @@ var pickup_detect_ray = null
 var highlighted_object = null
 var held_object = null
 var should_show_highlight = true
-var object_highlight = null
 var self_initial_rotation = Vector3.ZERO
 var held_object_initial_rotation = Vector3.ZERO
 var inventory_open = false
@@ -54,7 +53,6 @@ func _ready():
 	camera = $pivot/camera
 	hold_camera = $hold_layer/hold_viewport_container/hold_viewport/hold_camera
 	hold_position = $pivot/hold_position
-	object_highlight = $object_highlight
 	pickup_detect_ray = $pivot/pickup_detect_ray
 	focal_objects = $focus_layer/focal_objects
 	focus_camera = $focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera
@@ -137,7 +135,7 @@ func crouching_height_change(h):
 
 func pickup_object():
 	hold_object(highlighted_object)
-	highlighted_object = null
+	self.set_highlighted_object(null)
 
 func hold_object(obj):	
 	held_object = obj
@@ -188,9 +186,8 @@ func focus_object(focused_object):
 		focus_highlighted_object._end_highlight()
 	
 	focusing_on_object = true
-	highlighted_object = null
+	self.set_highlighted_object(null)
 	focus_highlighted_object = null
-	self.display_highlight()
 	reticle.visible = false
 	Input.set_custom_mouse_cursor(reticle_cursor)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -318,6 +315,16 @@ func move():
 
 	hold_camera.global_transform = camera.global_transform
 
+func set_highlighted_object(obj):
+	debug_info.log("setting highlighted", str(obj))
+	if highlighted_object and highlighted_object is SimObject:
+		highlighted_object._end_highlight()
+	
+	if obj and obj is SimObject:
+		obj._start_highlight()
+	
+	highlighted_object = obj
+
 func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
@@ -327,62 +334,9 @@ func interact_objects():
 	if raycast_hit and \
 		raycast_hit is SimObject and \
 		(raycast_hit.interactable or raycast_hit.hold_size):
-		highlighted_object = raycast_hit
-		highlighted_object._start_highlight()
+		self.set_highlighted_object(raycast_hit)
 	else:
-		if highlighted_object and highlighted_object is SimObject:
-			highlighted_object._end_highlight()
-		highlighted_object = null
-
-	self.display_highlight()
-
-func display_highlight():
-	if highlighted_object and should_show_highlight:
-		show_highlight()
-	else:
-		hide_highlight()
-
-func show_highlight():
-	var bounds = highlighted_object.highlight_shape.get_transformed_aabb()
-	var origin = bounds.position
-	var size = bounds.size
-	var points = [
-		camera.unproject_position(origin),
-		camera.unproject_position(origin + Vector3(size.x,0,0)),
-		camera.unproject_position(origin + Vector3(size.x,0,size.z)),
-		camera.unproject_position(origin + Vector3(size.x,size.y,0)),
-		camera.unproject_position(origin + Vector3(size.x,size.y,size.z)),
-		camera.unproject_position(origin + Vector3(0,size.y,0)),
-		camera.unproject_position(origin + Vector3(0,size.y,size.z)),
-		camera.unproject_position(origin + Vector3(0,0,size.z)),
-	]
-	
-	var left = points[0].x
-	var top = points[0].y
-	var right = points[0].x
-	var bottom = points[0].y
-	
-	for p in points:
-		if p.x < left:
-			left = p.x
-		
-		if right < p.x:
-			right = p.x
-		
-		if p.y < top:
-			top = p.y
-		
-		if bottom < p.y:
-			bottom = p.y
-	
-	object_highlight.set_position(Vector2(left,top))
-	object_highlight.set_size(Vector2(right-left,bottom-top))
-	object_highlight.visible = true
-	debug_info.log("highlight", object_highlight.visible)
-
-func hide_highlight():
-	object_highlight.visible = false
-	debug_info.log("highlight", object_highlight.visible)
+		self.set_highlighted_object(null)
 
 func rotate_held_object():
 	if held_object:

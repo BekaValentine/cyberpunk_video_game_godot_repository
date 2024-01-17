@@ -87,14 +87,6 @@ margin_bottom = 544.0
 mouse_filter = 2
 texture = SubResource( 8 )
 
-[node name="object_highlight" type="ReferenceRect" parent="."]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-mouse_filter = 2
-border_color = Color( 1, 1, 1, 1 )
-editor_only = false
-
 [node name="crouch_tween" type="Tween" parent="."]
 
 [node name="pause_menu" parent="." instance=ExtResource( 4 )]

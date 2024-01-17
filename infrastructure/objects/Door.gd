@@ -1,6 +1,7 @@
 class_name Door
 extends SimObject
 
+var normal_color = null
 var tween = null
 var toggling = false
 export(NodePath) var lock_path
@@ -11,7 +12,6 @@ var closed_angle = Vector3(0,0,0)
 
 func _ready():
 	tween = $Tween
-	highlight_shape = $CSGBox
 	if lock_path != null:
 		var candidate_lock = get_node(lock_path)
 		if candidate_lock is Lock:
@@ -19,6 +19,13 @@ func _ready():
 
 func _init():
 	interactable = true
+
+func start_highlight():
+	normal_color = $CSGBox.material.albedo_color
+	$CSGBox.material.albedo_color = normal_color.lightened(0.5)
+
+func end_highlight():
+	$CSGBox.material.albedo_color = normal_color
 
 func affected_by(agent, tool_object):
 	if lock and lock.locked: return
