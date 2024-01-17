@@ -1,4 +1,4 @@
-extends "res://infrastructure/objects/Character.gd"
+extends Character
 
 export var mouse_sensitivity = 0.002
 
@@ -317,13 +317,15 @@ func move():
 
 func set_highlighted_object(obj):
 	debug_info.log("setting highlighted", str(obj))
-	if highlighted_object and highlighted_object is SimObject:
-		highlighted_object._end_highlight()
-	
-	if obj and obj is SimObject:
-		obj._start_highlight()
-	
-	highlighted_object = obj
+
+	if obj != highlighted_object:
+		if highlighted_object and highlighted_object is SimObject:
+			highlighted_object._end_highlight()
+		
+		if obj and obj is SimObject:
+			obj._start_highlight()
+		
+		highlighted_object = obj
 
 func interact_objects():
 	

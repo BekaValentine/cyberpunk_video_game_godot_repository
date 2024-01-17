@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://infrastructure/objects/solid_surface.tscn" type="PackedScene" id=2]
-[ext_resource path="res://infrastructure/objects/LadderDemo.tscn" type="PackedScene" id=3]
-[ext_resource path="res://infrastructure/objects/test_cube.tscn" type="PackedScene" id=5]
+[ext_resource path="res://infrastructure/test_objects/solid_surface.tscn" type="PackedScene" id=2]
+[ext_resource path="res://infrastructure/test_objects/ladder_1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://infrastructure/test_objects/test_cube.tscn" type="PackedScene" id=5]
 
 [node name="interactions_level" type="Spatial"]
 
