@@ -1,18 +1,18 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://infrastructure/objects/solid_surface.tscn" type="PackedScene" id=1]
+[ext_resource path="res://infrastructure/test_objects/solid_surface.tscn" type="PackedScene" id=1]
 [ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://infrastructure/objects/test_cube.tscn" type="PackedScene" id=3]
-[ext_resource path="res://infrastructure/objects/lock_1.gd" type="Script" id=4]
-[ext_resource path="res://infrastructure/objects/key_1.gd" type="Script" id=5]
-[ext_resource path="res://infrastructure/objects/key_2.gd" type="Script" id=6]
-[ext_resource path="res://infrastructure/objects/Door.tscn" type="PackedScene" id=7]
-[ext_resource path="res://infrastructure/objects/Window.tscn" type="PackedScene" id=8]
-[ext_resource path="res://infrastructure/objects/key_3.gd" type="Script" id=9]
-[ext_resource path="res://infrastructure/objects/BoltCutters.gd" type="Script" id=10]
-[ext_resource path="res://infrastructure/objects/rfid_controller_1.gd" type="Script" id=11]
-[ext_resource path="res://infrastructure/objects/rfidkey_1.gd" type="Script" id=12]
-[ext_resource path="res://infrastructure/objects/rfidlock_1.gd" type="Script" id=13]
+[ext_resource path="res://infrastructure/test_objects/test_cube.tscn" type="PackedScene" id=3]
+[ext_resource path="res://infrastructure/test_objects/lock_1.gd" type="Script" id=4]
+[ext_resource path="res://infrastructure/test_objects/key_1.gd" type="Script" id=5]
+[ext_resource path="res://infrastructure/test_objects/key_2.gd" type="Script" id=6]
+[ext_resource path="res://infrastructure/test_objects/door_1.tscn" type="PackedScene" id=7]
+[ext_resource path="res://infrastructure/test_objects/window_1.tscn" type="PackedScene" id=8]
+[ext_resource path="res://infrastructure/test_objects/key_3.gd" type="Script" id=9]
+[ext_resource path="res://infrastructure/simulation_classes/BoltCutters.gd" type="Script" id=10]
+[ext_resource path="res://infrastructure/test_objects/rfid_controller_1.gd" type="Script" id=11]
+[ext_resource path="res://infrastructure/test_objects/rfidkey_1.gd" type="Script" id=12]
+[ext_resource path="res://infrastructure/test_objects/rfidlock_1.gd" type="Script" id=13]
 
 [node name="Spatial" type="Spatial"]
 
@@ -97,12 +97,11 @@ transform = Transform( 0.1, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 2.13322, 0.869336, -1.
 collision_layer = 6
 script = ExtResource( 10 )
 
-[node name="Door" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.120874, -2.38419e-07, 2.0346 )
-lock_path = NodePath("../lock1")
+[node name="door_1" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.06109 )
 
-[node name="Window" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7981, 1.22037, 2.26717 )
+[node name="window1" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7771, 1.31231, 2.07149 )
 
 [node name="rfid_controller_1" type="Node" parent="."]
 script = ExtResource( 11 )
