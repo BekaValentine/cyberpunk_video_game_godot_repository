@@ -89,6 +89,18 @@ func _focus():
 func _unfocus():
 	focal_object = null
 
+func _focus_left():
+	self.focus_left()
+
+func _focus_right():
+	self.focus_right()
+
+func _focus_up():
+	self.focus_up()
+
+func _focus_down():
+	self.focus_down()
+
 
 #### Exposed Functions MAY OVERRIDE ####
 
@@ -121,4 +133,16 @@ func focus():
 	pass
 
 func unfocus():
+	pass
+
+func focus_left():
+	pass
+
+func focus_right():
+	pass
+
+func focus_up():
+	pass
+
+func focus_down():
 	pass

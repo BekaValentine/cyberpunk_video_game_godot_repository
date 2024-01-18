@@ -124,6 +124,18 @@ func _unhandled_input(event):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
 				self.focus_object(highlighted_object)
 
+		elif Input.is_action_pressed("focus_left"):
+			focus_stack[-1]._focus_left()
+		
+		elif Input.is_action_pressed("focus_right"):
+			focus_stack[-1]._focus_right()
+
+		elif Input.is_action_pressed("focus_up"):
+			focus_stack[-1]._focus_up()
+
+		elif Input.is_action_pressed("focus_down"):
+			focus_stack[-1]._focus_down()
+
 func crouching_height_change(h):
 	.crouching_height_change(h)
 
