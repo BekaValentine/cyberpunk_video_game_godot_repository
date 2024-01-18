@@ -4,7 +4,7 @@ var normal_color = null
 
 func _ready():
 	self.interactable = true
-	self.focal_object_resource = preload("res://infrastructure/objects/inspectable_2.tscn")
+	self.focal_object_resource = preload("res://infrastructure/test_objects/inspectable_2.tscn")
 
 func start_highlight():
 	normal_color = $CSGBox.material.albedo_color
