@@ -115,7 +115,7 @@ func _unhandled_input(event):
 
 		elif Input.is_action_just_pressed("use"):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
-				focus_use_object()
+				use_object()
 
 		elif Input.is_action_just_pressed("unfocus"):
 			unfocus_object()
@@ -253,9 +253,6 @@ func focus_interact_objects():
 	else:
 		if highlighted_object:
 			self.set_highlighted_object(null)
-
-func focus_use_object():
-	highlighted_object._affected_by(self, held_object)
 
 
 
