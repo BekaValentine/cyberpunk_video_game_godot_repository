@@ -2,21 +2,16 @@
 
 [ext_resource path="res://infrastructure/test_objects/inspectable_2.gd" type="Script" id=1]
 [ext_resource path="res://infrastructure/test_objects/inspectable_3.tscn" type="PackedScene" id=2]
-
-[sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.113725, 0.0784314, 0.870588, 1 )
+[ext_resource path="res://infrastructure/test_objects/inspectable_2_ref_cube.tscn" type="PackedScene" id=3]
 
 [node name="RigidBody" type="RigidBody"]
 mode = 1
 script = ExtResource( 1 )
 
-[node name="CSGBox" type="CSGBox" parent="."]
-transform = Transform( -0.707107, 0, 0.707107, 0.183013, 0.965926, 0.183013, -0.683013, 0.258819, -0.683013, 0, 0, 0 )
-layers = 4
-width = 0.2
-height = 0.2
-depth = 0.2
-material = SubResource( 1 )
-
 [node name="RigidBody" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0609215, 0.00316848, 0.142942 )
+
+[node name="FocusPivot" type="Spatial" parent="."]
+
+[node name="FocusShape" parent="FocusPivot" instance=ExtResource( 3 )]
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0 )
