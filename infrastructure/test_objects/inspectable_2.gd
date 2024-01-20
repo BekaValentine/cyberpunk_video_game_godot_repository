@@ -1,41 +1,77 @@
 extends SimObject
 
-var vtilt = 0
+var horizontal_angle = 0
+var vertical_angle = 0
+var tween = null
+var horizontal_pivot = null
+var vertical_pivot = null
+var rotation_rate = 1.0/360 # 1 second per 360 degrees
+
+func _ready():
+	._ready()
+	tween = $Tween
+	horizontal_pivot = $VerticalPivot/HorizontalPivot
+	vertical_pivot = $VerticalPivot
+
+func set_horizontal_pivot_angle(theta):
+	horizontal_pivot.rotate_y(deg2rad(theta - horizontal_angle))
+	horizontal_angle = theta
+
+func set_vertical_pivot_angle(theta):
+	vertical_pivot.rotate_x(deg2rad(theta - vertical_angle))
+	vertical_angle = theta
 
 func affected_by(agent, tool_object):
 	debug_info.log("inspectable 2 used", true)
 
 func focus_left():
-	var old = vtilt
-	if old != 0:
-		self.reset_tilt()
-	$FocusPivot/FocusShape.rotate_y(deg2rad(90))
-	if old != 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(old))
-		vtilt = old
+	if !tween.is_active():
+		var theta = -90
+		var time = -theta * rotation_rate
+		tween.interpolate_method(
+			self,
+			"set_horizontal_pivot_angle",
+			horizontal_angle,
+			horizontal_angle+theta,
+			time
+		)
+		tween.start()
 
 func focus_right():
-	var old = vtilt
-	if old != 0:
-		self.reset_tilt()
-	$FocusPivot/FocusShape.rotate_y(deg2rad(-90))
-	if old != 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(old))
-		vtilt = old
+	if !tween.is_active():
+		var theta = 90
+		var time = theta * rotation_rate
+		tween.interpolate_method(
+			self,
+			"set_horizontal_pivot_angle",
+			horizontal_angle,
+			horizontal_angle+theta,
+			time
+		)
+		tween.start()
 
 func focus_up():
-	if vtilt >= 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(-30))
-		vtilt -= 30
+	if !tween.is_active() and vertical_angle > -30:
+		var theta = -30
+		var time = -theta * rotation_rate
+		tween.interpolate_method(
+			self,
+			"set_vertical_pivot_angle",
+			vertical_angle,
+			vertical_angle+theta,
+			time
+		)
+		tween.start()
 
 func focus_down():
-	if vtilt <= 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(30))
-		vtilt += 30
-
-func reset_tilt():
-	if vtilt > 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(-30))
-	elif vtilt < 0:
-		$FocusPivot/FocusShape.rotate_x(deg2rad(30))
-	vtilt = 0
+	if !tween.is_active() and vertical_angle < 30:
+		var theta = 30
+		var time = theta * rotation_rate
+		tween.interpolate_method(
+			self,
+			"set_vertical_pivot_angle",
+			vertical_angle,
+			vertical_angle+theta,
+			time
+		)
+		tween.start()
