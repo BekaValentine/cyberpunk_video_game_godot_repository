@@ -1,3 +1,4 @@
+class_name CubicFocus
 extends SimObject
 
 var horizontal_angle = 0

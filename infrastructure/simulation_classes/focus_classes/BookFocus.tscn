@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://infrastructure/simulation_classes/focus_classes/BookFocus.gd" type="Script" id=1]
+
+[node name="RigidBody" type="RigidBody"]
+mode = 1
+script = ExtResource( 1 )
+
+[node name="VerticalPivot" type="Spatial" parent="."]
+
+[node name="PageTurnTween" type="Tween" parent="."]
+
+[node name="BookShiftTween" type="Tween" parent="."]
