@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://infrastructure/simulation_classes/Door.gd"
 }, {
 "base": "SimObject",
+"class": "FlatFocus",
+"language": "GDScript",
+"path": "res://infrastructure/simulation_classes/focus_classes/FlatFocus.gd"
+}, {
+"base": "SimObject",
 "class": "FlipFocus",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/focus_classes/FlipFocus.gd"
@@ -96,6 +101,7 @@ _global_script_class_icons={
 "CubicFocus": "",
 "DebugInfo": "",
 "Door": "",
+"FlatFocus": "",
 "FlipFocus": "",
 "GitAPI": "",
 "Key": "",
