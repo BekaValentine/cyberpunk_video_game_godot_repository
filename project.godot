@@ -64,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Ladder.gd"
 }, {
-"base": "Reference",
+"base": "SimObject",
 "class": "Lock",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Lock.gd"

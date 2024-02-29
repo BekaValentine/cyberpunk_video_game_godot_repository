@@ -16,7 +16,9 @@ var interactable = false
 var meshes = []
 var focal_object_resource = null
 var focal_object = null
-var root_object = null
+var in_focus_object_resource = null
+var in_focus_object = null
+var root_object = self
 
 func _ready():
 	add_visual_instances(self)
@@ -31,6 +33,9 @@ func add_visual_instances(node):
 func move_meshes_to_layers(layers):
 	for m in meshes:
 		m.layers = layers
+
+func get_root_object():
+	return self.root_object
 
 func set_root_object(obj):
 	self.root_object = obj
@@ -51,6 +56,9 @@ func _hold():
 	if not self.holdable: return
 
 	self.move_meshes_to_layers(2)
+
+	if self.in_focus_object:
+		self.in_focus_object.get_parent().remove(self.in_focus_object)
 	
 	self.hold()
 

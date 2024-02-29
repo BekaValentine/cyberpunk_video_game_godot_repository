@@ -3,6 +3,8 @@ extends SimObject
 var normal_color = null
 
 func _ready():
+	._ready()
+	self.hold_size = 0
 	self.interactable = true
 	self.focal_object_resource = preload("res://infrastructure/test_objects/inspectable_4.tscn")
 

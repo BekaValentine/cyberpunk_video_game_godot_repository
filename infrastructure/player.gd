@@ -85,7 +85,7 @@ func _unhandled_input(event):
 				throw_object()
 			
 			elif highlighted_object:
-				if highlighted_object is SimObject and highlighted_object.holdable:
+				if highlighted_object is SimObject and highlighted_object.get_root_object().holdable:
 					pickup_object()
 					
 
@@ -136,6 +136,12 @@ func _unhandled_input(event):
 		elif Input.is_action_pressed("focus_down"):
 			focus_stack[-1]._focus_down()
 
+		elif Input.is_action_pressed("primary_interaction"):
+			if highlighted_object:
+				debug_info.log("picking up", [highlighted_object, highlighted_object is SimObject, highlighted_object.holdable])
+				if highlighted_object is SimObject and highlighted_object.holdable:
+					pickup_object()
+
 func crouching_height_change(h):
 	.crouching_height_change(h)
 
@@ -145,7 +151,7 @@ func crouching_height_change(h):
 		set_held_object_position()
 
 func pickup_object():
-	hold_object(highlighted_object)
+	hold_object(highlighted_object.get_root_object())
 	self.set_highlighted_object(null)
 
 func hold_object(obj):	
