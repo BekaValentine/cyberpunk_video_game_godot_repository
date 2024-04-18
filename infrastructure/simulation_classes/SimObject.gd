@@ -18,7 +18,6 @@ var focal_object_resource = null
 var focal_object = null
 var in_focus_object_resource = null
 var in_focus_object = null
-var root_object = self
 
 func _ready():
 	add_visual_instances(self)
@@ -33,12 +32,6 @@ func add_visual_instances(node):
 func move_meshes_to_layers(layers):
 	for m in meshes:
 		m.layers = layers
-
-func get_root_object():
-	return self.root_object
-
-func set_root_object(obj):
-	self.root_object = obj
 
 func can_highlight():
 	return self.get_holdable() or interactable or focal_object_resource != null
@@ -91,7 +84,6 @@ func _focus():
 	debug_info.log("focused on an object", self)
 	self.focus()
 	focal_object = focal_object_resource.instance()
-	focal_object.set_root_object(self)
 	return focal_object
 
 func _unfocus():

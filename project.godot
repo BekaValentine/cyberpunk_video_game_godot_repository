@@ -24,11 +24,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Character.gd"
 }, {
-"base": "SimObject",
-"class": "CubicFocus",
-"language": "GDScript",
-"path": "res://infrastructure/simulation_classes/focus_classes/CubicFocus.gd"
-}, {
 "base": "CanvasLayer",
 "class": "DebugInfo",
 "language": "GDScript",
@@ -43,11 +38,6 @@ _global_script_classes=[ {
 "class": "FlatFocus",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/focus_classes/FlatFocus.gd"
-}, {
-"base": "SimObject",
-"class": "FlipFocus",
-"language": "GDScript",
-"path": "res://infrastructure/simulation_classes/focus_classes/FlipFocus.gd"
 }, {
 "base": "",
 "class": "GitAPI",
@@ -98,11 +88,9 @@ _global_script_class_icons={
 "BoltCutters": "",
 "BookFocus": "",
 "Character": "",
-"CubicFocus": "",
 "DebugInfo": "",
 "Door": "",
 "FlatFocus": "",
-"FlipFocus": "",
 "GitAPI": "",
 "Key": "",
 "Ladder": "",
