@@ -4,7 +4,7 @@ var normal_color = null
 
 func _ready():
 	self.interactable = true
-	self.focal_object_resource = preload("res://infrastructure/test_objects/inspectable_page_2.tscn")
+	self.focal_object_resource = preload("res://infrastructure/test_objects/inspectable_2.tscn")
 
 func start_highlight():
 	normal_color = $CSGBox.material.albedo_color
@@ -14,7 +14,7 @@ func end_highlight():
 	$CSGBox.material.albedo_color = normal_color
 
 func affected_by(agent, tool_object):
-	debug_info.log("inspectable 2 used", true)
+	debug_info.log("inspectable 1 used", true)
 
 func focus():
-	debug_info.log("inspectable 2 focused", true)
+	debug_info.log("inspectable 1 focused", true)
