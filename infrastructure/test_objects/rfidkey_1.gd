@@ -4,7 +4,7 @@ var normal_color = null
 
 func _init():
 	._init()
-	key_code = "67890"
+	key_code = "12345"
 
 func start_highlight():
 	normal_color = $CSGBox.material.albedo_color

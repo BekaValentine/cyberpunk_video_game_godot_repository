@@ -1,10 +1,11 @@
-extends Key
+extends PhysicalKey
 
 var normal_color = null
 
 func _init():
 	._init()
 	key_type = "Type1"
+	direct_bitting_code = [1,2,3]
 	attack_strength = 1
 
 func start_highlight():

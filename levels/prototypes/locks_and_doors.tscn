@@ -99,6 +99,7 @@ script = ExtResource( 10 )
 
 [node name="door_1" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.06109 )
+lock_path = NodePath("../lock1")
 
 [node name="window1" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7771, 1.31231, 2.07149 )
