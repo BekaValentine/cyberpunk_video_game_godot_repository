@@ -1,10 +1,15 @@
-extends Lock
+extends PhysicalLock
 
 var normal_color = null
 
 func _init():
 	._init()
 	lock_types = ["Type1", "Type2"]
+	valid_pin_heights = [
+		[1],
+		[2],
+		[3,4]
+	]
 	max_unlock_time = 5
 
 func start_highlight():

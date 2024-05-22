@@ -1,7 +1,6 @@
 class_name Lock
 extends SimObject
 
-var lock_types = []
 var max_unlock_time = 0.0
 var timer = null
 var locked = true
@@ -16,7 +15,7 @@ func _ready():
 	timer.connect("timeout", self, "unlock")
 	
 func should_unlock(key):
-	return key.key_type and key.key_type in self.lock_types
+	return false
 
 func unlock():
 	locked = false
