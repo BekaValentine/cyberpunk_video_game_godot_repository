@@ -21,7 +21,10 @@ var should_move_left = false
 var should_move_right = false
 var stand_height = null
 var crouch_height = 0.75
-var focusing_on_object = false
+
+enum { UIMODE_FPCONTROL, UIMODE_FOCUSING }
+var ui_mode = UIMODE_FPCONTROL
+
 var focus_stack = []
 var focal_objects = null
 var focus_camera = null
@@ -70,7 +73,7 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if !focusing_on_object:
+	if ui_mode == UIMODE_FPCONTROL:
 		if event is InputEventMouseMotion:
 			self.rotate_y(-event.relative.x * mouse_sensitivity)
 			pivot.rotate_x(-event.relative.y * mouse_sensitivity)
@@ -109,7 +112,7 @@ func _unhandled_input(event):
 		elif Input.is_action_pressed("backpack"):
 			self.toggle_backpack()
 	
-	else:
+	elif ui_mode == UIMODE_FOCUSING:
 		if event is InputEventMouseMotion:
 			focus_interact_objects()
 
@@ -191,7 +194,7 @@ func use_object():
 		highlighted_object._affected_by(self)
 
 func focus_object(focused_object):
-	focusing_on_object = true
+	ui_mode = UIMODE_FOCUSING
 	self.set_highlighted_object(null)
 	reticle.visible = false
 	Input.set_custom_mouse_cursor(reticle_cursor)
@@ -215,13 +218,15 @@ func unfocus_object():
 	if len(focus_stack) > 0:
 		focal_objects.remove_child(focus_stack[-1])
 		focus_stack.pop_back()
-		focusing_on_object = len(focus_stack) > 0
-		reticle.visible = !focusing_on_object
-		if !focusing_on_object:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		focus_background_hider.visible = focusing_on_object
-		focus_camera.global_transform.origin.z -= focal_object_depth_offset
-		focus_camera.global_transform.origin.x -= focal_object_horizontal_offset
+
+	var focusing_on_object = len(focus_stack) > 0
+	reticle.visible = !focusing_on_object
+	if !focusing_on_object:
+		ui_mode = UIMODE_FPCONTROL
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	focus_background_hider.visible = focusing_on_object
+	focus_camera.global_transform.origin.z -= focal_object_depth_offset
+	focus_camera.global_transform.origin.x -= focal_object_horizontal_offset
 
 func toggle_backpack():
 	if not backpack.visible:
@@ -273,7 +278,7 @@ func focus_interact_objects():
 ################ Physics-based UI ################
 
 func physics_activities():
-	if !focusing_on_object:
+	if ui_mode == UIMODE_FPCONTROL:
 		calculate_behavior_from_user_inputs()
 		.physics_activities()
 		interact_objects()
