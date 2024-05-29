@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://infrastructure/grid.png" type="Texture" id=1]
+
+[node name="CenterContainer" type="CenterContainer"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 500.0
+margin_bottom = 500.0
+texture = ExtResource( 1 )
