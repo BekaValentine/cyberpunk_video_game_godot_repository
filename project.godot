@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/focus_classes/BookFocus.gd"
 }, {
-"base": "Reference",
+"base": "RigidBody",
 "class": "Character",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Character.gd"
@@ -100,6 +100,11 @@ _global_script_classes=[ {
 "path": "res://infrastructure/simulation_classes/SimObject.gd"
 }, {
 "base": "SimObject",
+"class": "TemperatureSensor",
+"language": "GDScript",
+"path": "res://infrastructure/simulation_classes/TemperatureSensor.gd"
+}, {
+"base": "SimObject",
 "class": "Window",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Window.gd"
@@ -123,6 +128,7 @@ _global_script_class_icons={
 "RFIDKey": "",
 "RFIDReader": "",
 "SimObject": "",
+"TemperatureSensor": "",
 "Window": ""
 }
 

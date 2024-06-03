@@ -9,4 +9,4 @@ func key_authorized(key_code):
 
 func handle_code(code):
 	if self.key_authorized(code):
-		self.locked = false
+		self.unlock()

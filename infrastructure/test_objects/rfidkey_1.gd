@@ -1,6 +1,7 @@
 extends RFIDKey
 
 var normal_color = null
+var temperature = 30
 
 func _init():
 	._init()
