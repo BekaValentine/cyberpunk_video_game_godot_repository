@@ -22,8 +22,8 @@ var should_move_right = false
 var stand_height = null
 var crouch_height = 0.75
 
-enum { UIMODE_FPCONTROL, UIMODE_FOCUSING }
-var ui_mode = UIMODE_FPCONTROL
+enum { UIMODE_FPCONTROL, UIMODE_FOCUSING, UIMODE_TOOL_OVERLAY }
+var ui_modes = [UIMODE_FPCONTROL];
 
 var focus_stack = []
 var focal_objects = null
@@ -31,6 +31,7 @@ var focus_camera = null
 var focus_background_hider = null
 var focal_object_depth_offset = 0.5
 var focal_object_horizontal_offset = 0.2
+var overlay_layer = null
 
 var reticle_cursor = load("res://infrastructure/ui/reticle.png")
 
@@ -59,6 +60,7 @@ func _ready():
 	focal_objects = $focus_layer/focal_objects
 	focus_camera = $focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera
 	focus_background_hider = $focus_layer/focus_object_viewport_container/focus_object_viewport/focus_camera/background_hider
+	overlay_layer = $overlay_layer
 
 	stand_height = pivot.transform.origin.y
 	
@@ -73,17 +75,17 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if ui_mode == UIMODE_FPCONTROL:
+	if ui_modes[-1] == UIMODE_FPCONTROL:
 		if event is InputEventMouseMotion:
 			self.rotate_y(-event.relative.x * mouse_sensitivity)
 			pivot.rotate_x(-event.relative.y * mouse_sensitivity)
 			pivot.rotation.x = clamp(pivot.rotation.x, -1.2, 1.2)
 			hold_camera.global_transform = camera.global_transform
 		
-		elif Input.is_action_pressed("crouch"):
+		elif Input.is_action_just_pressed("crouch"):
 			toggle_crouch()
 		
-		elif Input.is_action_pressed("primary_interaction"):
+		elif Input.is_action_just_pressed("primary_interaction"):
 			if held_object:
 				throw_object()
 			
@@ -109,10 +111,10 @@ func _unhandled_input(event):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
 				focus_object(highlighted_object)
 		
-		elif Input.is_action_pressed("backpack"):
+		elif Input.is_action_just_pressed("backpack"):
 			self.toggle_backpack()
 	
-	elif ui_mode == UIMODE_FOCUSING:
+	elif ui_modes[-1] == UIMODE_FOCUSING:
 		if event is InputEventMouseMotion:
 			focus_interact_objects()
 
@@ -127,17 +129,22 @@ func _unhandled_input(event):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
 				self.focus_object(highlighted_object)
 
-		elif Input.is_action_pressed("focus_left"):
+		elif Input.is_action_just_pressed("focus_left"):
 			focus_stack[-1]._focus_left()
 		
-		elif Input.is_action_pressed("focus_right"):
+		elif Input.is_action_just_pressed("focus_right"):
 			focus_stack[-1]._focus_right()
 
-		elif Input.is_action_pressed("focus_up"):
+		elif Input.is_action_just_pressed("focus_up"):
 			focus_stack[-1]._focus_up()
 
-		elif Input.is_action_pressed("focus_down"):
+		elif Input.is_action_just_pressed("focus_down"):
 			focus_stack[-1]._focus_down()
+
+	elif ui_modes[-1] == UIMODE_TOOL_OVERLAY:
+		
+		if Input.is_action_just_pressed("exit_overlay"):
+			self.exit_overlay()
 
 func crouching_height_change(h):
 	.crouching_height_change(h)
@@ -189,12 +196,17 @@ func take_object():
 	
 func use_object():
 	if held_object:
-		held_object._use_on(self, highlighted_object)
+		var overlay = held_object._use_on(self, highlighted_object)
+		if overlay != null:
+			debug_info.log("overlay", true)
+			overlay.set_active(true)
+			self.ui_modes.push_back(UIMODE_TOOL_OVERLAY)
+			self.overlay_layer.add_child(overlay)
 	else:
 		highlighted_object._affected_by(self)
 
 func focus_object(focused_object):
-	ui_mode = UIMODE_FOCUSING
+	ui_modes.push_back(UIMODE_FOCUSING)
 	self.set_highlighted_object(null)
 	reticle.visible = false
 	Input.set_custom_mouse_cursor(reticle_cursor)
@@ -222,11 +234,17 @@ func unfocus_object():
 	var focusing_on_object = len(focus_stack) > 0
 	reticle.visible = !focusing_on_object
 	if !focusing_on_object:
-		ui_mode = UIMODE_FPCONTROL
+		ui_modes.pop_back()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	focus_background_hider.visible = focusing_on_object
 	focus_camera.global_transform.origin.z -= focal_object_depth_offset
 	focus_camera.global_transform.origin.x -= focal_object_horizontal_offset
+
+func exit_overlay():
+	self.ui_modes.pop_back()
+	for n in self.overlay_layer.get_children():
+		self.overlay_layer.remove_child(n)
+		n.set_active(false)
 
 func toggle_backpack():
 	if not backpack.visible:
@@ -278,7 +296,7 @@ func focus_interact_objects():
 ################ Physics-based UI ################
 
 func physics_activities():
-	if ui_mode == UIMODE_FPCONTROL:
+	if ui_modes[-1] == UIMODE_FPCONTROL:
 		calculate_behavior_from_user_inputs()
 		.physics_activities()
 		interact_objects()

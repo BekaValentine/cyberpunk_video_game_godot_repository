@@ -21,7 +21,7 @@ func _ready():
 	add_visual_instances(self)
 
 func add_visual_instances(node):
-	debug_info.log("trying add mesh for " + str(node), true)
+	# debug_info.log("trying add mesh for " + str(node), true)
 	if node is VisualInstance:
 		meshes.push_back(node)
 	for c in node.get_children():
@@ -68,7 +68,7 @@ func _unstash():
 	self.unstash()
 
 func _use_on(agent, patient):
-	self.use_on(agent, patient)
+	return self.use_on(agent, patient)
 
 func _affected_by(agent, tool_object = null):
 	if not self.interactable: return
@@ -120,6 +120,7 @@ func unstash():
 func use_on(agent, patient):
 	# default behavior is to simply pass control to the patient
 	patient.affected_by(agent, self)
+	return null
 
 func affected_by(agent, tool_object):
 	pass
