@@ -1,4 +1,4 @@
-extends RFIDController
+extends ElectronicLockController
 
 func _init():
 	._init()

@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Door.gd"
 }, {
+"base": "Lock",
+"class": "ElectronicLockController",
+"language": "GDScript",
+"path": "res://infrastructure/simulation_classes/ElectronicLockController.gd"
+}, {
 "base": "SimObject",
 "class": "FlatFocus",
 "language": "GDScript",
@@ -79,20 +84,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/PhysicalLock.gd"
 }, {
-"base": "Node",
-"class": "RFIDController",
-"language": "GDScript",
-"path": "res://infrastructure/simulation_classes/RFIDController.gd"
-}, {
 "base": "Key",
 "class": "RFIDKey",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/RFIDKey.gd"
 }, {
-"base": "Lock",
-"class": "RFIDLock",
+"base": "SimObject",
+"class": "RFIDReader",
 "language": "GDScript",
-"path": "res://infrastructure/simulation_classes/RFIDLock.gd"
+"path": "res://infrastructure/simulation_classes/RFIDReader.gd"
 }, {
 "base": "RigidBody",
 "class": "SimObject",
@@ -111,6 +111,7 @@ _global_script_class_icons={
 "CubicFocus": "",
 "DebugInfo": "",
 "Door": "",
+"ElectronicLockController": "",
 "FlatFocus": "",
 "FlipFocus": "",
 "GitAPI": "",
@@ -119,9 +120,8 @@ _global_script_class_icons={
 "Lock": "",
 "PhysicalKey": "",
 "PhysicalLock": "",
-"RFIDController": "",
 "RFIDKey": "",
-"RFIDLock": "",
+"RFIDReader": "",
 "SimObject": "",
 "Window": ""
 }
