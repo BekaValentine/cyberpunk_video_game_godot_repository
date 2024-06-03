@@ -71,7 +71,7 @@ transform = Transform( -0.057847, -0.0645291, 0.0498971, 0, 0.0611707, 0.0791085
 collision_layer = 6
 mode = 1
 script = ExtResource( 13 )
-rfid_controller_path = NodePath("../rfid_controller_1")
+controller_path = NodePath("../rfic_controller")
 
 [node name="key1" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.1, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 2.13322, 0.869336, 0.279 )
@@ -105,10 +105,13 @@ script = ExtResource( 14 )
 
 [node name="door_1" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.06109 )
-lock_path = NodePath("../lock1")
+lock_path = NodePath("../rfic_controller")
 
 [node name="window1" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7771, 1.31231, 2.07149 )
 
-[node name="rfid_controller_1" type="Node" parent="."]
+[node name="rfic_controller" parent="." instance=ExtResource( 3 )]
+transform = Transform( -0.0072385, 0.0206891, -0.0975683, -0.0645291, 0.07362, 0.0203983, 0.07605, 0.0644364, 0.00802149, -0.972816, 1.26533, 1.74201 )
+collision_layer = 6
+mode = 1
 script = ExtResource( 11 )

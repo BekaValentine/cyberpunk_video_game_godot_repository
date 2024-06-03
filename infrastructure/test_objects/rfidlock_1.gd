@@ -1,10 +1,9 @@
-extends RFIDLock
+extends RFIDReader
 
 var normal_color = null
 
 func _init():
 	._init()
-	max_unlock_time = 5
 
 func start_highlight():
 	normal_color = $CSGBox.material.albedo_color
