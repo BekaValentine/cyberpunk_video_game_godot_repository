@@ -82,10 +82,10 @@ func _unhandled_input(event):
 			pivot.rotation.x = clamp(pivot.rotation.x, -1.2, 1.2)
 			hold_camera.global_transform = camera.global_transform
 		
-		elif Input.is_action_pressed("crouch"):
+		elif Input.is_action_just_pressed("crouch"):
 			toggle_crouch()
 		
-		elif Input.is_action_pressed("primary_interaction"):
+		elif Input.is_action_just_pressed("primary_interaction"):
 			if held_object:
 				throw_object()
 			
@@ -111,7 +111,7 @@ func _unhandled_input(event):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
 				focus_object(highlighted_object)
 		
-		elif Input.is_action_pressed("backpack"):
+		elif Input.is_action_just_pressed("backpack"):
 			self.toggle_backpack()
 	
 	elif ui_modes[-1] == UIMODE_FOCUSING:
@@ -129,21 +129,21 @@ func _unhandled_input(event):
 			if highlighted_object and highlighted_object is SimObject and highlighted_object.focal_object_resource:
 				self.focus_object(highlighted_object)
 
-		elif Input.is_action_pressed("focus_left"):
+		elif Input.is_action_just_pressed("focus_left"):
 			focus_stack[-1]._focus_left()
 		
-		elif Input.is_action_pressed("focus_right"):
+		elif Input.is_action_just_pressed("focus_right"):
 			focus_stack[-1]._focus_right()
 
-		elif Input.is_action_pressed("focus_up"):
+		elif Input.is_action_just_pressed("focus_up"):
 			focus_stack[-1]._focus_up()
 
-		elif Input.is_action_pressed("focus_down"):
+		elif Input.is_action_just_pressed("focus_down"):
 			focus_stack[-1]._focus_down()
 
 	elif ui_modes[-1] == UIMODE_TOOL_OVERLAY:
 		
-		if Input.is_action_pressed("exit_overlay"):
+		if Input.is_action_just_pressed("exit_overlay"):
 			self.exit_overlay()
 
 func crouching_height_change(h):
@@ -199,6 +199,7 @@ func use_object():
 		var overlay = held_object._use_on(self, highlighted_object)
 		if overlay != null:
 			debug_info.log("overlay", true)
+			overlay.set_active(true)
 			self.ui_modes.push_back(UIMODE_TOOL_OVERLAY)
 			self.overlay_layer.add_child(overlay)
 	else:
@@ -243,6 +244,7 @@ func exit_overlay():
 	self.ui_modes.pop_back()
 	for n in self.overlay_layer.get_children():
 		self.overlay_layer.remove_child(n)
+		n.set_active(false)
 
 func toggle_backpack():
 	if not backpack.visible:

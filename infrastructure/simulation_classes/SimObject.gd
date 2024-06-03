@@ -21,7 +21,7 @@ func _ready():
 	add_visual_instances(self)
 
 func add_visual_instances(node):
-	debug_info.log("trying add mesh for " + str(node), true)
+	# debug_info.log("trying add mesh for " + str(node), true)
 	if node is VisualInstance:
 		meshes.push_back(node)
 	for c in node.get_children():

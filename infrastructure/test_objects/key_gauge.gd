@@ -3,7 +3,6 @@ extends SimObject
 var normal_color = null
 var overlay_resource = null
 var overlay = null
-
 func _init():
 	hold_size = 1
 	self.overlay_resource = preload("res://infrastructure/test_objects/key_gauge_overlay.tscn")
