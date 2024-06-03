@@ -45,6 +45,8 @@ var should_climb_up = false
 var should_climb_down = false
 var tick = 0
 
+var temperature = 98.6
+
 func _ready():
 	body_collider = $body_collider
 	crouch_tween = $crouch_tween

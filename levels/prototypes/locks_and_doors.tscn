@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://infrastructure/test_objects/solid_surface.tscn" type="PackedScene" id=1]
 [ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=2]
@@ -14,6 +14,9 @@
 [ext_resource path="res://infrastructure/test_objects/rfidkey_1.gd" type="Script" id=12]
 [ext_resource path="res://infrastructure/test_objects/rfidlock_1.gd" type="Script" id=13]
 [ext_resource path="res://infrastructure/test_objects/key_gauge.gd" type="Script" id=14]
+[ext_resource path="res://infrastructure/test_objects/rex_sensor.gd" type="Script" id=15]
+
+[sub_resource type="BoxShape" id=1]
 
 [node name="Spatial" type="Spatial"]
 
@@ -73,6 +76,21 @@ mode = 1
 script = ExtResource( 13 )
 controller_path = NodePath("../rfic_controller")
 
+[node name="rex_sensor" parent="." instance=ExtResource( 3 )]
+transform = Transform( -0.057847, -0.0645291, 0.0498971, 0, 0.0611707, 0.0791085, -0.0815704, 0.0457619, -0.0353854, 0.505167, 2.32084, 2.17583 )
+collision_layer = 6
+mode = 1
+script = ExtResource( 15 )
+controller_path = NodePath("../rfic_controller")
+
+[node name="sensor_region" type="Area" parent="."]
+transform = Transform( 1, 1.86265e-07, 5.58794e-08, -1.86265e-07, 1, 1.11759e-07, -5.58794e-08, -1.11759e-07, 1, 0.379335, 1.14711, 3.19381 )
+collision_layer = 5
+
+[node name="CollisionShape" type="CollisionShape" parent="sensor_region"]
+transform = Transform( 1, -7.96585e-15, 0, 2.04559e-14, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 1 )
+
 [node name="key1" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.1, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 2.13322, 0.869336, 0.279 )
 collision_layer = 6
@@ -115,3 +133,5 @@ transform = Transform( -0.0072385, 0.0206891, -0.0975683, -0.0645291, 0.07362, 0
 collision_layer = 6
 mode = 1
 script = ExtResource( 11 )
+
+[connection signal="body_entered" from="sensor_region" to="rex_sensor" method="object_entered_view"]
