@@ -104,7 +104,7 @@ func _unhandled_input(event):
 					take_object()
 		
 		elif Input.is_action_just_pressed("use"):
-			if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
+			if highlighted_object and highlighted_object is SimObject and highlighted_object.can_use_or_affect():
 				use_object()
 		
 		elif Input.is_action_just_pressed("focus"):
@@ -119,7 +119,7 @@ func _unhandled_input(event):
 			focus_interact_objects()
 
 		elif Input.is_action_just_pressed("use"):
-			if highlighted_object and highlighted_object is SimObject and highlighted_object.interactable:
+			if highlighted_object and highlighted_object is SimObject and highlighted_object.can_use_or_affect():
 				use_object()
 
 		elif Input.is_action_just_pressed("unfocus"):
@@ -351,11 +351,12 @@ func interact_objects():
 	
 	var raycast_hit = pickup_detect_ray.get_collider()
 
-	debug_info.log("player.interact_objects", raycast_hit.name if raycast_hit else "no interactable object")
+	debug_info.log("player.interact_objects", raycast_hit.name if raycast_hit else "no usable object")
 	
 	if raycast_hit and \
 		raycast_hit is SimObject and \
-		(raycast_hit.interactable or raycast_hit.hold_size):
+		raycast_hit.can_highlight():
+		
 		self.set_highlighted_object(raycast_hit)
 	else:
 		self.set_highlighted_object(null)

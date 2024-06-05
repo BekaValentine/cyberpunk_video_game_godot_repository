@@ -8,7 +8,7 @@ var top_attachment_point = null
 var top_support = null
 
 func _init():
-	interactable = true
+	useable_or_affected_by_tools = true
 
 func _ready():
 	bottom_reference = $BottomReference

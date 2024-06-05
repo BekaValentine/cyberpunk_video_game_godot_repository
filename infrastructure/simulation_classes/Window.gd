@@ -18,7 +18,7 @@ func log_status(extra = ""):
 	debug_info.log("window", ("locked" if locked else "unlocked") + " " + ("open" if open else "closed") + extra)
 
 func _init():
-	interactable = true
+	useable_or_affected_by_tools = true
 
 func affected_by(agent, tool_object):
 	if locked: return

@@ -6,7 +6,7 @@ var controller
 
 func _init():
 	._init()
-	self.interactable = true
+	self.useable_or_affected_by_tools = true
 
 func _ready():
 	if controller_path != null:

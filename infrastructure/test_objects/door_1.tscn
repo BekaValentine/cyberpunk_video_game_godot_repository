@@ -26,5 +26,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.457, 1.066, 0 )
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
-
-[connection signal="tween_all_completed" from="Tween" to="." method="toggle_done"]
