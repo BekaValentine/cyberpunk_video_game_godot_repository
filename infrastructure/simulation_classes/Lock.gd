@@ -7,7 +7,7 @@ var locked = true
 var cut_durability = 5
 
 func _init():
-	interactable = true
+	useable_or_affected_by_tools = true
 
 func _ready():
 	timer = Timer.new()

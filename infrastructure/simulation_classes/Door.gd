@@ -17,7 +17,7 @@ func _ready():
 			lock = candidate_lock
 
 func _init():
-	interactable = true
+	useable_or_affected_by_tools = true
 
 func affected_by(agent, tool_object):
 	if lock and lock.locked: return

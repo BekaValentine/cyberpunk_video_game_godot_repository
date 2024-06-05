@@ -8,3 +8,10 @@ func start_highlight():
 
 func end_highlight():
 	$CSGBox.material.albedo_color = normal_color
+
+func affected_by(agent, tool_object):
+	if tool_object is Crowbar:
+		self.destroy()
+
+func destroy():
+	self.get_parent().remove_child(self)

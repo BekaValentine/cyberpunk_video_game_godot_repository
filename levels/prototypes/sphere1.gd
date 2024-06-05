@@ -3,7 +3,7 @@ extends SimObject
 var normal_color = null
 
 func _ready():
-	interactable = true
+	useable_or_affected_by_tools = true
 
 func start_highlight():
 	normal_color = $CSGSphere.material.albedo_color

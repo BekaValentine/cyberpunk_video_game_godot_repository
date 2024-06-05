@@ -10,12 +10,14 @@ var holdable setget, get_holdable
 func get_holdable():
 	return hold_size != null
 
-# interactable is whether the object can be interacted with or not
-var interactable = false
+# useable_or_affected_by_tools is whether or not the object can be used or affected by tools
+var useable_or_affected_by_tools = false
 
 var meshes = []
 var focal_object_resource = null
 var focal_object = null
+
+var destroyed = false
 
 func _ready():
 	add_visual_instances(self)
@@ -32,8 +34,10 @@ func move_meshes_to_layers(layers):
 		m.layers = layers
 
 func can_highlight():
-	return self.get_holdable() or interactable or focal_object_resource != null
+	return self.get_holdable() or self.can_use_or_affect() or focal_object_resource != null
 
+func can_use_or_affect():
+	return self.useable_or_affected_by_tools and not self.destroyed
 
 #### Internal Functions MUST NOT OVERRIDE ####
 
@@ -71,7 +75,7 @@ func _use_on(agent, patient):
 	return self.use_on(agent, patient)
 
 func _affected_by(agent, tool_object = null):
-	if not self.interactable: return
+	if not self.can_use_or_affect(): return
 	
 	self.affected_by(agent, tool_object)
 
@@ -141,4 +145,7 @@ func focus_up():
 	pass
 
 func focus_down():
+	pass
+
+func destroy():
 	pass
