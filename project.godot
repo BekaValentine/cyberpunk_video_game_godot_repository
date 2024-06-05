@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/Door.gd"
 }, {
+"base": "SimObject",
+"class": "DoorAssembly",
+"language": "GDScript",
+"path": "res://infrastructure/simulation_classes/DoorAssembly.gd"
+}, {
 "base": "Lock",
 "class": "ElectronicLockController",
 "language": "GDScript",
@@ -63,6 +68,11 @@ _global_script_classes=[ {
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
+"base": "SimObject",
+"class": "Hinge",
+"language": "GDScript",
+"path": "res://infrastructure/simulation_classes/Hinge.gd"
 }, {
 "base": "SimObject",
 "class": "Key",
@@ -99,7 +109,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/RFIDReader.gd"
 }, {
-"base": "RigidBody",
+"base": "Spatial",
 "class": "SimObject",
 "language": "GDScript",
 "path": "res://infrastructure/simulation_classes/SimObject.gd"
@@ -122,10 +132,12 @@ _global_script_class_icons={
 "CubicFocus": "",
 "DebugInfo": "",
 "Door": "",
+"DoorAssembly": "",
 "ElectronicLockController": "",
 "FlatFocus": "",
 "FlipFocus": "",
 "GitAPI": "",
+"Hinge": "",
 "Key": "",
 "Ladder": "",
 "Lock": "",

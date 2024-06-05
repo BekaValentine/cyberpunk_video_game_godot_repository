@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://infrastructure/test_objects/door_1.gd" type="Script" id=1]
+[ext_resource path="res://infrastructure/simulation_classes/DoorAssembly.gd" type="Script" id=1]
+[ext_resource path="res://infrastructure/test_objects/door_1.gd" type="Script" id=2]
+[ext_resource path="res://infrastructure/test_objects/test_cube.tscn" type="PackedScene" id=3]
+[ext_resource path="res://infrastructure/test_objects/hinge_1.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.807843, 0.152941, 0.152941, 1 )
@@ -8,21 +11,33 @@ albedo_color = Color( 0.807843, 0.152941, 0.152941, 1 )
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.457, 1.066, 0.022 )
 
-[node name="Door" type="RigidBody"]
+[node name="DoorAssembly" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="HingePivot" type="Spatial" parent="."]
+
+[node name="Door" type="RigidBody" parent="HingePivot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.457, 1.066, 0 )
 collision_layer = 6
 collision_mask = 5
 mode = 1
-script = ExtResource( 1 )
+script = ExtResource( 2 )
+use_delegate_path = NodePath("../..")
 
-[node name="CSGBox" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.457, 1.066, 0 )
+[node name="CSGBox" type="CSGBox" parent="HingePivot/Door"]
 width = 0.914
 height = 2.133
 depth = 0.044
 material = SubResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.457, 1.066, 0 )
+[node name="CollisionShape" type="CollisionShape" parent="HingePivot/Door"]
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="hinge" parent="." instance=ExtResource( 3 )]
+transform = Transform( -0.0072385, 0.0206891, -0.0975683, -0.0645291, 0.07362, 0.0203983, 0.07605, 0.0644364, 0.00802149, -0.159977, 1.98691, 0.00167769 )
+collision_layer = 6
+mode = 1
+script = ExtResource( 4 )
+door_assembly_path = NodePath("..")

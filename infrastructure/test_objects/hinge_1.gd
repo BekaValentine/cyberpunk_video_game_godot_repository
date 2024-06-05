@@ -1,4 +1,4 @@
-extends Door
+extends Hinge
 
 var normal_color = null
 

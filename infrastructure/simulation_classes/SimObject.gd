@@ -1,4 +1,4 @@
-extends RigidBody
+extends Spatial
 
 class_name SimObject
 
@@ -12,6 +12,8 @@ func get_holdable():
 
 # useable_or_affected_by_tools is whether or not the object can be used or affected by tools
 var useable_or_affected_by_tools = false
+export(NodePath) var use_delegate_path = null
+var use_delegate = null
 
 var meshes = []
 var focal_object_resource = null
@@ -20,6 +22,10 @@ var focal_object = null
 var destroyed = false
 
 func _ready():
+	if use_delegate_path:
+		self.use_delegate = get_node(use_delegate_path)
+	else:
+		self.use_delegate = self
 	add_visual_instances(self)
 
 func add_visual_instances(node):
@@ -75,12 +81,13 @@ func _use_on(agent, patient):
 	return self.use_on(agent, patient)
 
 func _affected_by(agent, tool_object = null):
+	debug_info.log("being used", [self, self.can_use_or_affect(), randf()])
 	if not self.can_use_or_affect(): return
 	
+	debug_info.log("being used 2", [self, self.can_use_or_affect(), randf()])
 	self.affected_by(agent, tool_object)
 
 func _focus():
-	debug_info.log("focused on an object", self)
 	self.focus()
 	focal_object = focal_object_resource.instance()
 	return focal_object
@@ -123,7 +130,8 @@ func unstash():
 
 func use_on(agent, patient):
 	# default behavior is to simply pass control to the patient
-	patient.affected_by(agent, self)
+	debug_info.log("using object", [self, patient, patient.use_delegate, randf()])
+	patient.use_delegate._affected_by(agent, self)
 	return null
 
 func affected_by(agent, tool_object):
