@@ -29,3 +29,6 @@ func goto_ladders_prototype():
 
 func goto_inspection_prototype():
 	goto_scene("res://levels/prototypes/inspection.tscn")
+
+func goto_transmitters_prototype():
+	goto_scene("res://levels/prototypes/transmitters.tscn")
