@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://infrastructure/menus/ladders_button.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://infrastructure/menus/interactions.gd" type="Script" id=5]
 [ext_resource path="res://infrastructure/menus/locks_and_doors.gd" type="Script" id=6]
 [ext_resource path="res://infrastructure/menus/inspection.gd" type="Script" id=7]
+[ext_resource path="res://infrastructure/menus/transmitters.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 0.564706, 0, 1 )
@@ -116,12 +117,30 @@ enabled_focus_mode = 0
 text = "Inspection"
 script = ExtResource( 7 )
 
+[node name="transmitters" type="Button" parent="."]
+anchor_right = 0.059
+margin_left = 785.0
+margin_top = 590.0
+margin_right = 1135.0
+margin_bottom = 650.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+enabled_focus_mode = 0
+text = "Transmitters"
+script = ExtResource( 8 )
+
 [node name="back" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 604.0
+margin_top = 916.0
 margin_right = 1135.0
-margin_bottom = 664.0
+margin_bottom = 976.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -138,4 +157,5 @@ script = ExtResource( 4 )
 [connection signal="pressed" from="locks_and_doors" to="locks_and_doors" method="pressed"]
 [connection signal="pressed" from="ladders" to="ladders" method="pressed"]
 [connection signal="pressed" from="inspection" to="inspection" method="pressed"]
+[connection signal="pressed" from="transmitters" to="transmitters" method="pressed"]
 [connection signal="pressed" from="back" to="back" method="pressed"]
