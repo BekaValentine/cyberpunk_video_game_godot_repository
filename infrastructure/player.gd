@@ -196,15 +196,14 @@ func take_object():
 	
 func use_object():
 	if held_object:
-		var overlay = held_object.use_delegate._use_on(self, highlighted_object)
+		var overlay = held_object._use_on(self, highlighted_object)
 		if overlay != null:
 			debug_info.log("overlay", true)
 			overlay.set_active(true)
 			self.ui_modes.push_back(UIMODE_TOOL_OVERLAY)
 			self.overlay_layer.add_child(overlay)
 	else:
-		debug_info.log("used object", [highlighted_object, highlighted_object.use_delegate])
-		highlighted_object.use_delegate._affected_by(self)
+		highlighted_object._affected_by(self)
 
 func focus_object(focused_object):
 	ui_modes.push_back(UIMODE_FOCUSING)

@@ -22,7 +22,6 @@ collision_layer = 6
 collision_mask = 5
 mode = 1
 script = ExtResource( 2 )
-use_delegate_path = NodePath("../..")
 
 [node name="CSGBox" type="CSGBox" parent="HingePivot/Door"]
 width = 0.914

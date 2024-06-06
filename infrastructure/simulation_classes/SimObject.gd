@@ -12,8 +12,6 @@ func get_holdable():
 
 # useable_or_affected_by_tools is whether or not the object can be used or affected by tools
 var useable_or_affected_by_tools = false
-export(NodePath) var use_delegate_path = null
-var use_delegate = null
 
 var meshes = []
 var focal_object_resource = null
@@ -22,10 +20,6 @@ var focal_object = null
 var destroyed = false
 
 func _ready():
-	if use_delegate_path:
-		self.use_delegate = get_node(use_delegate_path)
-	else:
-		self.use_delegate = self
 	add_visual_instances(self)
 
 func add_visual_instances(node):
@@ -130,8 +124,7 @@ func unstash():
 
 func use_on(agent, patient):
 	# default behavior is to simply pass control to the patient
-	debug_info.log("using object", [self, patient, patient.use_delegate, randf()])
-	patient.use_delegate._affected_by(agent, self)
+	patient._affected_by(agent, self)
 	return null
 
 func affected_by(agent, tool_object):
