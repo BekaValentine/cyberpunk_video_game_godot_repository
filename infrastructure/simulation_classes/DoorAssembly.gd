@@ -16,6 +16,7 @@ var closed_angle = Vector3(0,0,0)
 func _ready():
 	hinge_pivot = $HingePivot
 	door = $HingePivot/Door
+	door.set_door_assembly(self)
 	tween = $Tween
 	tween.connect("tween_completed", self, "toggle_done")
 	debug_info.log("tween", tween)
