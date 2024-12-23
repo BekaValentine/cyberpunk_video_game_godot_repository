@@ -6,6 +6,7 @@ export var gravity = -9.8
 export var jump_speed = 5.0
 export var run_speed = 5.0
 export var walk_speed = 1.5
+export var air_speed = 0.1
 export var push_force = 1
 
 var can_do_physics_activities = true
@@ -24,6 +25,7 @@ var stair_fwd_distance = 0
 var stair_phase = 0
 var stair_phase_frac = 0.0
 var stair_speed = 2
+var pre_stair_velocity = null
 var velocity = Vector3.ZERO
 var move_target = Vector3.ZERO
 var move_direction = Vector3.ZERO
@@ -141,7 +143,7 @@ func use_stair():
 				self.apply_central_impulse(target_velocity - self.linear_velocity)
 
 			else:
-				self.linear_velocity = Vector3.ZERO
+				self.linear_velocity = self.pre_stair_velocity
 				self.stair_phase = 0
 				self.using_stair = false
 				self.gravity_scale = 1
@@ -204,27 +206,41 @@ func walk_run_jump():
 	debug_info.log("on floor", is_on_floor())
 	# determine the horizontal velocity to move
 	var speed
-	
-	if should_run:
-		# we're running
-		speed = run_speed
-	else:
-		# we're walking
-		speed = walk_speed
+	if is_on_floor():
+		# we're on the floor so we can move under our own power a lot
 
-	var vel = speed * move_direction
-	velocity.x = vel.x
-	velocity.z = vel.z
-	
-	# actual velocity we need to add is the target velocity minus current velocity
-	velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
+		if should_run:
+			# we're running
+			speed = run_speed
+		else:
+			# we're walking
+			speed = walk_speed
 
-	# determine the vertical velocity
-	if should_jump:
-		# we're jumping, so we just set the vertical speed
-		velocity.y = jump_speed
+		var vel = speed * move_direction
+		velocity.x = vel.x
+		velocity.z = vel.z
 		
-	self.apply_central_impulse(velocity)
+		# actual velocity we need to add is the target velocity minus current velocity
+		velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
+
+		# determine the vertical velocity
+		if should_jump:
+			# we're jumping, so we just set the vertical speed
+			velocity.y = jump_speed
+
+		self.apply_central_impulse(velocity)
+
+	elif Vector3(linear_velocity.x, 0, linear_velocity.z).length() < air_speed:
+		# we're in the air and don't already have some momentum so we can move
+		# tiny bit to get onto ledges
+
+		speed = air_speed
+
+		var vel = speed * move_direction
+		velocity.x = vel.x
+		velocity.z = vel.z
+
+		self.apply_central_impulse(velocity)
 
 	#prevents infinite falling
 	if translation.y < fall_limit:
@@ -259,15 +275,6 @@ func try_stairs():
 	#    and if it is, there must be a step there, otherwise there's a ramp and
 	#    we're not using stairs.
 	
-	# Here we just show some debugging info, not essential
-#	if move_direction.length() > 0.01:
-#		stair_rays.show()
-#	else:
-#		stair_rays.hide()
-#	var delta_rotation = self.get_rotation() - self_initial_rotation
-#	stair_rays.set_rotation(-self.get_rotation())
-#	stair_rays.rotate_y(sign(Vector3(1,0,0).cross(Vector3(move_direction.x, 0, move_direction.z)).y)*Vector3(1,0,0).angle_to(Vector3(move_direction.x, 0, move_direction.z)))
-	
 	# The result of motion tests
 	var res
 	
@@ -288,10 +295,8 @@ func try_stairs():
 	var up_distance
 	res = self.cast_motion(test_origin, up_dir, 10);
 	if not res:
-		debug_info.log("res", "1 / " + str(max_step_height))
 		up_distance = 1
 	else:
-		debug_info.log("res", 2)
 		up_distance = res[0]
 	if up_distance == 0:
 		return
@@ -299,7 +304,6 @@ func try_stairs():
 	
 	# And now forward
 	var fwd_dir = min_step_depth * move_direction.normalized()
-	debug_info.log("fwd_dir", fwd_dir)
 	var fwd_distance
 	res = self.cast_motion(test_origin + up_dest, fwd_dir, 0)
 	if not res:
@@ -331,11 +335,6 @@ func try_stairs():
 	if not res:
 		return
 
-	debug_info.log("up_dest", up_dest)
-	debug_info.log("fwd_dest", fwd_dest)
-	debug_info.log("down_dest", down_dest)
-	debug_info.log("stair travel", travel)
-
 	# We're not going up a ramp, so we must be at a step!
 	using_stair = true
 	stair_phase = 0
@@ -346,6 +345,7 @@ func try_stairs():
 	stair_fwd_distance = min_step_depth
 	stair_fwd_vec = min_step_depth * Vector3(travel.x, 0, travel.z).normalized()
 	move_target = self.global_transform.origin
+	self.pre_stair_velocity = self.linear_velocity
 	self.linear_velocity = Vector3.ZERO
 	self.gravity_scale = 0
 		

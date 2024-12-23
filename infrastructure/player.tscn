@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://infrastructure/player.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_48.tres" type="DynamicFont" id=3]
@@ -12,10 +12,6 @@ friction = 0.001
 margin = 0.001
 height = 1.77
 radius = 0.3
-
-[sub_resource type="Environment" id=3]
-background_mode = 1
-background_color = Color( 0.160784, 0.160784, 0.160784, 1 )
 
 [sub_resource type="Image" id=11]
 data = {
@@ -72,14 +68,6 @@ collision_mask = 2
 
 [node name="camera" type="Camera" parent="pivot"]
 cull_mask = 2147483649
-environment = SubResource( 3 )
-fov = 60.0
-far = 2000.0
-
-[node name="camera2" type="Camera" parent="pivot"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.916507, -1.52355, 0 )
-cull_mask = 2147483649
-environment = SubResource( 3 )
 fov = 60.0
 far = 2000.0
 

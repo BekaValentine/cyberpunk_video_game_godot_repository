@@ -152,7 +152,6 @@ visible = false
 light_color = Color( 0.937255, 0.972549, 1, 1 )
 
 [node name="reference_marks" type="Spatial" parent="."]
-visible = false
 
 [node name="streets and sidewalks" type="Spatial" parent="reference_marks"]
 visible = false
@@ -211,7 +210,6 @@ material = SubResource( 3 )
 
 [node name="tower_base (100x100)" type="CSGBox" parent="reference_marks"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
-visible = false
 width = 100.0
 height = 9.0
 depth = 100.0
@@ -219,7 +217,6 @@ material = SubResource( 4 )
 
 [node name="tower_base_aux" type="CSGBox" parent="reference_marks"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.6021, 6, 30.112 )
-visible = false
 width = 17.0
 height = 12.0
 depth = 30.0
@@ -227,7 +224,6 @@ material = SubResource( 4 )
 
 [node name="tower" type="CSGBox" parent="reference_marks"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 150, 0 )
-visible = false
 width = 60.0
 height = 300.0
 depth = 60.0
@@ -572,7 +568,7 @@ height = 1.0
 depth = 1.0
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.999992, 0, 0.00394442, 0, 1, 0, -0.00394442, 0, 0.999992, 0.0688477, -3.69549e-06, 71.5345 )
+transform = Transform( 0.999992, 0, 0.00394442, 0, 1, 0, -0.00394442, 0, 0.999992, -78.2395, -3.69549e-06, 85.3164 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
