@@ -34,6 +34,10 @@ collision_mask = 5
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00735188, 1, -4.46828 )
 mode = 1
 
+[node name="cube5" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37514, 4.08612, -4.46828 )
+mode = 1
+
 [node name="cube2" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.50536, 1, -1.754 )
 mode = 1
