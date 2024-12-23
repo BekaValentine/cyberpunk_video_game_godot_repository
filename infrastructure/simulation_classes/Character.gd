@@ -5,7 +5,7 @@ export var fall_limit = -100
 export var gravity = -9.8
 export var jump_speed = 5.0
 export var run_speed = 5.0
-export var walk_speed = 1.0
+export var walk_speed = 1.5
 export var air_speed = 0.1
 export var push_force = 1
 
@@ -32,7 +32,7 @@ var crouch_time = 0.25
 var crouching = false
 var crouch_state = 1
 var in_crouching_transition = false
-var max_step_height = 0.178
+var max_step_height = 0.2
 var min_step_depth = 0.1
 var climbing_ladder = false
 var climb_ladder_speed = 2
@@ -104,6 +104,9 @@ func _physics_process(delta):
 	physics_activities()
 
 func physics_activities():
+	debug_info.log("using stairs", self.using_stair)
+	debug_info.log("stair phase", self.stair_phase)
+	debug_info.log("position", self.global_transform.origin)
 	tick += 1
 	if can_do_physics_activities:
 		move()
@@ -121,7 +124,10 @@ func use_stair():
 			var target_velocity = stair_speed * current_delta.normalized()
 			var velocity_delta = target_velocity - self.linear_velocity
 			self.apply_central_impulse(velocity_delta)
-		stair_phase_frac = 1 - current_delta.y / stair_up_distance
+		stair_phase_frac = 1 - stair_up_distance / stair_up_distance
+		debug_info.log("stair phase frac", stair_phase_frac)
+		debug_info.log("current delta", current_delta.y)
+		debug_info.log("stair up distance", stair_up_distance)
 		stair_phase_frac = clamp(stair_phase_frac, 0, 1)
 		if stair_phase_frac >= 0.99:
 			stair_phase_frac = 0.0
@@ -241,7 +247,6 @@ func walk_run_jump():
 func move():
 
 	if using_stair:
-		
 		use_stair()
 		
 	elif climbing_ladder:
@@ -249,7 +254,6 @@ func move():
 		climb_ladder()
 	
 	else:
-		
 		walk_run_jump()
 
 func try_stairs():
@@ -298,8 +302,10 @@ func try_stairs():
 	var up_distance
 	res = self.cast_motion(test_origin, up_dir, 10);
 	if not res:
+		debug_info.log("res", "1 / " + str(max_step_height))
 		up_distance = 1
 	else:
+		debug_info.log("res", 2)
 		up_distance = res[0]
 	if up_distance == 0:
 		return
@@ -318,7 +324,7 @@ func try_stairs():
 	var fwd_dest = fwd_distance * fwd_dir
 	
 	# And now back down
-	var down_dir = -up_dest
+	var down_dir = max_step_height * Vector3.DOWN
 	var down_distance
 	res = self.cast_motion(test_origin + up_dest + fwd_dest, down_dir, 10)
 	if not res:
@@ -326,7 +332,6 @@ func try_stairs():
 	else:
 		down_distance = res[0]
 	var down_dest = down_distance * down_dir
-	
 	# If we haven't travelled anywhere up a step or ramp, then we can just
 	# quit early
 	var travel = up_dest + fwd_dest + down_dest
@@ -338,6 +343,8 @@ func try_stairs():
 	res = self.cast_motion(self.global_transform.origin + 0.01 * Vector3.UP, travel, 5, true)
 	if not res:
 		return
+
+	debug_info.log("stair travel", [up_dest, fwd_dest, down_dest, travel])
 
 	# We're not going up a ramp, so we must be at a step!
 	using_stair = true

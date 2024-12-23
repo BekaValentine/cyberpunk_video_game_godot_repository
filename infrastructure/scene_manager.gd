@@ -32,3 +32,6 @@ func goto_inspection_prototype():
 
 func goto_transmitters_prototype():
 	goto_scene("res://levels/prototypes/transmitters.tscn")
+
+func goto_vertical_slice():
+	goto_scene("res://levels/vertical_slice/vertical_slice.tscn")

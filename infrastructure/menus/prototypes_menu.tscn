@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://infrastructure/menus/ladders_button.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://infrastructure/menus/locks_and_doors.gd" type="Script" id=6]
 [ext_resource path="res://infrastructure/menus/inspection.gd" type="Script" id=7]
 [ext_resource path="res://infrastructure/menus/transmitters.gd" type="Script" id=8]
+[ext_resource path="res://infrastructure/menus/vertical_slice.gd" type="Script" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 0.564706, 0, 1 )
@@ -42,12 +43,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="vertical_slice" type="Button" parent="."]
+anchor_right = 0.059
+margin_left = 785.0
+margin_top = 192.0
+margin_right = 1135.0
+margin_bottom = 252.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 3 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+enabled_focus_mode = 0
+text = "Vertical Slice"
+script = ExtResource( 9 )
+
 [node name="interactions" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 200.0
+margin_top = 384.0
 margin_right = 1135.0
-margin_bottom = 260.0
+margin_bottom = 444.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -63,9 +82,9 @@ script = ExtResource( 5 )
 [node name="locks_and_doors" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 300.0
+margin_top = 452.0
 margin_right = 1135.0
-margin_bottom = 360.0
+margin_bottom = 512.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -81,9 +100,9 @@ script = ExtResource( 6 )
 [node name="ladders" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 400.0
+margin_top = 520.0
 margin_right = 1135.0
-margin_bottom = 460.0
+margin_bottom = 580.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -102,9 +121,9 @@ __meta__ = {
 [node name="inspection" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 500.0
+margin_top = 588.0
 margin_right = 1135.0
-margin_bottom = 560.0
+margin_bottom = 648.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -120,9 +139,9 @@ script = ExtResource( 7 )
 [node name="transmitters" type="Button" parent="."]
 anchor_right = 0.059
 margin_left = 785.0
-margin_top = 590.0
+margin_top = 654.0
 margin_right = 1135.0
-margin_bottom = 650.0
+margin_bottom = 714.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 3 )
@@ -153,6 +172,7 @@ enabled_focus_mode = 0
 text = "Back"
 script = ExtResource( 4 )
 
+[connection signal="pressed" from="vertical_slice" to="vertical_slice" method="pressed"]
 [connection signal="pressed" from="interactions" to="interactions" method="pressed"]
 [connection signal="pressed" from="locks_and_doors" to="locks_and_doors" method="pressed"]
 [connection signal="pressed" from="ladders" to="ladders" method="pressed"]

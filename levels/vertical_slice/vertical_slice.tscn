@@ -1,0 +1,578 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://models/road_and_sidewalk_140x140_block/road_and_sidewalk.tscn" type="PackedScene" id=2]
+[ext_resource path="res://models/streetlight/streetlight.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/night_environment.tres" type="Environment" id=4]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 125, 1, 125 )
+
+[sub_resource type="BoxShape" id=9]
+resource_local_to_scene = true
+extents = Vector3( 70, 0.15, 70 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.266667, 1, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0, 1, 0.486275, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0, 0.462745, 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.662745, 0, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.835294, 0.470588, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.419608, 0.419608, 0.419608, 1 )
+
+[node name="vertical_slice" type="Spatial"]
+
+[node name="ground_plane" type="StaticBody" parent="."]
+
+[node name="asphalt_collider" type="CollisionShape" parent="ground_plane"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+shape = SubResource( 1 )
+
+[node name="sidewalk_collider" type="CollisionShape" parent="ground_plane"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.075, 0 )
+shape = SubResource( 9 )
+disabled = true
+
+[node name="streetlights" type="Spatial" parent="ground_plane"]
+
+[node name="streetlight" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, 66.5689 )
+
+[node name="streetlight2" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, 11.3071 )
+
+[node name="streetlight3" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, -37.4859 )
+
+[node name="streetlight4" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.3848, 0, -63.3941 )
+
+[node name="streetlight5" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.325, 0, -12.5181 )
+
+[node name="streetlight6" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.3446, 0, 38.2745 )
+
+[node name="streetlight7" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -81.7026, 0, 69.7107 )
+
+[node name="streetlight8" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -130.943, 0, 69.7107 )
+
+[node name="streetlight9" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, -107.971, 0, 86.2907 )
+
+[node name="streetlight10" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.4102, 0, 88.8186 )
+
+[node name="streetlight11" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.4314, 0, 135.625 )
+
+[node name="streetlight12" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, -69.5635, 0, 112.799 )
+
+[node name="streetlight13" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, -66.418, 0, 86.3616 )
+
+[node name="streetlight14" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, -15.5575, 0, 86.3615 )
+
+[node name="streetlight15" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, 37.0498, 0, 86.3615 )
+
+[node name="streetlight16" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, -41.4114, 0, 69.5782 )
+
+[node name="streetlight17" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 8.22718, 0, 69.5782 )
+
+[node name="streetlight18" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 66.3472, 0, 69.5782 )
+
+[node name="streetlight19" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -3.89414e-07, 0, 1, 0, 3.89414e-07, 0, -1, 69.6954, 0, 88.7112 )
+
+[node name="streetlight20" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -3.89414e-07, 0, 1, 0, 3.89414e-07, 0, -1, 69.6954, 0, 136.543 )
+
+[node name="streetlight21" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3083, 0, 113.288 )
+
+[node name="streetlight22" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 4.33126e-07, 0, -1, 0, 1, 0, 1, 0, 4.33126e-07, 82.9612, 0, 86.3406 )
+
+[node name="streetlight23" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 4.33126e-07, 0, -1, 0, 1, 0, 1, 0, 4.33126e-07, 134.211, 0, 86.3406 )
+
+[node name="streetlight24" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -5.20549e-07, 0, 1, 0, 1, 0, -1, 0, -5.20549e-07, 107.969, 0, 69.7139 )
+
+[node name="streetlight25" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3349, 0, 67.2277 )
+
+[node name="streetlight26" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3545, 0, 19.6604 )
+
+[node name="streetlight27" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3151, 0, -32.0792 )
+
+[node name="streetlight28" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.5937, 0, -54.0181 )
+
+[node name="streetlight29" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.4757, 0, -7.44636 )
+
+[node name="streetlight30" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.6611, 0, 44.9214 )
+
+[node name="road_and_sidewalk" parent="ground_plane" instance=ExtResource( 2 )]
+
+[node name="sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.446638, -0.613096, 0.651635, 0.324466, 0.789727, 0.520628, -0.833808, -0.0210991, 0.551651, 120.959, 86.1296, -28.7496 )
+visible = false
+light_color = Color( 1, 0.984314, 0.905882, 1 )
+light_energy = 0.76
+
+[node name="sun2" type="DirectionalLight" parent="."]
+transform = Transform( -0.492327, 0.366853, -0.789324, -0.0438111, 0.895248, 0.443409, 0.869307, 0.252884, -0.424682, 120.959, 86.1296, -28.7496 )
+visible = false
+light_color = Color( 0.937255, 0.972549, 1, 1 )
+
+[node name="reference_marks" type="Spatial" parent="."]
+visible = false
+
+[node name="streets and sidewalks" type="Spatial" parent="reference_marks"]
+visible = false
+
+[node name="street_1" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75, -0.5, 0 )
+width = 10.0
+depth = 250.0
+material = SubResource( 2 )
+
+[node name="sidewalk_1" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75, -0.5, 0 )
+width = 15.0
+height = 1.8
+depth = 250.0
+material = SubResource( 8 )
+
+[node name="street_2" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 75, -0.5, 0 )
+width = 10.0
+depth = 250.0
+material = SubResource( 2 )
+
+[node name="sidewalk_2" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 75, -0.5, 0 )
+width = 15.0
+height = 1.8
+depth = 250.0
+material = SubResource( 8 )
+
+[node name="street_3" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 78 )
+width = 250.0
+depth = 16.0
+material = SubResource( 2 )
+
+[node name="sidewalk_3" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 78 )
+width = 250.0
+height = 1.8
+depth = 21.0
+material = SubResource( 8 )
+
+[node name="street_4" type="CSGBox" parent="reference_marks/streets and sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -78 )
+width = 250.0
+depth = 16.0
+material = SubResource( 2 )
+
+[node name="area (140x140)" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0 )
+visible = false
+width = 140.0
+depth = 140.0
+material = SubResource( 3 )
+
+[node name="tower_base (100x100)" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
+visible = false
+width = 100.0
+height = 9.0
+depth = 100.0
+material = SubResource( 4 )
+
+[node name="tower_base_aux" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.6021, 6, 30.112 )
+visible = false
+width = 17.0
+height = 12.0
+depth = 30.0
+material = SubResource( 4 )
+
+[node name="tower" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 150, 0 )
+visible = false
+width = 60.0
+height = 300.0
+depth = 60.0
+material = SubResource( 5 )
+
+[node name="stairs" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.332615, 60.2369 )
+visible = false
+width = 9.0
+depth = 25.54
+material = SubResource( 6 )
+
+[node name="alleys" type="Spatial" parent="reference_marks"]
+visible = false
+
+[node name="mall_alley" type="CSGBox" parent="reference_marks/alleys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51.7235, -0.332615, 52.5206 )
+width = 38.377
+depth = 5.0
+material = SubResource( 6 )
+
+[node name="alley_1" type="CSGBox" parent="reference_marks/alleys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59.1594, -0.332615, 16.2385 )
+width = 24.121
+depth = 5.0
+material = SubResource( 6 )
+
+[node name="alley_2" type="CSGBox" parent="reference_marks/alleys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.9712, -0.332615, -26.0026 )
+width = 24.121
+depth = 5.0
+material = SubResource( 6 )
+
+[node name="alley_3" type="CSGBox" parent="reference_marks/alleys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 59.1243, -0.332615, -4.4504 )
+width = 24.121
+depth = 5.0
+material = SubResource( 6 )
+
+[node name="other_buildings" type="Spatial" parent="reference_marks"]
+
+[node name="other_building_1" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.061, 22, 58.6934 )
+width = 15.0
+height = 45.0
+depth = 17.4981
+
+[node name="other_building_17" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47.9326, 41, 98.6484 )
+width = 38.499
+height = 82.0999
+depth = 20.0
+
+[node name="other_building_22" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105.657, 61, 111.413 )
+width = 46.1033
+height = 122.721
+depth = 45.6785
+
+[node name="other_building_24" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105.662, 20.182, 54.2463 )
+width = 46.1033
+height = 40.9746
+depth = 26.1306
+
+[node name="other_building_25" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -91.9704, 7.89694, -0.701157 )
+width = 18.5063
+height = 15.3845
+depth = 83.5468
+
+[node name="other_building_26" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -91.8636, 20.3801, -56.3227 )
+width = 18.5063
+height = 41.2025
+depth = 27.2804
+
+[node name="other_building_27" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -96.8319, 27.3525, -99.7894 )
+width = 32.7354
+height = 55.5298
+depth = 27.2804
+
+[node name="other_building_28" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51.1244, 28.5643, -99.7894 )
+width = 36.7599
+height = 57.6077
+depth = 27.4013
+
+[node name="other_building_29" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.3775, 28.0073, -100.652 )
+width = 20.0868
+height = 55.9018
+depth = 27.4013
+
+[node name="other_building_30" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.4185, 19.8067, -100.077 )
+width = 52.8582
+height = 40.6929
+depth = 27.4013
+
+[node name="other_building_31" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.5265, 17.4952, -100.364 )
+width = 27.561
+height = 35.2879
+depth = 27.4013
+
+[node name="other_building_32" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 102.671, 25.6007, -103.239 )
+width = 45.384
+height = 51.6472
+depth = 33.1507
+
+[node name="other_building_33" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95.5819, 28.3408, -54.9119 )
+width = 25.8362
+height = 56.8163
+depth = 33.1507
+
+[node name="other_building_34" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95.4657, 15.1225, -27.8898 )
+width = 25.8362
+height = 30.3346
+depth = 21.077
+
+[node name="other_building_35" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95.4658, 32, 6.89404 )
+width = 25.8362
+height = 64.5698
+depth = 47.5241
+
+[node name="other_building_36" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95.5144, 19, 49.2134 )
+width = 25.8362
+height = 38.8693
+depth = 36.6003
+
+[node name="other_building_39" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 125.698, 22, 49.1954 )
+width = 34.6367
+height = 45.0
+depth = 36.6003
+
+[node name="other_building_23" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 105.583, 36, 111.402 )
+width = 46.1033
+height = 72.0205
+depth = 45.6785
+
+[node name="other_building_21" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55.9818, 22, 118.782 )
+width = 22.5309
+height = 45.0
+depth = 20.0
+
+[node name="other_building_18" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.11888, 35, 98.6484 )
+width = 44.6795
+height = 70.8593
+depth = 20.0
+
+[node name="other_building_19" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30.3753, 28, 98.6484 )
+width = 27.6549
+height = 57.2505
+depth = 20.0
+
+[node name="other_building_20" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.7603, 22.5, 111.217 )
+width = 23.2186
+height = 45.0
+depth = 45.4363
+
+[node name="other_building_5" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.7335, 43.3312, 58.6781 )
+width = 24.0661
+height = 85.5108
+depth = 17.2957
+
+[node name="other_building_6" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.3362, 26.2967, 58.7114 )
+width = 20.9984
+height = 52.4263
+depth = 17.2291
+
+[node name="other_building_7" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.7767, 26.469, 56.3812 )
+width = 17.2655
+height = 53.1856
+depth = 22.0892
+
+[node name="other_building_11" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.8831, 11, 34.377 )
+width = 17.563
+height = 23.9414
+depth = 31.0
+
+[node name="other_building_12" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.8953, 9.44133, 6.14891 )
+width = 17.4456
+height = 17.9304
+depth = 15.0
+
+[node name="other_building_13" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.8083, 8.41601, -6.36751 )
+width = 17.2716
+height = 15.4843
+depth = 10.0
+
+[node name="other_building_14" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.8083, 12.8952, -17.5177 )
+width = 16.978
+height = 24.3345
+depth = 12.0
+
+[node name="other_building_15" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.745, 22, -39.2225 )
+width = 17.123
+height = 45.0
+depth = 21.16
+
+[node name="other_building_16" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56.1048, 16.526, -59.9752 )
+width = 22.3824
+height = 31.4923
+depth = 20.0
+
+[node name="other_building_37" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28.1673, 16.526, -59.9752 )
+width = 33.3911
+height = 31.4923
+depth = 20.0
+
+[node name="other_building_38" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.9776, 16.526, -59.9752 )
+width = 60.9881
+height = 31.4923
+depth = 20.0
+
+[node name="other_building_8" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.6659, 6, 6.602 )
+width = 17.5122
+height = 13.0
+depth = 17.0
+
+[node name="other_building_9" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.9099, 8.44943, -18.085 )
+width = 17.6992
+height = 15.5719
+depth = 22.0
+
+[node name="other_building_10" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.7767, 13.5569, -49.4417 )
+width = 17.5661
+height = 25.6572
+depth = 40.0
+
+[node name="other_building_2" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.073, 20, 58.6078 )
+width = 13.0
+height = 40.0
+depth = 17.4981
+
+[node name="other_building_3" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.741, 10, 61.0904 )
+width = 16.0
+height = 20.0
+depth = 12.3617
+
+[node name="other_building_4" type="CSGBox" parent="reference_marks/other_buildings"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.1845, 5, 61.2616 )
+width = 18.6003
+height = 11.0941
+depth = 12.5329
+
+[node name="limit_walls" type="Spatial" parent="reference_marks"]
+
+[node name="limit_wall_1" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 122.878, 4.37672, 77.5608 )
+width = 3.182
+height = 10.0
+depth = 20.391
+material = SubResource( 7 )
+
+[node name="limit_wall_2" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -123.245, 4.37672, 78.3044 )
+width = 3.182
+height = 10.0
+depth = 26.4594
+material = SubResource( 7 )
+
+[node name="limit_wall_3" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1241, 4.37672, 120.279 )
+width = 23.7065
+height = 10.0
+depth = 5.063
+material = SubResource( 7 )
+
+[node name="limit_wall_4" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.6528, 4.37672, -59.5925 )
+width = 18.155
+height = 10.0
+depth = 5.063
+material = SubResource( 7 )
+
+[node name="limit_wall_5" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.2435, 4.37672, 118.598 )
+width = 18.155
+height = 10.0
+depth = 5.063
+material = SubResource( 7 )
+
+[node name="limit_wall_6" type="CSGBox" parent="reference_marks/limit_walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 74.0601, 4.37672, -61.5898 )
+width = 18.155
+height = 10.0
+depth = 5.063
+material = SubResource( 7 )
+
+[node name="CSGBox" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.5081, 0.669135, 66.5629 )
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67.9842, 0.669135, 66.5629 )
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65.9482, 0.669135, 68.0196 )
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="reference_marks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65.9482, 0.669135, 69.4977 )
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.999992, 0, 0.00394442, 0, 1, 0, -0.00394442, 0, 0.999992, 0.0688477, -3.69549e-06, 71.5345 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 4 )
