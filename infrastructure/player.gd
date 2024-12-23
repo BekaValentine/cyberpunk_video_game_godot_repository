@@ -20,7 +20,7 @@ var should_move_backward = false
 var should_move_left = false
 var should_move_right = false
 var stand_height = null
-var crouch_height = null
+var crouch_height = 0.75
 
 enum { UIMODE_FPCONTROL, UIMODE_FOCUSING, UIMODE_TOOL_OVERLAY }
 var ui_modes = [UIMODE_FPCONTROL];
@@ -63,7 +63,6 @@ func _ready():
 	overlay_layer = $overlay_layer
 
 	stand_height = pivot.transform.origin.y
-	crouch_height = 0.42*stand_height
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -150,12 +149,14 @@ func _unhandled_input(event):
 func crouching_height_change(h):
 	.crouching_height_change(h)
 
-	var pivot_height = lerp(crouch_height, stand_height, crouch_state)
-	pivot.transform.origin.y = pivot_height
-	self.body_collider.shape.height = pivot_height + self.body_collider.shape.radius
+	pivot.transform.origin.y = lerp(crouch_height, stand_height, crouch_state)
 	
 	if held_object:
 		set_held_object_position()
+
+func finished_crouching_transition():
+	.finished_crouching_transition()
+	# self.body_collider.shape.height = pivot.transform.origin.y
 
 func pickup_object():
 	hold_object(highlighted_object)
