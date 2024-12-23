@@ -70,15 +70,14 @@ enabled = true
 cast_to = Vector3( 0, 0, -2 )
 collision_mask = 2
 
-[node name="camera2" type="Camera" parent="pivot"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.916507, -1.52355, 0 )
+[node name="camera" type="Camera" parent="pivot"]
 cull_mask = 2147483649
 environment = SubResource( 3 )
 fov = 60.0
 far = 2000.0
 
-[node name="camera" type="Camera" parent="pivot"]
-visible = false
+[node name="camera2" type="Camera" parent="pivot"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.916507, -1.52355, 0 )
 cull_mask = 2147483649
 environment = SubResource( 3 )
 fov = 60.0

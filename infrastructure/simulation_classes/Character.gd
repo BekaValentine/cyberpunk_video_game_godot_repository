@@ -6,7 +6,6 @@ export var gravity = -9.8
 export var jump_speed = 5.0
 export var run_speed = 5.0
 export var walk_speed = 1.5
-export var air_speed = 0.1
 export var push_force = 1
 
 var can_do_physics_activities = true
@@ -33,9 +32,9 @@ var crouching = false
 var crouch_state = 1
 var in_crouching_transition = false
 var max_step_height = 0.2
-var min_step_depth = 0.1
+var min_step_depth = 0.05
 var climbing_ladder = false
-var climb_ladder_speed = 2
+var climb_ladder_speed = 5
 var ladder = null
 var ladder_attachment_point_position = null
 var ladder_phase = 0
@@ -117,33 +116,35 @@ func is_on_floor():
 
 func use_stair():
 
-	if stair_phase == 0:
-		var current_delta = stair_start_position + stair_up_vec - self.global_transform.origin
-		var current_distance = current_delta.length()
-		if current_distance > 0.001:
-			var target_velocity = stair_speed * current_delta.normalized()
-			var velocity_delta = target_velocity - self.linear_velocity
-			self.apply_central_impulse(velocity_delta)
-		stair_phase_frac = 1 - stair_up_distance / stair_up_distance
-		debug_info.log("stair phase frac", stair_phase_frac)
-		debug_info.log("current delta", current_delta.y)
-		debug_info.log("stair up distance", stair_up_distance)
-		stair_phase_frac = clamp(stair_phase_frac, 0, 1)
-		if stair_phase_frac >= 0.99:
-			stair_phase_frac = 0.0
-			stair_phase = 1
-			self.global_transform.origin = stair_start_position + stair_up_vec
-	else:
-		var current_delta = stair_start_position + stair_up_vec + stair_fwd_vec - self.global_transform.origin
-		var current_distance = current_delta.length()
-		if current_distance > 0.001:
-			var target_velocity = stair_speed * current_delta.normalized()
-			var velocity_delta = target_velocity - self.linear_velocity
-			self.apply_central_impulse(velocity_delta)
-		stair_phase_frac = 1 - current_distance / stair_fwd_distance
-		stair_phase_frac = clamp(stair_phase_frac, 0, 1)
-		if stair_phase_frac >= 0.9:
-			using_stair = false
+	if self.using_stair:
+		if self.stair_phase == 0:
+			var spacing = 0.005
+			var top = stair_start_position + stair_up_vec + spacing*Vector3.UP
+			var total_to_top = stair_up_vec + spacing*Vector3.UP
+			var vec_to_top = top - self.global_transform.origin
+			if vec_to_top.length() > spacing/2 and vec_to_top.dot(total_to_top) >= 0:
+			
+				var target_velocity = stair_speed * Vector3.UP
+				self.apply_central_impulse(target_velocity - self.linear_velocity)
+
+			else:
+				self.linear_velocity = Vector3.ZERO
+				self.stair_phase = 1
+
+		elif self.stair_phase == 1:
+			var fwd = stair_start_position + stair_up_vec + stair_fwd_vec
+			var total_to_fwd = stair_fwd_vec
+			var vec_to_fwd = fwd - self.global_transform.origin
+			if vec_to_fwd.length() > 0.001 and vec_to_fwd.dot(total_to_fwd) >= 0:
+			
+				var target_velocity = stair_speed * stair_fwd_vec.normalized()
+				self.apply_central_impulse(target_velocity - self.linear_velocity)
+
+			else:
+				self.linear_velocity = Vector3.ZERO
+				self.stair_phase = 0
+				self.using_stair = false
+				self.gravity_scale = 1
 
 func climb_ladder():
 
@@ -200,46 +201,31 @@ func walk_run_jump():
 
 	velocity = Vector3.ZERO
 	move_direction = (move_target - self.global_transform.origin).normalized()
-	
+	debug_info.log("on floor", is_on_floor())
 	# determine the horizontal velocity to move
 	var speed
-	if is_on_floor():
-		# we're on the floor so we can move under our own power a lot
-		
-		if should_run:
-			# we're running
-			speed = run_speed
-		else:
-			# we're walking
-			speed = walk_speed
-
-		var vel = speed * move_direction
-		velocity.x = vel.x
-		velocity.z = vel.z
-		
-		# actual velocity we need to add is the target velocity minus current velocity
-		velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
-
-		# determine the vertical velocity
-		if should_jump:
-			# we're jumping, so we just set the vertical speed
-			velocity.y = jump_speed
-			
-		self.apply_central_impulse(velocity)
-		
-	elif Vector3(linear_velocity.x, 0, linear_velocity.z).length() < air_speed:
-		# we're in the air and don't already have some momentum so we can move
-		# tiny bit to get onto ledges
-		
-		speed = air_speed
-		
-		var vel = speed * move_direction
-		velocity.x = vel.x
-		velocity.z = vel.z
-		
-		self.apply_central_impulse(velocity)
-
 	
+	if should_run:
+		# we're running
+		speed = run_speed
+	else:
+		# we're walking
+		speed = walk_speed
+
+	var vel = speed * move_direction
+	velocity.x = vel.x
+	velocity.z = vel.z
+	
+	# actual velocity we need to add is the target velocity minus current velocity
+	velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
+
+	# determine the vertical velocity
+	if should_jump:
+		# we're jumping, so we just set the vertical speed
+		velocity.y = jump_speed
+		
+	self.apply_central_impulse(velocity)
+
 	#prevents infinite falling
 	if translation.y < fall_limit:
 		scene_manager.reload_scene()
@@ -313,6 +299,7 @@ func try_stairs():
 	
 	# And now forward
 	var fwd_dir = min_step_depth * move_direction.normalized()
+	debug_info.log("fwd_dir", fwd_dir)
 	var fwd_distance
 	res = self.cast_motion(test_origin + up_dest, fwd_dir, 0)
 	if not res:
@@ -344,7 +331,10 @@ func try_stairs():
 	if not res:
 		return
 
-	debug_info.log("stair travel", [up_dest, fwd_dest, down_dest, travel])
+	debug_info.log("up_dest", up_dest)
+	debug_info.log("fwd_dest", fwd_dest)
+	debug_info.log("down_dest", down_dest)
+	debug_info.log("stair travel", travel)
 
 	# We're not going up a ramp, so we must be at a step!
 	using_stair = true
@@ -355,7 +345,9 @@ func try_stairs():
 	stair_up_distance = travel.y
 	stair_fwd_distance = min_step_depth
 	stair_fwd_vec = min_step_depth * Vector3(travel.x, 0, travel.z).normalized()
-	move_direction = Vector3.ZERO
+	move_target = self.global_transform.origin
+	self.linear_velocity = Vector3.ZERO
+	self.gravity_scale = 0
 		
 func try_using_ladder(ladder):
 	if climbing_ladder:
@@ -390,7 +382,7 @@ func try_using_ladder(ladder):
 
 	
 	climbing_ladder = true
-	self.apply_central_impulse(-linear_velocity)
+	self.linear_velocity = Vector3.ZERO
 	self.gravity_scale = 0
 	self.ladder = ladder
 	self.ladder_phase = 0
