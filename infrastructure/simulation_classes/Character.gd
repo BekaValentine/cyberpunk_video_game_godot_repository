@@ -36,6 +36,7 @@ var in_crouching_transition = false
 var max_step_height = 0.2
 var min_step_depth = 0.05
 var climbing_ladder = false
+var approach_ladder_speed = 3
 var climb_ladder_speed = 5
 var ladder = null
 var ladder_attachment_point_position = null
@@ -178,7 +179,7 @@ func climb_ladder():
 		debug_info.log("distance to attachment point", distance_to_attachment_point)
 		
 		if distance_to_attachment_point > attach_distance:
-			var target_velocity = climb_ladder_speed*direction.normalized()
+			var target_velocity = approach_ladder_speed*direction.normalized()
 			self.apply_central_impulse(target_velocity - linear_velocity)
 		else:
 			ladder_phase = 1
@@ -224,7 +225,7 @@ func walk_run_jump():
 		velocity = velocity - Vector3(linear_velocity.x, 0, linear_velocity.z)
 
 		# determine the vertical velocity
-		if should_jump:
+		if should_jump and self.is_on_floor():
 			# we're jumping, so we just set the vertical speed
 			velocity.y = jump_speed
 

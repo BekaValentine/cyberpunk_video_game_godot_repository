@@ -309,7 +309,7 @@ func calculate_behavior_from_user_inputs():
 	should_move_left = Input.is_action_pressed("move_left")
 	should_move_right = Input.is_action_pressed("move_right")
 
-	should_jump = Input.is_action_just_pressed("jump") and self.is_on_floor()
+	should_jump = Input.is_action_just_pressed("jump")
 	should_run = Input.is_action_pressed("run")
 	should_climb_up = Input.is_action_pressed("move_forward")
 	should_climb_down = Input.is_action_pressed("move_backward")
