@@ -1,16 +1,17 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://infrastructure/player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://models/road_and_sidewalk_140x140_block/road_and_sidewalk.tscn" type="PackedScene" id=2]
-[ext_resource path="res://models/streetlight/streetlight.tscn" type="PackedScene" id=3]
-[ext_resource path="res://models/night_environment.tres" type="Environment" id=4]
-
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 125, 1, 125 )
-
-[sub_resource type="BoxShape" id=9]
-resource_local_to_scene = true
-extents = Vector3( 70, 0.15, 70 )
+[ext_resource path="res://objects/streetlight_basic.tscn" type="PackedScene" id=3]
+[ext_resource path="res://objects/streetlight_with_traffic_light_and_crosswalk_signal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://environments/night_environment.tres" type="Environment" id=5]
+[ext_resource path="res://objects/road_and_sidewalk/road_10x10.tscn" type="PackedScene" id=6]
+[ext_resource path="res://objects/road_and_sidewalk/road_10x16.tscn" type="PackedScene" id=7]
+[ext_resource path="res://levels/vertical_slice/sidewalk_middle.tscn" type="PackedScene" id=8]
+[ext_resource path="res://levels/vertical_slice/sidewalk_left.tscn" type="PackedScene" id=9]
+[ext_resource path="res://levels/vertical_slice/sidewalk_right.tscn" type="PackedScene" id=10]
+[ext_resource path="res://levels/vertical_slice/sidewalk_bottom_middle.tscn" type="PackedScene" id=11]
+[ext_resource path="res://levels/vertical_slice/sidewalk_bottom_left.tscn" type="PackedScene" id=12]
+[ext_resource path="res://levels/vertical_slice/sidewalk_bottom_right.tscn" type="PackedScene" id=13]
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.266667, 1, 0, 1 )
@@ -35,110 +36,319 @@ albedo_color = Color( 0.419608, 0.419608, 0.419608, 1 )
 
 [node name="vertical_slice" type="Spatial"]
 
-[node name="ground_plane" type="StaticBody" parent="."]
-
-[node name="asphalt_collider" type="CollisionShape" parent="ground_plane"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
-shape = SubResource( 1 )
-
-[node name="sidewalk_collider" type="CollisionShape" parent="ground_plane"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.075, 0 )
-shape = SubResource( 9 )
-disabled = true
+[node name="ground_plane" type="Spatial" parent="."]
 
 [node name="streetlights" type="Spatial" parent="ground_plane"]
 
-[node name="streetlight" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, 66.5689 )
+[node name="streetlight_1" parent="ground_plane/streetlights" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.651, 0, 67.393 )
 
-[node name="streetlight2" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, 11.3071 )
+[node name="streetlight_2" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.651, 0.075, 17.393 )
 
-[node name="streetlight3" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6066, 0, -37.4859 )
+[node name="streetlight_3" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.651, 0.075, -32.607 )
 
-[node name="streetlight4" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.3848, 0, -63.3941 )
+[node name="streetlight_4" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -80.425, 0.075, 42.393 )
 
-[node name="streetlight5" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.325, 0, -12.5181 )
+[node name="streetlight_5" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -80.425, 0.075, -7.607 )
 
-[node name="streetlight6" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.3446, 0, 38.2745 )
+[node name="streetlight_6" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -80.425, 0.075, -57.607 )
 
-[node name="streetlight7" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -81.7026, 0, 69.7107 )
+[node name="streetlight_7" parent="ground_plane/streetlights" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -82.6967, 0, 69.5992 )
 
-[node name="streetlight8" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -130.943, 0, 69.7107 )
+[node name="streetlight_8" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -117.698, 0.075, 69.592 )
 
-[node name="streetlight9" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, -107.971, 0, 86.2907 )
+[node name="streetlight_9" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 0, 0, -1, 0, 1, 0, 1, 0, 0, -99.698, 0.075, 86.374 )
 
-[node name="streetlight10" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.4102, 0, 88.8186 )
+[node name="streetlight_10" parent="ground_plane/streetlights" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -80.3507, 0, 88.8316 )
 
-[node name="streetlight11" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -80.4314, 0, 135.625 )
+[node name="streetlight_11" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, -1, -80.35, 0.075, 118.83 )
 
-[node name="streetlight12" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, -69.5635, 0, 112.799 )
+[node name="streetlight_12" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, 1, -69.6761, 0.075, 103.83 )
 
-[node name="streetlight13" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, -66.418, 0, 86.3616 )
+[node name="streetlight_13" parent="ground_plane/streetlights" instance=ExtResource( 4 )]
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -67.0132, 0, 86.3423 )
 
-[node name="streetlight14" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, -15.5575, 0, 86.3615 )
+[node name="streetlight_14" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 0, 0, -1, 0, 1, 0, 1, 0, 0, -14.7606, 0.075, 86.339 )
 
-[node name="streetlight15" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1.94707e-07, 0, -1, 0, 1, 0, 1, 0, 1.94707e-07, 37.0498, 0, 86.3615 )
+[node name="streetlight_15" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 0, 0, -1, 0, 1, 0, 1, 0, 0, 37.3355, 0.075, 86.339 )
 
-[node name="streetlight16" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, -41.4114, 0, 69.5782 )
+[node name="streetlight_16" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, -1, 69.6341, 0.075, 88.6729 )
 
-[node name="streetlight17" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 8.22718, 0, 69.5782 )
+[node name="streetlight_17" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, -1, 69.634, 0.075, 118.673 )
 
-[node name="streetlight18" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 66.3472, 0, 69.5782 )
+[node name="streetlight_18" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 80.3354, 0.075, 103.673 )
 
-[node name="streetlight19" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -3.89414e-07, 0, 1, 0, 3.89414e-07, 0, -1, 69.6954, 0, 88.7112 )
+[node name="streetlight_19" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1.58933e-08, 0, -1, 0, 1, 0, 1, 0, 1.58933e-08, 82.6886, 0.075, 86.3274 )
 
-[node name="streetlight20" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -3.89414e-07, 0, 1, 0, 3.89414e-07, 0, -1, 69.6954, 0, 136.543 )
+[node name="streetlight_20" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1.58933e-08, 0, -1, 0, 1, 0, 1, 0, 1.58933e-08, 117.689, 0.075, 86.327 )
 
-[node name="streetlight21" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3083, 0, 113.288 )
+[node name="streetlight_21" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1.03316e-07, 0, 1, 0, 1, 0, -1, 0, -1.03316e-07, 100.689, 0.075, 69.6691 )
 
-[node name="streetlight22" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 4.33126e-07, 0, -1, 0, 1, 0, 1, 0, 4.33126e-07, 82.9612, 0, 86.3406 )
+[node name="streetlight_22" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 80.3296, 0.075, 67.3928 )
 
-[node name="streetlight23" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 4.33126e-07, 0, -1, 0, 1, 0, 1, 0, 4.33126e-07, 134.211, 0, 86.3406 )
+[node name="streetlight_23" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 80.33, 0.075, 16.393 )
 
-[node name="streetlight24" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -5.20549e-07, 0, 1, 0, 1, 0, -1, 0, -5.20549e-07, 107.969, 0, 69.7139 )
+[node name="streetlight_24" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 80.33, 0.075, -33.607 )
 
-[node name="streetlight25" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3349, 0, 67.2277 )
+[node name="streetlight_25" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.47027e-07, 0, 1, 0, 1.47027e-07, 0, -1, 69.6068, 0.075, -58.607 )
 
-[node name="streetlight26" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3545, 0, 19.6604 )
+[node name="streetlight_26" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.47027e-07, 0, 1, 0, 1.47027e-07, 0, -1, 69.607, 0.075, -8.607 )
 
-[node name="streetlight27" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 4.76837e-07, 0, 1, 0, -4.76837e-07, 0, 1, 80.3151, 0, -32.0792 )
+[node name="streetlight_27" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.47027e-07, 0, 1, 0, 1.47027e-07, 0, -1, 69.607, 0.075, 41.393 )
 
-[node name="streetlight28" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.5937, 0, -54.0181 )
+[node name="streetlight_28" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1.03316e-07, 0, 1, 0, 1, 0, -1, 0, -1.03316e-07, 67.2295, 0.075, 69.5767 )
 
-[node name="streetlight29" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.4757, 0, -7.44636 )
+[node name="streetlight_29" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1.03316e-07, 0, 1, 0, 1, 0, -1, 0, -1.03316e-07, 11.7468, 0.075, 69.577 )
 
-[node name="streetlight30" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -6.27833e-07, 0, 1, 0, 6.27833e-07, 0, -1, 69.6611, 0, 44.9214 )
+[node name="streetlight_30" parent="ground_plane/streetlights" instance=ExtResource( 3 )]
+transform = Transform( -1.03316e-07, 0, 1, 0, 1, 0, -1, 0, -1.03316e-07, -39.5431, 0.075, 69.577 )
 
-[node name="road_and_sidewalk" parent="ground_plane" instance=ExtResource( 2 )]
+[node name="roads_and_sidewalks" type="Spatial" parent="ground_plane"]
+
+[node name="road_1_vertical_left" type="Spatial" parent="ground_plane/roads_and_sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75, 0, 0 )
+
+[node name="road_10x10_1" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65 )
+
+[node name="road_10x10_2" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 55 )
+
+[node name="road_10x10_3" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 45 )
+
+[node name="road_10x10_4" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 35 )
+
+[node name="road_10x10_5" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 25 )
+
+[node name="road_10x10_6" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15 )
+
+[node name="road_10x10_7" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5 )
+
+[node name="road_10x10_8" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5 )
+
+[node name="road_10x10_9" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15 )
+
+[node name="road_10x10_10" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -25 )
+
+[node name="road_10x10_11" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35 )
+
+[node name="road_10x10_12" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -45 )
+
+[node name="road_10x10_13" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -55 )
+
+[node name="road_10x10_14" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -65 )
+
+[node name="road_10x10_15" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 91 )
+
+[node name="road_10x10_16" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 101 )
+
+[node name="road_10x10_17" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 111 )
+
+[node name="road_10x10_18" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 121 )
+
+[node name="road_10x10_19" parent="ground_plane/roads_and_sidewalks/road_1_vertical_left" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 131 )
+
+[node name="road_2_vertical_right" type="Spatial" parent="ground_plane/roads_and_sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 0, 0 )
+
+[node name="road_10x10_1" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65 )
+
+[node name="road_10x10_2" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 55 )
+
+[node name="road_10x10_3" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 45 )
+
+[node name="road_10x10_4" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 35 )
+
+[node name="road_10x10_5" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 25 )
+
+[node name="road_10x10_6" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15 )
+
+[node name="road_10x10_7" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5 )
+
+[node name="road_10x10_8" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5 )
+
+[node name="road_10x10_9" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15 )
+
+[node name="road_10x10_10" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -25 )
+
+[node name="road_10x10_11" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35 )
+
+[node name="road_10x10_12" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -45 )
+
+[node name="road_10x10_13" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -55 )
+
+[node name="road_10x10_14" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -65 )
+
+[node name="road_10x10_15" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 91 )
+
+[node name="road_10x10_16" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 101 )
+
+[node name="road_10x10_17" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 111 )
+
+[node name="road_10x10_18" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 121 )
+
+[node name="road_10x10_19" parent="ground_plane/roads_and_sidewalks/road_2_vertical_right" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 131 )
+
+[node name="road_3_horizontal" type="Spatial" parent="ground_plane/roads_and_sidewalks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 78 )
+
+[node name="road_10x16_1" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -125, 0, 0 )
+
+[node name="road_10x16_2" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -115, 0, 0 )
+
+[node name="road_10x16_3" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105, 0, 0 )
+
+[node name="road_10x16_4" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -95, 0, 0 )
+
+[node name="road_10x16_5" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -85, 0, 0 )
+
+[node name="road_10x16_6" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75, 0, 0 )
+
+[node name="road_10x16_7" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 0, 0 )
+
+[node name="road_10x16_8" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="road_10x16_9" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="road_10x16_10" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="road_10x16_11" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="road_10x16_12" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="road_10x16_13" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="road_10x16_14" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="road_10x16_15" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="road_10x16_16" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="road_10x16_17" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="road_10x16_18" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="road_10x16_19" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )
+
+[node name="road_10x16_20" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 0, 0 )
+
+[node name="road_10x16_21" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 0, 0 )
+
+[node name="road_10x16_22" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 85, 0, 0 )
+
+[node name="road_10x16_23" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95, 0, 0 )
+
+[node name="road_10x16_24" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 105, 0, 0 )
+
+[node name="road_10x16_25" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 115, 0, 0 )
+
+[node name="road_10x16_26" parent="ground_plane/roads_and_sidewalks/road_3_horizontal" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, 0 )
+
+[node name="sidewalk_left" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105, 0, 0 )
+
+[node name="sidewalk_middle" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 8 )]
+
+[node name="sidewalk_right" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 105, 0, 0 )
+
+[node name="sidewalk_bottom_middle" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 111 )
+
+[node name="sidewalk_bottom_right" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 105, 0, 111 )
+
+[node name="sidewalk_bottom_left" parent="ground_plane/roads_and_sidewalks" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105, 0, 111 )
 
 [node name="sun" type="DirectionalLight" parent="."]
 transform = Transform( 0.446638, -0.613096, 0.651635, 0.324466, 0.789727, 0.520628, -0.833808, -0.0210991, 0.551651, 120.959, 86.1296, -28.7496 )
@@ -516,28 +726,28 @@ depth = 26.4594
 material = SubResource( 7 )
 
 [node name="limit_wall_3" type="CSGBox" parent="reference_marks/limit_walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1241, 4.37672, 120.279 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1241, 4.37672, 125.367 )
 width = 23.7065
 height = 10.0
 depth = 5.063
 material = SubResource( 7 )
 
 [node name="limit_wall_4" type="CSGBox" parent="reference_marks/limit_walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.6528, 4.37672, -59.5925 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -75.6528, 4.37672, -62.3244 )
 width = 18.155
 height = 10.0
 depth = 5.063
 material = SubResource( 7 )
 
 [node name="limit_wall_5" type="CSGBox" parent="reference_marks/limit_walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.2435, 4.37672, 118.598 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.2435, 4.37672, 125.997 )
 width = 18.155
 height = 10.0
 depth = 5.063
 material = SubResource( 7 )
 
 [node name="limit_wall_6" type="CSGBox" parent="reference_marks/limit_walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 74.0601, 4.37672, -61.5898 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 74.0601, 4.37672, -63.3844 )
 width = 18.155
 height = 10.0
 depth = 5.063
@@ -568,7 +778,7 @@ height = 1.0
 depth = 1.0
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.999992, 0, 0.00394442, 0, 1, 0, -0.00394442, 0, 0.999992, -78.2395, -3.69549e-06, 85.3164 )
+transform = Transform( 0.999992, 0, 0.00394442, 0, 1, 0, -0.00394442, 0, 0.999992, -77.7036, -3.69549e-06, 67.3163 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 4 )
+environment = ExtResource( 5 )

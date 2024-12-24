@@ -1,0 +1,232 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://objects/road_and_sidewalk/sidewalk_10x10_side.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/road_and_sidewalk/sidewalk_10x10_center.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/road_and_sidewalk/sidewalk_10x10_corner.tscn" type="PackedScene" id=3]
+
+[node name="sidewalk_bottom_middle" type="Spatial"]
+
+[node name="with_corners" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.74846e-06, 0, -20 )
+
+[node name="sidewalk_10x10_corner_1" parent="with_corners" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 0, 0 )
+
+[node name="sidewalk_10x10_corner_2" parent="with_corners" instance=ExtResource( 3 )]
+transform = Transform( 0, 0, 1, 0, 1, 0, -1, 0, 0, 65, 0, 0 )
+
+[node name="sidewalk_10x10_side_1" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="sidewalk_10x10_side_2" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="sidewalk_10x10_side_3" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="sidewalk_10x10_side_4" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="sidewalk_10x10_side_5" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="sidewalk_10x10_side_6" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="sidewalk_10x10_side_7" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="sidewalk_10x10_side_8" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="sidewalk_10x10_side_9" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="sidewalk_10x10_side_10" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="sidewalk_10x10_side_11" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="sidewalk_10x10_side_12" parent="with_corners" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )
+
+[node name="no_corners_1" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -8.74228e-07, 0, -10 )
+
+[node name="sidewalk_10x10_side_1" parent="no_corners_1" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -65, 0, 0 )
+
+[node name="sidewalk_10x10_side_2" parent="no_corners_1" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65, 0, 3.8147e-06 )
+
+[node name="sidewalk_10x10_center_1" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="sidewalk_10x10_center_2" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="sidewalk_10x10_center_3" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="sidewalk_10x10_center_4" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="sidewalk_10x10_center_5" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="sidewalk_10x10_center_6" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="sidewalk_10x10_center_7" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="sidewalk_10x10_center_8" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="sidewalk_10x10_center_9" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="sidewalk_10x10_center_10" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="sidewalk_10x10_center_11" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="sidewalk_10x10_center_12" parent="no_corners_1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )
+
+[node name="no_corners_2" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+
+[node name="sidewalk_10x10_side_1" parent="no_corners_2" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -65, 0, 0 )
+
+[node name="sidewalk_10x10_side_2" parent="no_corners_2" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65, 0, 3.8147e-06 )
+
+[node name="sidewalk_10x10_center_1" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="sidewalk_10x10_center_2" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="sidewalk_10x10_center_3" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="sidewalk_10x10_center_4" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="sidewalk_10x10_center_5" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="sidewalk_10x10_center_6" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="sidewalk_10x10_center_7" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="sidewalk_10x10_center_8" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="sidewalk_10x10_center_9" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="sidewalk_10x10_center_10" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="sidewalk_10x10_center_11" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="sidewalk_10x10_center_12" parent="no_corners_2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )
+
+[node name="no_corners_3" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8.74228e-07, 0, 10 )
+
+[node name="sidewalk_10x10_side_1" parent="no_corners_3" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -65, 0, 0 )
+
+[node name="sidewalk_10x10_side_2" parent="no_corners_3" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65, 0, 3.8147e-06 )
+
+[node name="sidewalk_10x10_center_1" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="sidewalk_10x10_center_2" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="sidewalk_10x10_center_3" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="sidewalk_10x10_center_4" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="sidewalk_10x10_center_5" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="sidewalk_10x10_center_6" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="sidewalk_10x10_center_7" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="sidewalk_10x10_center_8" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="sidewalk_10x10_center_9" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="sidewalk_10x10_center_10" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="sidewalk_10x10_center_11" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="sidewalk_10x10_center_12" parent="no_corners_3" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )
+
+[node name="no_corners_4" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.74846e-06, 0, 20 )
+
+[node name="sidewalk_10x10_side_1" parent="no_corners_4" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -65, 0, 0 )
+
+[node name="sidewalk_10x10_side_2" parent="no_corners_4" instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65, 0, 3.8147e-06 )
+
+[node name="sidewalk_10x10_center_1" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 0, 0 )
+
+[node name="sidewalk_10x10_center_2" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 0 )
+
+[node name="sidewalk_10x10_center_3" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 0 )
+
+[node name="sidewalk_10x10_center_4" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 0 )
+
+[node name="sidewalk_10x10_center_5" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
+
+[node name="sidewalk_10x10_center_6" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0 )
+
+[node name="sidewalk_10x10_center_7" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0 )
+
+[node name="sidewalk_10x10_center_8" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
+
+[node name="sidewalk_10x10_center_9" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0 )
+
+[node name="sidewalk_10x10_center_10" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
+
+[node name="sidewalk_10x10_center_11" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 0 )
+
+[node name="sidewalk_10x10_center_12" parent="no_corners_4" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 0 )

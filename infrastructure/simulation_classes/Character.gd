@@ -11,6 +11,7 @@ export var push_force = 1
 
 var can_do_physics_activities = true
 var body_collider = null
+var stair_collider = null
 var crouch_tween = null
 var on_floor = false
 var stair_rays = null
@@ -51,6 +52,7 @@ var temperature = 98.6
 
 func _ready():
 	body_collider = $body_collider
+	stair_collider = $stair_collider
 	crouch_tween = $crouch_tween
 	stair_rays = $stair_rays
 	stair_ray_bottom = $stair_rays/stair_ray_bottom
@@ -281,7 +283,7 @@ func try_stairs():
 	
 	# Here we move forward to test if we're obstructed
 	var move_dir = 0.005 * move_direction.normalized()
-	res = self.cast_motion(self.global_transform.origin, move_dir, 0)
+	res = self.cast_stair_motion(self.global_transform.origin, move_dir, 0)
 	if not res:
 		# not colliding with anything, so must not be next to a step
 		return
@@ -294,7 +296,7 @@ func try_stairs():
 	# Here we test upward
 	var up_dir = max_step_height * Vector3.UP
 	var up_distance
-	res = self.cast_motion(test_origin, up_dir, 10);
+	res = self.cast_stair_motion(test_origin, up_dir, 10);
 	if not res:
 		up_distance = 1
 	else:
@@ -306,7 +308,7 @@ func try_stairs():
 	# And now forward
 	var fwd_dir = min_step_depth * move_direction.normalized()
 	var fwd_distance
-	res = self.cast_motion(test_origin + up_dest, fwd_dir, 0)
+	res = self.cast_stair_motion(test_origin + up_dest, fwd_dir, 0)
 	if not res:
 		fwd_distance = 1
 	else:
@@ -318,7 +320,7 @@ func try_stairs():
 	# And now back down
 	var down_dir = max_step_height * Vector3.DOWN
 	var down_distance
-	res = self.cast_motion(test_origin + up_dest + fwd_dest, down_dir, 10)
+	res = self.cast_stair_motion(test_origin + up_dest + fwd_dest, down_dir, 10)
 	if not res:
 		down_distance = 1
 	else:
@@ -332,7 +334,7 @@ func try_stairs():
 		return
 	
 	# But otherwise we test if we're going up a ramp
-	res = self.cast_motion(self.global_transform.origin + 0.01 * Vector3.UP, travel, 5, true)
+	res = self.cast_stair_motion(self.global_transform.origin + 0.01 * Vector3.UP, travel, 5, true)
 	if not res:
 		return
 
@@ -406,8 +408,8 @@ func climb_onto_surface():
 	self.gravity_scale = 1
 	self.ladder = null
 
-func cast_motion(origin : Vector3, dir : Vector3, recursive_steps : int, force_recursive_steps = false):
-	var shape = body_collider.shape
+func cast_stair_motion(origin : Vector3, dir : Vector3, recursive_steps : int, force_recursive_steps = false):
+	var shape = stair_collider.shape
 	# raise the shape by half its height so that its at the same position
 	# as the collider, then add a millimeter so it doesnt collide with ground
 	origin += Vector3(0,shape.height/2 + 0.001,0)
